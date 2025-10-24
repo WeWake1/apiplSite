@@ -1,0 +1,770 @@
+/* In css/style.css */
+
+/* --- 1. CSS Reset --- */
+/* This removes default browser styles for consistency */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* This prevents horizontal scrolling on the main page elements */
+body, html {
+    overflow-x: hidden;
+}
+
+/* --- 2. Font Definition --- */
+/* This tells the browser where to find your custom font */
+@font-face {
+    font-family: 'ITCAnna'; /* We're giving our font a name */
+    src: url(../fonts/itc-anna.otf); /* IMPORTANT: Change ITC-ANNA.ttf to your exact font filename */
+    /* If your font is .otf, use format('opentype') */
+    /* If it is .woff or .woff2, use format('woff') or format('woff2') */
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* --- 3. CSS Variables (Root) --- */
+/* This makes it easy to manage your theme colors and fonts */
+:root {
+    --primary-color: #0056b3;
+    --dark-color: #212529;
+    --light-color: #f8f9fa;
+    --font-heading: 'ITCAnna', sans-serif;
+    --font-body: 'Poppins', sans-serif;
+}
+
+/* --- 4. General Body Styles --- */
+body {
+    font-family: var(--font-body);
+    background-color: var(--light-color);
+    color: var(--primary-color);
+    line-height: 1.6;
+    cursor: auto;
+}
+
+/* --- 5. Header and Navigation Styles --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    border-bottom: 1px solid #dee2e6;   
+}
+
+.logo a {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: lighter;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 2rem;
+}
+
+nav ul li a {
+    color: var(--dark-color);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600; /* Bolder font for nav links */
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent; /* Prepare for hover effect */
+    transition: border-color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+/* --- 6. Hero Section Styles --- */
+main {
+    padding: 0 5%;
+}
+
+.hero {
+    min-height: 80vh; /* Make the hero section tall */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem; /* Adds space between text and image */
+    padding: 4rem 0;
+}
+
+.hero-text {
+    max-width: 50%;
+}
+
+h1 {
+    font-family: var(--font-heading);
+    font-size: 4.5rem;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    font-weight: normal;
+}
+
+.hero-text p {
+    font-size: 1.2rem;
+    color: #495057; /* Slightly dimmer than pure white */
+}
+
+
+
+
+/* --- 8. Custom Cursor Styles --- */
+/* First, hide the default system cursor */
+body {
+    cursor: auto;
+}
+
+
+
+
+/* --- 9. Content Section Styles --- */
+
+.content-section {
+    max-width: 1500px; /* Constrains the width of text for readability */
+    margin: 0 auto; /* Centers the section horizontally */
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.content-section h2 {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: normal;
+    margin-bottom: 1.5rem;
+}
+
+.content-section p {
+    font-size: 1.1rem;
+    color: #495057;
+    line-height: 1.8;
+}
+
+/* --- Style for the horizontal line divider --- */
+.divider {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0;
+}
+
+.divider hr {
+    width: 800px;
+    border: none;
+    border-top: 2px solid var(--primary-color);
+}
+
+
+/* --- 10. Universal Magnetic Button Styles --- */
+
+/* This is the base style for ANY magnetic element */
+.magnetic-button {
+    display: inline-block; /* Ensures transform works correctly */
+    transition: transform 0.3s ease-out; /* Smoothly resets position */
+}
+
+
+/* --- 10. Magnetic Snap Styles & Product Cards --- */
+/* Style for the container of the product cards */
+.product-range-container {
+    display: flex;
+    justify-content: center;
+    gap: 4rem; /* Ample space between cards */
+    margin-top: 4rem;
+}
+
+
+
+.product-card {
+    border-radius: 15px;
+    text-decoration: none;
+    color: var(--dark-color); /* CHANGE THIS */
+    width: 400px;
+    overflow: hidden;
+}
+
+/* The title inside the card */
+.product-card h3 {
+    font-family: var(--font-body); /* EXPLICITLY set the font */
+    font-size: 1.5rem;
+    font-weight: 600; /* Let's ensure it's bold */
+    color: var(--dark-color); /* Also good to re-declare the color */
+    padding: 1.5rem;
+    text-align: center;
+}
+
+/* A subtle zoom effect on the image when hovering the card */
+.product-card:hover .product-image-placeholder {
+    transform: scale(1.05);
+}
+
+
+
+
+/* In css/style.css (add to the end) */
+
+/* --- 11. Contact Page Styles --- */
+.contact-details {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    margin-top: 4rem;
+    text-align: center;
+}
+
+.contact-item h3 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: normal;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.contact-item a, .contact-item p {
+    font-size: 1.1rem;
+    color: var(--dark-color);
+    text-decoration: none;
+}
+
+.contact-item a:hover {
+    text-decoration: underline;
+}
+
+/* --- Style for the active navigation link --- */
+nav ul li a.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+
+/* In css/style.css (add to the end) */
+
+/* --- 13. Image Styles and New Layouts --- */
+
+/* Style for the new images inside the product cards */
+.product-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover; /* This prevents images from stretching */
+    display: block; /* Removes any unwanted space below the image */
+    transition: transform 0.4s ease; /* This was on the placeholder, now it's on the img */
+    border-radius: 15px;
+}
+
+/* Keep the hover effect on the card to zoom the image */
+.product-card:hover img {
+    transform: scale(1.05);
+}
+
+/* Styles for the new two-column section */
+.two-column-layout {
+    display: flex;
+    align-items: center; /* Vertically aligns the text and image */
+    justify-content: space-between;
+    gap: 4rem; /* Space between text and image */
+    text-align: left; /* Override the default center alignment */
+}
+
+.two-column-layout .text-content {
+    flex-basis: 50%; /* The text takes up half the space */
+}
+
+.two-column-layout .image-content {
+    flex-basis: 45%; /* The image takes up slightly less space */
+}
+
+.two-column-layout .image-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px; /* Give the image soft corners */
+    display: block;
+}
+
+
+/* In css/style.css (add to the end) */
+
+/* --- 14. Responsive Design & Mobile Styles (REVISED) --- */
+
+/* This new class will be toggled by JS to stop page scrolling */
+.body-no-scroll {
+    overflow: hidden;
+}
+
+/* Style the hamburger menu itself */
+.hamburger-menu {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10001; /* Make sure it's on top of EVERYTHING */
+    position: relative; /* Needed for consistent behavior */
+    width: 25px;
+    height: 21px;
+}
+.hamburger-menu span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--dark-color);
+    margin: 5px 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Animate the hamburger to an 'X' when active */
+.hamburger-menu.is-active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+.hamburger-menu.is-active span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger-menu.is-active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+    /* (Styles for stacking layouts remain the same) */
+    .hero, .two-column-layout { flex-direction: column; text-align: center; }
+    .hero-text, .two-column-layout .text-content, .two-column-layout .image-content { max-width: 100%; flex-basis: auto; }
+    .hero { padding: 2rem 0; }
+    model-viewer { width: 100% !important; height: 400px !important; margin-top: 2rem; }
+    .hero-text h1 { font-size: 2.8rem; }
+    .content-section h2 { font-size: 2.2rem; }
+    .product-range-container, .contact-details { flex-direction: column; align-items: center; gap: 2rem; }
+    .product-card { width: 90%; max-width: 350px; }
+
+    /* --- REVISED Hamburger Menu on Mobile --- */
+    .hamburger-menu {
+        display: block;
+    }
+
+    .hamburger-menu.is-active span{
+        background-color: var(--light-color);
+    }
+
+    nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(26, 26, 26, 0.95);
+        backdrop-filter: blur(10px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: translateX(100%);
+        transition: transform 0.4s ease-in-out;
+        z-index: 10000; /* High z-index, but below the button */
+    }
+
+    nav.is-open {
+        transform: translateX(0); /* Slide the menu in when active */
+    }
+
+    nav ul {
+        flex-direction: column; /* Stack the nav links vertically */
+        text-align: center;
+    }
+
+    nav ul li {
+        margin: 1.5rem 0; /* Add space between vertical links */
+    }
+    nav ul li a {
+        font-size: 1.8rem;
+        color: var(--light-color); /* Make the links much bigger for tapping */
+    }
+
+    /* --- General Layout Stacking --- */
+    .hero,
+    .two-column-layout {
+        flex-direction: column; /* Stack columns vertically */
+        text-align: center;
+    }
+
+    .hero-text, 
+    .two-column-layout .text-content,
+    .two-column-layout .image-content {
+        max-width: 100%; /* Allow content to take full width */
+        flex-basis: auto;
+    }
+
+    .hero {
+        padding: 2rem 0; /* Reduce padding on mobile */
+    }
+
+    /* Make 3D model smaller on mobile */
+    model-viewer {
+        width: 100% !important;
+        height: 400px !important;
+        margin-top: 2rem;
+    }
+    
+    /* Reduce font sizes for smaller screens */
+    .hero-text h1 {
+        font-size: 2.8rem;
+    }
+    .content-section h2 {
+        font-size: 2.2rem;
+    }
+
+    /* --- Stack Product & Contact Cards --- */
+    .product-range-container,
+    .contact-details {
+        flex-direction: column;
+        align-items: center; /* Center the stacked cards */
+        gap: 2rem;
+    }
+    .product-card {
+        width: 90%; /* Make cards take up most of the screen width */
+        max-width: 350px;
+    }
+}
+
+
+/* In css/style.css (add to the end) */
+
+/* --- 15. Modern Gallery Carousel Styles --- */
+
+.gallery-carousel-section {
+    padding: 6rem 0;
+    /* We don't need a background color here, let it be the page default */
+}
+
+/* A centered title for the new section */
+.section-title {
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: normal;
+    margin-bottom: 3rem;
+}
+
+.gallery-scroller {
+    max-width: 100%;
+    overflow: hidden;
+    /* This creates a soft fade-out effect on the edges */
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.scroller-inner {
+    display: flex;
+    gap: 1.5rem; /* Space between images */
+    padding-block: 1rem;
+    width: max-content; /* Allows the container to be as wide as its content */
+    
+    /* The animation itself */
+    animation: scroll 40s linear infinite;
+}
+
+/* This pauses the animation when the user hovers over the gallery */
+.gallery-scroller:hover .scroller-inner {
+    animation-play-state: paused;
+}
+
+/* Define the keyframes for our scroll animation */
+@keyframes scroll {
+    to {
+        transform: translate(calc(-50% - 0.75rem));
+    }
+}
+
+.scroller-inner img {
+    height: 350px; /* A nice, large height for the images */
+    width: auto;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1); /* Adds a subtle shadow for depth */
+}
+
+
+/* In css/style.css (add to the end) */
+
+/* --- 17. Final High-Impact Footer Styles --- */
+
+.site-footer-new {
+    background-color: #212529; /* Dark, professional background */
+    color: #adb5bd;
+    padding: 5rem 5% 2rem; /* More top padding */
+    /* REMOVED margin and border-radius for a standard, full-width footer */
+}
+
+.footer-main {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start; /* Aligns heading and grid to the top */
+    padding-bottom: 4rem;
+}
+
+.footer-heading {
+    flex-basis: 55%; /* The heading takes up about a third of the space */
+}
+
+.footer-heading h2 {
+    font-family: var(--font-heading);
+    font-size: 4.5rem; /* HUGE font size for impact */
+    line-height: 1.2;
+    color: #ffffff;
+    font-weight: normal;
+    margin: 0;
+}
+
+.footer-grid {
+    flex: 1;
+    display: flex;
+    gap: 3rem;
+}
+
+.footer-column h4 {
+    font-family: var(--font-heading);
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: normal;
+    margin-bottom: 1.5rem;
+}
+
+.footer-column p {
+    margin-bottom: 0.8rem;
+    line-height: 1.7;
+}
+
+.footer-column a {
+    color: #ced4da;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.footer-column a:hover {
+    color: #ffffff;
+}
+.footer-column .fa-solid {
+    margin-right: 10px;
+    color: var(--primary-color);
+}
+
+.licenses-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.license-badge {
+    border: 1px solid #495057;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    height: 80px;
+    color: #ced4da;
+}
+.license-number {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.footer-bottom-new {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    border-top: 1px solid #495057;
+}
+
+.copyright-text {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.footer-bottom-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.social-icons-bottom a {
+    color: #adb5bd;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+.social-icons-bottom a:hover {
+    color: #ffffff;
+}
+
+.back-to-top {
+    color: #adb5bd;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+.back-to-top:hover {
+    color: #ffffff;
+}
+.back-to-top .fa-arrow-up {
+    margin-left: 8px;
+}
+
+/* Responsive adjustments for the new footer */
+@media (max-width: 900px) {
+    .footer-main {
+        flex-direction: column;
+    }
+    .footer-grid {
+        width: 100%;
+    }
+}
+@media (max-width: 768px) {
+    .footer-grid {
+        flex-direction: column;
+    }
+    .footer-bottom-new {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* In style.css (add to the very end) */
+
+/* ========================================
+   18. PRODUCT PAGE STYLES (Consolidated & Fixed)
+======================================== */
+
+.products-main {
+    padding: 0;
+}
+
+/* --- Smart Navigation Header --- */
+.products-nav-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(248, 249, 250, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 86, 179, 0.1);
+    padding: 1rem 0;
+}
+
+.products-nav-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    padding: 0 2rem;
+}
+
+.products-nav-item {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    white-space: nowrap;
+}
+
+.products-nav-item:hover {
+    color: var(--primary-color);
+    background-color: rgba(0, 86, 179, 0.05);
+}
+
+.products-nav-item.active {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.products-nav-indicator {
+    position: absolute;
+    bottom: -1rem;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), #007bff);
+    border-radius: 2px;
+    /* THE FIX: We use 'left' instead of 'transform' for positioning relative to the container */
+    transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* --- Swiper Container Styles --- */
+.products-swiper {
+    width: 100%;
+    overflow: hidden;
+    transition: height 0.4s ease-in-out;
+}
+
+.category-slide {
+    height: auto;
+}
+
+.category-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 5%;
+}
+
+.category-header { text-align: center; margin-bottom: 4rem; padding: 2rem 0; }
+.category-header h1 { font-family: var(--font-heading); font-size: 3.5rem; color: var(--primary-color); margin-bottom: 1rem; }
+.category-description { font-size: 1.2rem; color: #495057; max-width: 800px; margin: 0 auto; }
+.products-list { display: flex; flex-direction: column; gap: 3rem; }
+.product-item { display: flex; align-items: flex-start; gap: 3rem; padding: 2.5rem; background: #ffffff; border-radius: 20px; box-shadow: 0 8px 32px rgba(0, 86, 179, 0.08); border: 1px solid rgba(0, 86, 179, 0.05); }
+.product-item:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0, 86, 179, 0.15); }
+.product-image { flex: 0 0 300px; height: 250px; border-radius: 12px; overflow: hidden; }
+.product-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+.product-item:hover .product-image img { transform: scale(1.05); }
+.product-info { flex: 1; }
+.product-info h3 { font-family: var(--font-heading); font-size: 2.2rem; color: var(--primary-color); margin-bottom: 1rem; }
+.product-info p { color: #495057; margin-bottom: 1.5rem; }
+.product-specs { list-style: none; padding: 0; }
+.product-specs li { color: #6c757d; padding-left: 1.5rem; position: relative; margin-bottom: 0.5rem; }
+.product-specs li::before { content: "•"; color: var(--primary-color); font-weight: bold; font-size: 1.2rem; position: absolute; left: 0; top: 0; }
+.product-specs li strong { color: var(--dark-color); }
+
+/* --- Product Page Responsive --- */
+@media (max-width: 768px) {
+    .products-nav-container {
+        justify-content: center;
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+    .products-nav-item {
+        font-size: 0.9rem;
+        padding: 0.6rem 0.8rem;
+    }
+    .product-item { flex-direction: column; text-align: center; }
+    .product-image { width: 100%; max-width: 350px; margin: 0 auto; }
+    .product-info p, .product-specs { text-align: left; }
+    .products-nav-indicator { bottom: -0.8rem; }
+}
+@media (max-width: 420px) {
+    .products-nav-container { gap: 0.5rem; }
+    .products-nav-item { font-size: 0.8rem; padding: 0.5rem 0.6rem; }
+}

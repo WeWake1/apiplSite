@@ -189,7 +189,8 @@ body {
     text-decoration: none;
     color: var(--dark-color); /* CHANGE THIS */
     width: 400px;
-    overflow: hidden;
+    background: var(--light-color); /* Match page background */
+        overflow: visible;
 }
 
 /* The title inside the card */
@@ -251,17 +252,28 @@ nav ul li a.active {
 /* --- 13. Image Styles and New Layouts --- */
 
 /* Style for the new images inside the product cards */
-.product-card img {
-    width: 100%;
+.product-card-image {
     height: 300px;
+    border-radius: 15px; /* Match the card's rounded corners */
+    overflow: hidden; /* Clip the image even when it scales */
+    transition: transform 0.4s ease;
+    transform: scale(1);
+}
+
+.product-card-image img {
+    width: 100%;
+    height: 100%;
     object-fit: cover; /* This prevents images from stretching */
     display: block; /* Removes any unwanted space below the image */
-    transition: transform 0.4s ease; /* This was on the placeholder, now it's on the img */
-    border-radius: 15px;
+    transition: transform 0.4s ease; /* Smooth zoom animation */
 }
 
 /* Keep the hover effect on the card to zoom the image */
-.product-card:hover img {
+.product-card:hover .product-card-image img {
+    transform: scale(1.05);
+}
+
+.product-card:hover .product-card-image {
     transform: scale(1.05);
 }
 

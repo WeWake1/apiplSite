@@ -750,8 +750,24 @@ nav ul li a.active {
 .product-item { display: flex; align-items: flex-start; gap: 3rem; padding: 2.5rem; background: #ffffff; border-radius: 20px; box-shadow: 0 8px 32px rgba(0, 86, 179, 0.08); border: 1px solid rgba(0, 86, 179, 0.05); }
 .product-item:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0, 86, 179, 0.15); }
 .product-image { flex: 0 0 300px; height: 250px; border-radius: 12px; overflow: hidden; }
-.product-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
-.product-item:hover .product-image img { transform: scale(1.05); }
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+.product-image model-viewer {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: var(--light-color);
+    transition: transform 0.3s ease;
+    --poster-color: transparent;
+}
+.product-item:hover .product-image img,
+.product-item:hover .product-image model-viewer {
+    transform: scale(1.05);
+}
 .product-info { flex: 1; }
 .product-info h3 { font-family: var(--font-heading); font-size: 2.2rem; color: var(--primary-color); margin-bottom: 1rem; }
 .product-info p { color: #495057; margin-bottom: 1.5rem; }

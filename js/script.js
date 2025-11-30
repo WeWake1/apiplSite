@@ -1,10 +1,13 @@
 // In script.js
 
 // --- Part 5: Lenis Smooth Scrolling ---
+/*
 const lenis = new Lenis({
-    lerp: 0.07,
+    lerp: 0.5,
     duration: 1.2,
 });
+*/
+
 
 function raf(time) {
   lenis.raf(time)

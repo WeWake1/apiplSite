@@ -43,6 +43,27 @@ body {
     cursor: auto;
 }
 
+/* --- 4a. Skip Link for Accessibility --- */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0 0 8px 8px;
+    text-decoration: none;
+    font-weight: 600;
+    z-index: 100000;
+    transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: 3px solid var(--dark-color);
+}
+
 /* --- 5. Header and Navigation Styles --- */
 header {
     display: flex;
@@ -775,6 +796,580 @@ nav ul li a.active {
 .product-specs li { color: #6c757d; padding-left: 1.5rem; position: relative; margin-bottom: 0.5rem; }
 .product-specs li::before { content: "•"; color: var(--primary-color); font-weight: bold; font-size: 1.2rem; position: absolute; left: 0; top: 0; }
 .product-specs li strong { color: var(--dark-color); }
+
+/* ========================================
+   19. ABOUT PAGE STYLES
+======================================== */
+
+/* Hero Banner for About Page */
+.about-hero {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #003d82 100%);
+    color: #fff;
+    padding: 6rem 5%;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.about-hero h1 {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    font-weight: normal;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.about-hero .tagline {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Stats Section */
+.stats-section {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    padding: 4rem 5%;
+    background: #fff;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    color: var(--primary-color);
+    display: block;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* About Content Sections */
+.about-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 5%;
+}
+
+.about-section h2 {
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-weight: normal;
+}
+
+.about-section p {
+    font-size: 1.1rem;
+    color: #495057;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+/* Two Column About Layout */
+.about-two-column {
+    display: flex;
+    gap: 4rem;
+    align-items: center;
+}
+
+.about-two-column .about-text {
+    flex: 1;
+}
+
+.about-two-column .about-image {
+    flex: 1;
+}
+
+.about-two-column .about-image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.about-two-column.reverse {
+    flex-direction: row-reverse;
+}
+
+/* Services/What We Do Grid */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.service-card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 86, 179, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 86, 179, 0.1);
+}
+
+.service-card i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.service-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--dark-color);
+    margin-bottom: 0.75rem;
+    font-weight: normal;
+}
+
+.service-card p {
+    color: #6c757d;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Industries Grid */
+.industries-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.industry-tag {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #007bff 100%);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Vision Mission Section */
+.vision-mission {
+    display: flex;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.vision-box, .mission-box {
+    flex: 1;
+    padding: 2.5rem;
+    border-radius: 12px;
+    position: relative;
+}
+
+.vision-box {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #003d82 100%);
+    color: #fff;
+}
+
+.mission-box {
+    background: #fff;
+    border: 2px solid var(--primary-color);
+}
+
+.vision-box h3, .mission-box h3 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-weight: normal;
+}
+
+.vision-box h3 {
+    color: #fff;
+}
+
+.mission-box h3 {
+    color: var(--primary-color);
+}
+
+.vision-box p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.mission-box p {
+    color: #495057;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* Commitment List */
+.commitment-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.commitment-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #495057;
+    font-size: 1.05rem;
+}
+
+.commitment-list li i {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+/* CTA Section */
+.cta-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #003d82 100%);
+    color: #fff;
+    text-align: center;
+    padding: 5rem 5%;
+    margin-top: 4rem;
+}
+
+.cta-section h2 {
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    font-weight: normal;
+}
+
+.cta-section p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+
+.cta-button {
+    display: inline-block;
+    background: #fff;
+    color: var(--primary-color);
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* About Page Responsive */
+@media (max-width: 768px) {
+    .about-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .stats-section {
+        gap: 2rem;
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+    }
+    
+    .about-two-column,
+    .about-two-column.reverse {
+        flex-direction: column;
+    }
+    
+    .vision-mission {
+        flex-direction: column;
+    }
+    
+    .about-section h2 {
+        font-size: 2.2rem;
+    }
+}
+
+/* ========================================
+   20. CONTACT PAGE STYLES
+======================================== */
+
+/* Contact Hero */
+.contact-hero {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #003d82 100%);
+    color: #fff;
+    padding: 5rem 5%;
+    text-align: center;
+}
+
+.contact-hero h1 {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    font-weight: normal;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.contact-hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Contact Main Container */
+.contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 5%;
+}
+
+/* Contact Grid Layout */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+}
+
+/* Contact Info Cards */
+.contact-info-section h2 {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-weight: normal;
+}
+
+.contact-info-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.contact-info-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 86, 179, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-info-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0, 86, 179, 0.1);
+}
+
+.contact-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #007bff 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.contact-icon i {
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.contact-info-content h3 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+    font-weight: normal;
+}
+
+.contact-info-content p,
+.contact-info-content a {
+    color: #495057;
+    font-size: 1rem;
+    text-decoration: none;
+    line-height: 1.6;
+}
+
+.contact-info-content a:hover {
+    color: var(--primary-color);
+}
+
+/* Contact Form */
+.contact-form-section h2 {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-weight: normal;
+}
+
+.contact-form {
+    background: #fff;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+}
+
+.form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.submit-button {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #007bff 100%);
+    color: #fff;
+    padding: 1rem 2.5rem;
+    border: none;
+    border-radius: 50px;
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+}
+
+.submit-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 86, 179, 0.3);
+}
+
+/* Map Section */
+.map-section {
+    margin-top: 2rem;
+}
+
+.map-section h2 {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-weight: normal;
+    text-align: center;
+}
+
+.map-container {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 450px;
+    border: none;
+}
+
+/* Contact Business Hours */
+.business-hours {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #003d82 100%);
+    color: #fff;
+    padding: 3rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+}
+
+.business-hours h3 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    font-weight: normal;
+}
+
+.hours-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.hours-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hours-item:last-child {
+    border-bottom: none;
+}
+
+/* Contact Page Responsive */
+@media (max-width: 768px) {
+    .contact-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-form {
+        padding: 1.5rem;
+    }
+}
 
 /* --- Product Page Responsive --- */
 @media (max-width: 768px) {

@@ -1,5 +1,17 @@
 // In script.js
 
+// --- Part 5: Lenis Smooth Scrolling ---
+const lenis = new Lenis({
+    lerp: 0.07,
+    duration: 1.2,
+});
+
+function raf(time) {
+  lenis.raf(time)
+  requestAnimationFrame(raf)
+}
+requestAnimationFrame(raf);
+
 // --- Part 11: Hamburger Menu Logic ---
 const hamburger = document.querySelector('.hamburger-menu');
 const nav = document.querySelector('nav');
@@ -23,7 +35,7 @@ const backToTopButton = document.getElementById('back-to-top-button');
 if (backToTopButton) {
     backToTopButton.addEventListener('click', (e) => {
         e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        lenis.scrollTo(0, { duration: 1.5 });
     });
 }
 

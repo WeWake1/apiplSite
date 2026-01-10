@@ -1,17 +1,5 @@
 // In script.js
 
-// --- Part 5: Lenis Smooth Scrolling ---
-const lenis = new Lenis({
-    lerp: 0.07,
-    duration: 1.2,
-});
-
-function raf(time) {
-  lenis.raf(time)
-  requestAnimationFrame(raf)
-}
-requestAnimationFrame(raf);
-
 // --- Part 11: Hamburger Menu Logic ---
 const hamburger = document.querySelector('.hamburger-menu');
 const nav = document.querySelector('nav');
@@ -47,7 +35,7 @@ window.addEventListener('load', () => {
 // --- Products Page Functionality (FINAL, BULLETPROOF VERSION) ---
 const productsMain = document.querySelector('.products-main');
 if (productsMain) {
-    const navItems = document.querySelectorAll('.products-nav-item');
+    conswindow.scrollTo({ top: 0, behavior: 'smooth'orAll('.products-nav-item');
     const indicator = document.querySelector('.products-nav-indicator');
     const swiperContainer = document.querySelector('.products-swiper');
 

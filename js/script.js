@@ -1,96 +1,177 @@
-// In script.js
+/* ============================================================
+   AMBICA PATTERNS — site interactions (no external JS deps)
+   ============================================================ */
+(function () {
+  "use strict";
 
-// --- Part 11: Hamburger Menu Logic ---
-const hamburger = document.querySelector('.hamburger-menu');
-const nav = document.querySelector('nav');
+  /* ---------- Sticky header + scroll progress + back-to-top ---------- */
+  const header = document.querySelector(".site-header");
+  const progress = document.querySelector(".scroll-progress");
+  const toTop = document.querySelector(".back-to-top");
 
-hamburger.addEventListener('click', () => {
-    nav.classList.toggle('is-open');
-    hamburger.classList.toggle('is-active');
-    document.body.classList.toggle('body-no-scroll');
-});
-
-// --- Part 7: On-Scroll Animation Initialization ---
-AOS.init({
-    duration: 800,
-    easing: 'ease-in-out',
-    once: false,
-    offset: 100,
-});
-
-// --- Back to Top Button Logic ---
-const backToTopButton = document.getElementById('back-to-top-button');
-if (backToTopButton) {
-    backToTopButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        lenis.scrollTo(0, { duration: 1.5 });
-    });
-}
-
-// --- AOS Refresh on Load ---
-window.addEventListener('load', () => {
-  AOS.refresh();
-});
-
-// --- Products Page Functionality (FINAL, BULLETPROOF VERSION) ---
-const productsMain = document.querySelector('.products-main');
-if (productsMain) {
-    conswindow.scrollTo({ top: 0, behavior: 'smooth'orAll('.products-nav-item');
-    const indicator = document.querySelector('.products-nav-indicator');
-    const swiperContainer = document.querySelector('.products-swiper');
-
-    function updateSwiperHeight(swiperInstance) {
-        const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
-        const content = activeSlide ? activeSlide.querySelector('.category-content') : null;
-        if (content) {
-            swiperContainer.style.height = `${content.scrollHeight}px`;
-        }
+  function onScroll() {
+    const y = window.scrollY;
+    if (header) header.classList.toggle("scrolled", y > 30);
+    if (progress) {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.width = (h > 0 ? (y / h) * 100 : 0) + "%";
     }
+    if (toTop) toTop.classList.toggle("show", y > 500);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 
-    function updateIndicator(activeItem) {
-        if (!indicator || !activeItem) return;
-        indicator.style.left = `${activeItem.offsetLeft}px`;
-        indicator.style.width = `${activeItem.offsetWidth}px`;
-    }
+  if (toTop) {
+    toTop.addEventListener("click", () =>
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    );
+  }
 
-    function updateNavigation(activeIndex) {
-        navItems.forEach(item => item.classList.remove('active'));
-        const activeItem = navItems[activeIndex];
-        if (activeItem) {
-            activeItem.classList.add('active');
-            updateIndicator(activeItem);
-        }
-    }
+  /* ---------- Mobile navigation ---------- */
+  const hamburger = document.querySelector(".hamburger");
+  const nav = document.querySelector(".nav");
+  if (hamburger && nav) {
+    const toggle = (force) => {
+      const isOpen =
+        typeof force === "boolean"
+          ? force
+          : !nav.classList.contains("mobile-open");
+      nav.classList.toggle("mobile-open", isOpen);
+      hamburger.classList.toggle("open", isOpen);
+      document.body.style.overflow = isOpen ? "hidden" : "";
+      hamburger.setAttribute("aria-expanded", String(isOpen));
+    };
+    hamburger.addEventListener("click", () => toggle());
+    nav.querySelectorAll("a").forEach((a) =>
+      a.addEventListener("click", () => toggle(false))
+    );
+  }
 
-    const productsSwiper = new Swiper('.products-swiper', {
-        speed: 500,
-        resistanceRatio: 0.3,
-        threshold: 20,
-        on: {
-            init: function () {
-                updateSwiperHeight(this);
-            },
-            slideChangeTransitionStart: function () {
-                updateNavigation(this.activeIndex);
-                updateSwiperHeight(this);
-            },
-        }
-    });
-
-    navItems.forEach((item, index) => {
-        item.addEventListener('click', () => {
-            productsSwiper.slideTo(index);
+  /* ---------- Scroll reveal (IntersectionObserver) ---------- */
+  const reveals = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window && reveals.length) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
         });
-    });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+    );
+    reveals.forEach((el) => io.observe(el));
+  } else {
+    reveals.forEach((el) => el.classList.add("in"));
+  }
 
-    // THE DEFINITIVE FIX: Wait for the entire window to be loaded before positioning.
-    window.addEventListener('load', () => {
-        updateNavigation(productsSwiper.activeIndex);
-        // Also re-check height after images are loaded.
-        updateSwiperHeight(productsSwiper);
-    });
+  /* ---------- Animated counters ---------- */
+  const counters = document.querySelectorAll("[data-count]");
+  const animateCount = (el) => {
+    const target = parseFloat(el.dataset.count);
+    const dur = 1600;
+    const start = performance.now();
+    const step = (now) => {
+      const p = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased).toLocaleString();
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = target.toLocaleString();
+    };
+    requestAnimationFrame(step);
+  };
+  if ("IntersectionObserver" in window && counters.length) {
+    const cio = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            animateCount(e.target);
+            cio.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    counters.forEach((c) => cio.observe(c));
+  } else {
+    counters.forEach((c) => (c.textContent = c.dataset.count));
+  }
 
-    window.addEventListener('resize', () => {
-        updateNavigation(productsSwiper.activeIndex);
+  /* ---------- Lazy-load <model-viewer> only when near viewport ---------- */
+  const stages = document.querySelectorAll("[data-model-stage]");
+  if (stages.length) {
+    let loaded = false;
+    const loadMV = () => {
+      if (loaded) return;
+      loaded = true;
+      const s = document.createElement("script");
+      s.type = "module";
+      s.src =
+        "https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js";
+      document.head.appendChild(s);
+    };
+    if ("IntersectionObserver" in window) {
+      const mio = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            loadMV();
+            mio.disconnect();
+          }
+        },
+        { rootMargin: "400px" }
+      );
+      stages.forEach((s) => mio.observe(s));
+    } else {
+      loadMV();
+    }
+  }
+
+  /* ---------- Product tabs ---------- */
+  const tabBtns = document.querySelectorAll(".tab-btn");
+  const panels = document.querySelectorAll(".tab-panel");
+  if (tabBtns.length && panels.length) {
+    const activate = (id) => {
+      if (!document.getElementById(id)) return;
+      tabBtns.forEach((b) => b.classList.toggle("active", b.dataset.tab === id));
+      panels.forEach((p) => p.classList.toggle("active", p.id === id));
+    };
+    tabBtns.forEach((b) =>
+      b.addEventListener("click", () => activate(b.dataset.tab))
+    );
+    const hash = window.location.hash.replace("#", "");
+    if (hash) activate(hash);
+  }
+
+  /* ---------- Contact form (graceful fallback to mailto) ---------- */
+  const form = document.querySelector("[data-contact-form]");
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      const action = form.getAttribute("action") || "";
+      if (action.includes("your-form-id") || action === "") {
+        e.preventDefault();
+        const fd = new FormData(form);
+        const subject = encodeURIComponent(
+          "Pallet enquiry — " + (fd.get("name") || "Website")
+        );
+        const body = encodeURIComponent(
+          `Name: ${fd.get("name") || ""}\nCompany: ${fd.get("company") || ""}\n` +
+            `Email: ${fd.get("email") || ""}\nPhone: ${fd.get("phone") || ""}\n` +
+            `Product: ${fd.get("product") || ""}\n\n${fd.get("message") || ""}`
+        );
+        window.location.href = `mailto:sales@ambicapatterns.in?subject=${subject}&body=${body}`;
+        const btn = form.querySelector('[type="submit"]');
+        if (btn) {
+          const t = btn.textContent;
+          btn.textContent = "Opening your email…";
+          setTimeout(() => (btn.textContent = t), 3000);
+        }
+      }
     });
-}
+  }
+
+  /* ---------- Year in footer ---------- */
+  document.querySelectorAll("[data-year]").forEach(
+    (el) => (el.textContent = new Date().getFullYear())
+  );
+})();

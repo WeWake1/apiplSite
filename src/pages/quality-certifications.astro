@@ -1,0 +1,89 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import Fa from '../components/Fa.astro';
+import { site } from '../data/site';
+import imgStamp from '../assets/brand/ippc-mark-in-081-ht.webp';
+
+const checks = [
+  ['tree', 'Timber Intake', 'Each delivery is checked for species, grade, dimensions and defects such as large knots, splits, bark and decay.'],
+  ['ruler-combined', 'Cutting', 'Boards and blocks are cut to the drawing; the first pieces of every run are measured before production continues.'],
+  ['layer-group', 'Assembly', 'Nail type, count and pattern follow the model specification, so pallets behave the same in every batch.'],
+  ['fire-flame-curved', 'Heat Treatment', 'Export pallets are treated to ISPM-15 with probes in the core of the thickest pieces, and every cycle is recorded.'],
+  ['clipboard-check', 'Final Inspection', 'Finished pallets are checked for dimensions, squareness, protruding nails and correct markings before dispatch.'],
+];
+const faqs = [
+  { q: 'Can I get copies of your certificates?', a: 'Yes. Ask us and we will send copies of our ISPM-15 registration, ISO 9001 certificate and PEFC / FSC chain-of-custody certificate.' },
+  { q: 'What does the mark "IN-081 HT" mean?', a: `It is our ISPM-15 mark: IN is the country code for India, 081 is our registration number with the plant protection authority, and HT means heat treated. It is shown next to the IPPC wheat-ear symbol.` },
+  { q: 'Are all your pallets heat treated?', a: 'Pallets for export are always heat treated. For domestic use you can choose treated or untreated pallets.' },
+];
+---
+
+<Base
+  title={`Quality & Certifications: ISPM-15 ${site.ippc}, ISO 9001, PEFC / FSC`}
+  description={`Ambica Patterns is a registered ISPM-15 heat-treatment provider (${site.ippc}) with an ISO 9001 quality system and PEFC / FSC certified timber. How we check every pallet.`}
+>
+  <section class="about-hero" data-aos="fade-up">
+    <h1>Quality &amp; Certifications</h1>
+    <p class="tagline">Independent certificates are the easiest way to know a pallet supplier does what it says. These are ours, and this is how we check every pallet.</p>
+  </section>
+
+  <section class="about-section" data-aos="fade-up">
+    <h2>Our Certifications</h2>
+    <div class="services-grid">
+      {
+        site.certifications.map((c, i) => (
+          <div class="service-card" data-aos="fade-up" data-aos-delay={i * 100}>
+            <Fa name={c.icon} />
+            <h3>{c.name}{c.sub && ` (${c.sub})`}</h3>
+            <p>{c.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <div class="divider" data-aos="zoom-in"><hr /></div>
+
+  <section class="about-section" data-aos="fade-up">
+    <div class="about-two-column">
+      <div class="about-text">
+        <h2>ISPM-15 in Plain English</h2>
+        <p>Wooden packaging that crosses a border must be heat treated so it cannot carry pests. The core of the wood is held at 56 °C for at least 30 minutes, and the pallet is stamped with the IPPC mark.</p>
+        <p>Our mark reads <strong>{site.ippc} HT</strong> next to the IPPC wheat-ear symbol, on two opposite sides of every export pallet. <a href="/guides/ispm-15-heat-treatment/">Read the full ISPM-15 guide</a>.</p>
+      </div>
+      <div class="about-image">
+        <Image src={imgStamp} alt={`ISPM-15 mark ${site.ippc} HT with the IPPC wheat-ear symbol on the corner block of a wooden pallet`} widths={[480, 720, 960]} sizes="(max-width: 768px) 90vw, 45vw" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" data-aos="zoom-in"><hr /></div>
+
+  <section class="about-section" data-aos="fade-up">
+    <h2>Five Checks Between Timber and Truck</h2>
+    <div class="services-grid">
+      {
+        checks.map(([icon, t, d], i) => (
+          <div class="service-card" data-aos="fade-up" data-aos-delay={i * 100}>
+            <Fa name={icon} />
+            <h3>{i + 1}. {t}</h3>
+            <p>{d}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="about-section" data-aos="fade-up">
+    <h2>Questions About Quality</h2>
+    <Faq items={faqs} />
+  </section>
+
+  <section class="cta-section" data-aos="fade-up">
+    <h2>Ask for Our Certificates</h2>
+    <p>We can share copies of our registration and certificates with your purchase or quality team.</p>
+    <a href="/contact/#quote" class="cta-button">Contact Us <Fa name="arrow-right" /></a>
+  </section>
+</Base>

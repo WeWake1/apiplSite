@@ -1,0 +1,221 @@
+---
+import { Image, getImage } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ProductCard from '../components/ProductCard.astro';
+import Faq from '../components/Faq.astro';
+import Fa from '../components/Fa.astro';
+import { categories, categoryUrl, mainImage, modelUrl, productBySlug, products } from '../lib/catalog';
+import { site, yearsInBusiness } from '../data/site';
+
+import imgBlocks from '../assets/photos/cut-timber-blocks.jpg';
+import g1 from '../assets/photos/timber-bundles-yard.jpg';
+import g2 from '../assets/photos/timber-bundle.jpg';
+import g3 from '../assets/photos/timber-cutting-saw.jpg';
+import g4 from '../assets/photos/timber-logs-yard.jpg';
+import g5 from '../assets/photos/sawn-timber-stack.jpg';
+import g6 from '../assets/photos/forklift-loading-pallets.jpg';
+import g7 from '../assets/photos/factory-euro-pallet.jpg';
+
+const heroProduct = productBySlug['euro-pallet-1200x800'];
+const hero = mainImage(heroProduct);
+const heroPoster = await getImage({ src: hero.src, width: 1000, format: 'webp', quality: 80 });
+const guides = (await getCollection('guides')).sort((a, b) => a.data.title.localeCompare(b.data.title));
+const gallery = [
+  [g1, 'Bundles of sawn softwood timber in the Ambica Patterns yard'],
+  [g2, 'Wrapped bundle of timber ready for pallet production'],
+  [g3, 'Circular saw cutting pallet boards to size'],
+  [g4, 'Timber logs stacked for pallet manufacturing'],
+  [g5, 'Sawn timber stacked at the Ambica Patterns factory'],
+  [g6, 'Forklift loading finished wooden pallets'],
+  [g7, 'Freshly built wooden pallet on the factory floor'],
+] as const;
+const galleryImgs = await Promise.all(gallery.map(async ([src, alt]) => ({ img: await getImage({ src, height: 350, format: 'webp', quality: 72 }), alt })));
+
+const reasons = [
+  ['fire-flame-curved', 'In-House Heat Treatment', `Registered ISPM-15 facility ${site.ippc}: export pallets are heat treated and IPPC stamped on site, without waiting on a third party.`],
+  ['ruler-combined', 'Built to Standard Sizes', 'Euro-size, CP-type and GMA pallets built to the published dimensions and board layouts, plus custom sizes to your drawing.'],
+  ['tree', 'Graded Timber', 'Softwood and seasoned hardwood graded before cutting, so load-bearing boards are free of large knots, splits and bark.'],
+  ['clipboard-check', 'ISO 9001 Quality', 'Documented checks from timber intake to dispatch keep every batch consistent with the one before.'],
+  ['truck', 'On-Time Delivery', 'From our plant on Hesarghatta Main Road in north Bengaluru, close to the Peenya industrial belt, we deliver across Karnataka and India.'],
+  ['recycle', 'Responsible Sourcing', 'PEFC / FSC certified timber on request, efficient cutting and offcuts put to use.'],
+];
+const industries = [
+  ['industry', 'Manufacturing'],
+  ['warehouse', 'Logistics & Warehousing'],
+  ['box', 'FMCG'],
+  ['pills', 'Pharmaceuticals'],
+  ['flask', 'Chemicals & Polymers'],
+  ['gears', 'Engineering & Heavy Industries'],
+  ['car', 'Automotive'],
+  ['ship', 'Exporters & Importers'],
+];
+const faqs = [
+  { q: 'Where is Ambica Patterns located?', a: 'Our factory is at No. 6/7, Hesarghatta Main Road, near Chikkabanavara Railway Station, Bengaluru 560090, Karnataka.' },
+  { q: 'Do you make pallets in custom sizes?', a: 'Yes. Send your product size, load weight and handling method and we will propose a design and quote.' },
+  { q: 'Are your pallets suitable for export?', a: `Yes. We run a registered ISPM-15 heat-treatment facility (${site.ippc}) and stamp export pallets with the IPPC mark "${site.ippc} HT".` },
+  { q: 'Do you make EPAL pallets?', a: 'We do not hold an EPAL licence. We build Euro-size and CP-type pallets to the standard dimensions and layouts, marked with our ISPM-15 stamp instead of EPAL marks.' },
+];
+---
+
+<Base
+  title="Wooden Pallet Manufacturer in Bangalore | Ambica Patterns"
+  description={`Ambica Patterns makes wooden pallets in Bengaluru since 2001: Euro-size, CP1-CP9 type, GMA, pinewood and hardwood pallets and pallet collars. ISPM-15 heat treatment ${site.ippc}, ISO 9001.`}
+  image={hero.src}
+  active="home"
+>
+  <section class="hero">
+    <div class="hero-text">
+      <h1 data-aos="fade-up">High-Quality Wooden Pallets</h1>
+      <p data-aos="fade-up">Over {yearsInBusiness} years of excellence in manufacturing and supply: Euro-size, CP-type, GMA, pinewood and hardwood pallets from our factory in Bengaluru.</p>
+    </div>
+
+    <model-viewer
+      id="hero-model"
+      data-src={modelUrl(heroProduct)}
+      alt="3D model of a Euro-size wooden pallet, 1200 × 800 mm"
+      camera-controls
+      auto-rotate
+      ar
+      shadow-intensity="1"
+      environment-image="neutral"
+      camera-orbit="-35deg 70deg 105%"
+      interaction-prompt="none"
+      style="width: 45%; height: 600px; border-radius: 12px; background-color: #f2f2f2; position: relative;"
+    >
+      <img slot="poster" src={heroPoster.src} width="1000" height="750" alt={hero.alt} fetchpriority="high" style="width:100%;height:100%;object-fit:contain;border-radius:12px;" />
+      <button type="button" class="view-3d hero-3d" aria-label="View the Euro-size pallet in 3D" hidden><Fa name="cube" /> 3D</button>
+    </model-viewer>
+  </section>
+
+  <div class="divider" data-aos="zoom-in"><hr /></div>
+
+  <section class="content-section two-column-layout">
+    <div class="text-content" data-aos="fade-right">
+      <h2>Pioneering Pallet Solutions Since {site.founded}</h2>
+      <p>
+        Ambica Patterns India Pvt Ltd has been a cornerstone of the packaging industry, delivering robust and reliable wooden pallets. Every
+        pallet is built in our own plant at Chikkabanavara, north Bengaluru: we hold timber stock on site, cut boards and blocks to size,
+        assemble each model to its drawing and heat treat export pallets in our registered chamber before they leave the gate.
+      </p>
+      <p>
+        Our commitment to quality and precision engineering ensures your goods are transported safely and efficiently, from a 1200 × 800
+        Euro-size pallet to a 1275 × 1275 hardwood pallet for heavy machinery.
+      </p>
+    </div>
+    <div class="image-content" data-aos="fade-left">
+      <Image src={imgBlocks} alt="Cut timber blocks ready for pallet assembly at Ambica Patterns" widths={[480, 720, 960]} sizes="(max-width: 768px) 90vw, 45vw" loading="lazy" />
+    </div>
+  </section>
+
+  <div class="divider" data-aos="zoom-in"><hr /></div>
+
+  <section class="content-section">
+    <h2 data-aos="fade-up">Our Product Range</h2>
+    <p data-aos="fade-up">{products.length} pallet models in six families. Choose one to see every model with its studio renders, 3D view and specifications.</p>
+    <div class="product-range-container">
+      {
+        categories.map((c, i) => (
+          <ProductCard href={categoryUrl(c.slug)} title={c.name} image={mainImage(productBySlug[c.heroProduct])} text={c.summary} delay={(i % 3) * 200} />
+        ))
+      }
+    </div>
+  </section>
+
+  <div class="divider" data-aos="zoom-in"><hr /></div>
+
+  <section class="content-section" data-aos="fade-up">
+    <h2>Two Decades of Trust</h2>
+    <p>
+      Founded on the principles of integrity and craftsmanship, Ambica Patterns has grown from a small workshop into a leading manufacturer.
+      Our journey is built on long-lasting relationships with clients who trust us for our consistency and dedication.
+    </p>
+  </section>
+
+  <section class="gallery-carousel-section" aria-label="Our factory">
+    <div class="gallery-scroller" data-direction="left" data-speed="slow">
+      <div class="scroller-inner" data-aos="fade-in" data-aos-delay="200">
+        {galleryImgs.map(({ img, alt }) => <img src={img.src} width={img.attributes.width} height={img.attributes.height} alt={alt} loading="lazy" decoding="async" />)}
+        {galleryImgs.map(({ img }) => <img src={img.src} width={img.attributes.width} height={img.attributes.height} alt="" aria-hidden="true" loading="lazy" decoding="async" />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section" data-aos="fade-up">
+    <h2>Why Choose Ambica Patterns</h2>
+    <p>
+      A pallet only gets noticed when it fails: a rejected shipment, a broken board in the racking, a container held at customs. Since {site.founded}
+      we have built our process around making sure that never happens to our customers.
+    </p>
+    <div class="services-grid">
+      {
+        reasons.map(([icon, t, d], i) => (
+          <div class="service-card" data-aos="fade-up" data-aos-delay={(i % 3) * 100}>
+            <Fa name={icon} />
+            <h3>{t}</h3>
+            <p>{d}</p>
+          </div>
+        ))
+      }
+    </div>
+    <p style="margin-top:2rem"><a href="/quality-certifications/">See our quality checks and certifications</a></p>
+  </section>
+
+  <div class="divider" data-aos="zoom-in"><hr /></div>
+
+  <section class="about-section" data-aos="fade-up">
+    <h2>Industries We Serve</h2>
+    <p>We cater to a wide range of industries, providing pallet solutions that meet the specific requirements of each sector.</p>
+    <div class="industries-grid">
+      {industries.map(([icon, name]) => <span class="industry-tag"><Fa name={icon} /> {name}</span>)}
+    </div>
+  </section>
+
+  <div class="divider" data-aos="zoom-in"><hr /></div>
+
+  <section class="content-section">
+    <h2 data-aos="fade-up">Pallet Buyer Guides</h2>
+    <p data-aos="fade-up">Straight answers to the questions purchase and logistics teams ask us most.</p>
+    <div class="product-range-container">
+      {guides.map((g, i) => <ProductCard href={`/guides/${g.id}/`} title={g.data.title} image={mainImage(productBySlug[g.data.heroProduct])} text={g.data.summary} delay={i * 200} />)}
+    </div>
+  </section>
+
+  <section class="about-section" data-aos="fade-up">
+    <h2>Frequently Asked Questions</h2>
+    <Faq items={faqs} />
+  </section>
+
+  <section class="cta-section" data-aos="fade-up">
+    <h2>Ready to Partner With Us?</h2>
+    <p>Let's discuss how we can provide the perfect pallet solutions for your business needs.</p>
+    <a href="/contact/#quote" class="cta-button">Get in Touch <Fa name="arrow-right" /></a>
+  </section>
+</Base>
+
+<script is:inline>
+  // Rotating 3D pallet in the hero. The render (poster) shows first. Desktops load the 3D viewer once the
+  // page is idle; phones, touch screens and data-saver users get a "3D" button instead, because the
+  // viewer is about 1 MB of JavaScript and would make the first scroll janky on a slower phone.
+  (function () {
+    var mv = document.getElementById('hero-model');
+    if (!mv) return;
+    var btn = mv.querySelector('.hero-3d');
+    var go = function () {
+      if (!window.__ambicaLoadModelViewer) return;
+      if (btn) btn.hidden = true;
+      window.__ambicaLoadModelViewer().then(function () { mv.setAttribute('src', mv.getAttribute('data-src')); });
+    };
+    var light = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches || (navigator.connection && navigator.connection.saveData);
+    if (light) {
+      if (btn) {
+        btn.hidden = false;
+        btn.addEventListener('click', go);
+      }
+      return;
+    }
+    window.addEventListener('load', function () {
+      if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 2500 }); else setTimeout(go, 1200);
+    });
+  })();
+</script>

@@ -1,0 +1,1585 @@
+/* In css/style.css */
+
+/* --- 1. CSS Reset --- */
+/* This removes default browser styles for consistency */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* This prevents horizontal scrolling on the main page elements */
+body, html {
+    overflow-x: hidden;
+}
+
+/* --- 2. Font Definition --- */
+/* This tells the browser where to find your custom font */
+@font-face {
+    font-family: 'ITCAnna'; /* We're giving our font a name */
+    src: url(../fonts/itc-anna.otf) format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* --- 3. CSS Variables (Root) --- */
+/* This makes it easy to manage your theme colors and fonts */
+:root {
+    --primary-color: #0056b3;
+    --dark-color: #212529;
+    --light-color: #f8f9fa;
+    --font-heading: 'ITCAnna', sans-serif;
+    --font-body: 'Poppins', sans-serif;
+}
+
+/* --- 4. General Body Styles --- */
+body {
+    font-family: var(--font-body);
+    background-color: var(--light-color);
+    color: var(--primary-color);
+    line-height: 1.6;
+    cursor: auto;
+}
+
+/* --- 4a. Skip Link for Accessibility --- */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0 0 8px 8px;
+    text-decoration: none;
+    font-weight: 600;
+    z-index: 100000;
+    transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: 3px solid var(--dark-color);
+}
+
+/* --- 5. Header and Navigation Styles --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    border-bottom: 1px solid #dee2e6;   
+}
+
+.logo a {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: lighter;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 2rem;
+}
+
+nav ul li a {
+    color: var(--dark-color);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600; /* Bolder font for nav links */
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent; /* Prepare for hover effect */
+    transition: border-color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+/* --- 6. Hero Section Styles --- */
+main {
+    padding: 0 5%;
+}
+
+.hero {
+    min-height: 80vh; /* Make the hero section tall */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem; /* Adds space between text and image */
+    padding: 4rem 0;
+}
+
+.hero-text {
+    max-width: 50%;
+}
+
+h1 {
+    font-family: var(--font-heading);
+    font-size: 4.5rem;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    font-weight: normal;
+}
+
+.hero-text p {
+    font-size: 1.2rem;
+    color: #495057; /* Slightly dimmer than pure white */
+}
+
+
+
+
+/* --- 8. Custom Cursor Styles --- */
+/* First, hide the default system cursor */
+body {
+    cursor: auto;
+}
+
+
+
+
+/* --- 9. Content Section Styles --- */
+
+.content-section {
+    max-width: 1500px; /* Constrains the width of text for readability */
+    margin: 0 auto; /* Centers the section horizontally */
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.content-section h2 {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: normal;
+    margin-bottom: 1.5rem;
+}
+
+.content-section p {
+    font-size: 1.1rem;
+    color: #495057;
+    line-height: 1.8;
+}
+
+/* --- Style for the horizontal line divider --- */
+.divider {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0;
+}
+
+.divider hr {
+    width: 800px;
+    border: none;
+    border-top: 2px solid var(--primary-color);
+}
+
+
+/* --- 10. Universal Magnetic Button Styles --- */
+
+/* This is the base style for ANY magnetic element */
+.magnetic-button {
+    display: inline-block; /* Ensures transform works correctly */
+    transition: transform 0.3s ease-out; /* Smoothly resets position */
+}
+
+
+/* --- 10. Magnetic Snap Styles & Product Cards --- */
+/* Style for the container of the product cards */
+.product-range-container {
+    display: flex;
+    justify-content: center;
+    gap: 4rem; /* Ample space between cards */
+    margin-top: 4rem;
+}
+
+
+
+.product-card {
+    border-radius: 15px;
+    text-decoration: none;
+    color: var(--dark-color); /* CHANGE THIS */
+    width: 400px;
+    background: var(--light-color); /* Match page background */
+        overflow: visible;
+}
+
+/* The title inside the card */
+.product-card h3 {
+    font-family: var(--font-body); /* EXPLICITLY set the font */
+    font-size: 1.5rem;
+    font-weight: 600; /* Let's ensure it's bold */
+    color: var(--dark-color); /* Also good to re-declare the color */
+    padding: 1.5rem;
+    text-align: center;
+}
+
+/* A subtle zoom effect on the image when hovering the card */
+.product-card:hover .product-image-placeholder {
+    transform: scale(1.05);
+}
+
+
+
+
+/* In css/style.css (add to the end) */
+
+/* --- 11. Contact Page Styles --- */
+.contact-details {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    margin-top: 4rem;
+    text-align: center;
+}
+
+.contact-item h3 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: normal;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.contact-item a, .contact-item p {
+    font-size: 1.1rem;
+    color: var(--dark-color);
+    text-decoration: none;
+}
+
+.contact-item a:hover {
+    text-decoration: underline;
+}
+
+/* --- Style for the active navigation link --- */
+nav ul li a.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+
+/* In css/style.css (add to the end) */
+
+/* --- 13. Image Styles and New Layouts --- */
+
+/* Style for the new images inside the product cards */
+.product-card-image {
+    height: 300px;
+    border-radius: 15px; /* Match the card's rounded corners */
+    overflow: hidden; /* Clip the image even when it scales */
+    transition: transform 0.4s ease;
+    transform: scale(1);
+}
+
+.product-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This prevents images from stretching */
+    display: block; /* Removes any unwanted space below the image */
+    transition: transform 0.4s ease; /* Smooth zoom animation */
+}
+
+/* Keep the hover effect on the card to zoom the image */
+.product-card:hover .product-card-image img {
+    transform: scale(1.05);
+}
+
+.product-card:hover .product-card-image {
+    transform: scale(1.05);
+}
+
+/* Styles for the new two-column section */
+.two-column-layout {
+    display: flex;
+    align-items: center; /* Vertically aligns the text and image */
+    justify-content: space-between;
+    gap: 4rem; /* Space between text and image */
+    text-align: left; /* Override the default center alignment */
+}
+
+.two-column-layout .text-content {
+    flex-basis: 50%; /* The text takes up half the space */
+}
+
+.two-column-layout .image-content {
+    flex-basis: 45%; /* The image takes up slightly less space */
+}
+
+.two-column-layout .image-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px; /* Give the image soft corners */
+    display: block;
+}
+
+
+/* In css/style.css (add to the end) */
+
+/* --- 14. Responsive Design & Mobile Styles (REVISED) --- */
+
+/* This new class will be toggled by JS to stop page scrolling */
+.body-no-scroll {
+    overflow: hidden;
+}
+
+/* Style the hamburger menu itself */
+.hamburger-menu {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10001; /* Make sure it's on top of EVERYTHING */
+    position: relative; /* Needed for consistent behavior */
+    width: 25px;
+    height: 21px;
+}
+.hamburger-menu span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--dark-color);
+    margin: 5px 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Animate the hamburger to an 'X' when active */
+.hamburger-menu.is-active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+.hamburger-menu.is-active span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger-menu.is-active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+    /* (Styles for stacking layouts remain the same) */
+    .hero, .two-column-layout { flex-direction: column; text-align: center; }
+    .hero-text, .two-column-layout .text-content, .two-column-layout .image-content { max-width: 100%; flex-basis: auto; }
+    .hero { padding: 2rem 0; }
+    model-viewer { width: 100% !important; height: 400px !important; margin-top: 2rem; }
+    .hero-text h1 { font-size: 2.8rem; }
+    .content-section h2 { font-size: 2.2rem; }
+    .product-range-container, .contact-details { flex-direction: column; align-items: center; gap: 2rem; }
+    .product-card { width: 90%; max-width: 350px; }
+
+    /* --- REVISED Hamburger Menu on Mobile --- */
+    .hamburger-menu {
+        display: block;
+    }
+
+    .hamburger-menu.is-active span{
+        background-color: var(--light-color);
+    }
+
+    nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(26, 26, 26, 0.95);
+        backdrop-filter: blur(10px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: translateX(100%);
+        transition: transform 0.4s ease-in-out;
+        z-index: 10000; /* High z-index, but below the button */
+    }
+
+    nav.is-open {
+        transform: translateX(0); /* Slide the menu in when active */
+    }
+
+    nav ul {
+        flex-direction: column; /* Stack the nav links vertically */
+        text-align: center;
+    }
+
+    nav ul li {
+        margin: 1.5rem 0; /* Add space between vertical links */
+    }
+    nav ul li a {
+        font-size: 1.8rem;
+        color: var(--light-color); /* Make the links much bigger for tapping */
+    }
+
+    /* --- General Layout Stacking --- */
+    .hero,
+    .two-column-layout {
+        flex-direction: column; /* Stack columns vertically */
+        text-align: center;
+    }
+
+    .hero-text, 
+    .two-column-layout .text-content,
+    .two-column-layout .image-content {
+        max-width: 100%; /* Allow content to take full width */
+        flex-basis: auto;
+    }
+
+    .hero {
+        padding: 2rem 0; /* Reduce padding on mobile */
+    }
+
+    /* Make 3D model smaller on mobile */
+    model-viewer {
+        width: 100% !important;
+        height: 400px !important;
+        margin-top: 2rem;
+    }
+    
+    /* Reduce font sizes for smaller screens */
+    .hero-text h1 {
+        font-size: 2.8rem;
+    }
+    .content-section h2 {
+        font-size: 2.2rem;
+    }
+
+    /* --- Stack Product & Contact Cards --- */
+    .product-range-container,
+    .contact-details {
+        flex-direction: column;
+        align-items: center; /* Center the stacked cards */
+        gap: 2rem;
+    }
+    .product-card {
+        width: 90%; /* Make cards take up most of the screen width */
+        max-width: 350px;
+    }
+}
+
+
+/* In css/style.css (add to the end) */
+
+/* --- 15. Modern Gallery Carousel Styles --- */
+
+.gallery-carousel-section {
+    padding: 6rem 0;
+    /* We don't need a background color here, let it be the page default */
+}
+
+/* A centered title for the new section */
+.section-title {
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: normal;
+    margin-bottom: 3rem;
+}
+
+.gallery-scroller {
+    max-width: 100%;
+    overflow: hidden;
+    /* This creates a soft fade-out effect on the edges */
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.scroller-inner {
+    display: flex;
+    gap: 1.5rem; /* Space between images */
+    padding-block: 1rem;
+    width: max-content; /* Allows the container to be as wide as its content */
+    
+    /* The animation itself */
+    animation: scroll 40s linear infinite;
+}
+
+/* This pauses the animation when the user hovers over the gallery */
+.gallery-scroller:hover .scroller-inner {
+    animation-play-state: paused;
+}
+
+/* Define the keyframes for our scroll animation */
+@keyframes scroll {
+    to {
+        transform: translate(calc(-50% - 0.75rem));
+    }
+}
+
+.scroller-inner img {
+    height: 350px; /* A nice, large height for the images */
+    width: auto;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1); /* Adds a subtle shadow for depth */
+}
+
+
+/* In css/style.css (add to the end) */
+
+/* --- 17. Final High-Impact Footer Styles --- */
+
+.site-footer-new {
+    background-color: #212529; /* Dark, professional background */
+    color: #adb5bd;
+    padding: 5rem 5% 2rem; /* More top padding */
+    /* REMOVED margin and border-radius for a standard, full-width footer */
+}
+
+.footer-main {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start; /* Aligns heading and grid to the top */
+    padding-bottom: 4rem;
+}
+
+.footer-heading {
+    flex-basis: 55%; /* The heading takes up about a third of the space */
+}
+
+.footer-heading h2 {
+    font-family: var(--font-heading);
+    font-size: 4.5rem; /* HUGE font size for impact */
+    line-height: 1.2;
+    color: #ffffff;
+    font-weight: normal;
+    margin: 0;
+}
+
+.footer-grid {
+    flex: 1;
+    display: flex;
+    gap: 3rem;
+}
+
+.footer-column h4, .footer-column h3 {
+    font-family: var(--font-heading);
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: normal;
+    margin-bottom: 1.5rem;
+}
+
+.footer-column p {
+    margin-bottom: 0.8rem;
+    line-height: 1.7;
+}
+
+.footer-column a {
+    color: #ced4da;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.footer-column a:hover {
+    color: #ffffff;
+}
+.footer-column .fa-solid {
+    margin-right: 10px;
+    color: var(--primary-color);
+}
+
+.licenses-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.license-badge {
+    border: 1px solid #495057;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    height: 80px;
+    color: #ced4da;
+}
+.license-number {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.footer-bottom-new {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    border-top: 1px solid #495057;
+}
+
+.copyright-text {
+    font-size: 0.9rem;
+    color: #9aa1a8; /* was #6c757d: too faint on the dark footer (WCAG contrast) */
+}
+
+.footer-bottom-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.social-icons-bottom a {
+    color: #adb5bd;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+.social-icons-bottom a:hover {
+    color: #ffffff;
+}
+
+.back-to-top {
+    color: #adb5bd;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+.back-to-top:hover {
+    color: #ffffff;
+}
+.back-to-top .fa-arrow-up {
+    margin-left: 8px;
+}
+
+/* Responsive adjustments for the new footer */
+@media (max-width: 900px) {
+    .footer-main {
+        flex-direction: column;
+    }
+    .footer-grid {
+        width: 100%;
+    }
+}
+@media (max-width: 768px) {
+    .footer-grid {
+        flex-direction: column;
+    }
+    .footer-bottom-new {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* In style.css (add to the very end) */
+
+/* ========================================
+   18. PRODUCT PAGE STYLES (Consolidated & Fixed)
+======================================== */
+
+.products-main {
+    padding: 0;
+}
+
+/* --- Smart Navigation Header --- */
+.products-nav-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(248, 249, 250, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 86, 179, 0.1);
+    padding: 1rem 0;
+}
+
+.products-nav-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    padding: 0 2rem;
+}
+
+.products-nav-item {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #5a6268; /* was #6c757d: below 4.5:1 on the light header */
+    cursor: pointer;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    white-space: nowrap;
+}
+
+.products-nav-item:hover {
+    color: var(--primary-color);
+    background-color: rgba(0, 86, 179, 0.05);
+}
+
+.products-nav-item.active {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.products-nav-indicator {
+    position: absolute;
+    bottom: -1rem;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), #007bff);
+    border-radius: 2px;
+    /* THE FIX: We use 'left' instead of 'transform' for positioning relative to the container */
+    transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* --- Swiper Container Styles --- */
+.products-swiper {
+    width: 100%;
+    overflow: hidden;
+    transition: height 0.4s ease-in-out;
+}
+
+.category-slide {
+    height: auto;
+}
+
+.category-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 5%;
+}
+
+.category-header { text-align: center; margin-bottom: 4rem; padding: 2rem 0; }
+.category-header h1 { font-family: var(--font-heading); font-size: 3.5rem; color: var(--primary-color); margin-bottom: 1rem; }
+.category-description { font-size: 1.2rem; color: #495057; max-width: 800px; margin: 0 auto; }
+.products-list { display: flex; flex-direction: column; gap: 3rem; }
+.product-item { display: flex; align-items: flex-start; gap: 3rem; padding: 2.5rem; background: #ffffff; border-radius: 20px; box-shadow: 0 8px 32px rgba(0, 86, 179, 0.08); border: 1px solid rgba(0, 86, 179, 0.05); }
+.product-item:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0, 86, 179, 0.15); }
+.product-image { flex: 0 0 300px; height: 250px; border-radius: 12px; overflow: hidden; }
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+.product-image model-viewer {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: var(--light-color);
+    transition: transform 0.3s ease;
+    --poster-color: transparent;
+}
+.product-item:hover .product-image img,
+.product-item:hover .product-image model-viewer {
+    transform: scale(1.05);
+}
+.product-info { flex: 1; }
+.product-info h3 { font-family: var(--font-heading); font-size: 2.2rem; color: var(--primary-color); margin-bottom: 1rem; }
+.product-info p { color: #495057; margin-bottom: 1.5rem; }
+.product-specs { list-style: none; padding: 0; }
+.product-specs li { color: #6c757d; padding-left: 1.5rem; position: relative; margin-bottom: 0.5rem; }
+.product-specs li::before { content: "•"; color: var(--primary-color); font-weight: bold; font-size: 1.2rem; position: absolute; left: 0; top: 0; }
+.product-specs li strong { color: var(--dark-color); }
+
+/* ========================================
+   19. ABOUT PAGE STYLES
+======================================== */
+
+/* Hero Banner for About Page */
+.about-hero {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #003d82 100%);
+    color: #fff;
+    padding: 6rem 5%;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.about-hero h1 {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    font-weight: normal;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.about-hero .tagline {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Stats Section */
+.stats-section {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    padding: 4rem 5%;
+    background: #fff;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    color: var(--primary-color);
+    display: block;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* About Content Sections */
+.about-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 5%;
+}
+
+.about-section h2 {
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-weight: normal;
+}
+
+.about-section p {
+    font-size: 1.1rem;
+    color: #495057;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+/* Two Column About Layout */
+.about-two-column {
+    display: flex;
+    gap: 4rem;
+    align-items: center;
+}
+
+.about-two-column .about-text {
+    flex: 1;
+}
+
+.about-two-column .about-image {
+    flex: 1;
+}
+
+.about-two-column .about-image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.about-two-column.reverse {
+    flex-direction: row-reverse;
+}
+
+/* Services/What We Do Grid */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.service-card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 86, 179, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 86, 179, 0.1);
+}
+
+.service-card i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.service-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--dark-color);
+    margin-bottom: 0.75rem;
+    font-weight: normal;
+}
+
+.service-card p {
+    color: #6c757d;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Industries Grid */
+.industries-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.industry-tag {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #007bff 100%);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Vision Mission Section */
+.vision-mission {
+    display: flex;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.vision-box, .mission-box {
+    flex: 1;
+    padding: 2.5rem;
+    border-radius: 12px;
+    position: relative;
+}
+
+.vision-box {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #003d82 100%);
+    color: #fff;
+}
+
+.mission-box {
+    background: #fff;
+    border: 2px solid var(--primary-color);
+}
+
+.vision-box h3, .mission-box h3 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-weight: normal;
+}
+
+.vision-box h3 {
+    color: #fff;
+}
+
+.mission-box h3 {
+    color: var(--primary-color);
+}
+
+.vision-box p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.mission-box p {
+    color: #495057;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* Commitment List */
+.commitment-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.commitment-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #495057;
+    font-size: 1.05rem;
+}
+
+.commitment-list li i {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+/* CTA Section */
+.cta-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #003d82 100%);
+    color: #fff;
+    text-align: center;
+    padding: 5rem 5%;
+    margin-top: 4rem;
+}
+
+.cta-section h2 {
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    font-weight: normal;
+}
+
+.cta-section p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+
+.cta-button {
+    display: inline-block;
+    background: #fff;
+    color: var(--primary-color);
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* About Page Responsive */
+@media (max-width: 768px) {
+    .about-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .stats-section {
+        gap: 2rem;
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+    }
+    
+    .about-two-column,
+    .about-two-column.reverse {
+        flex-direction: column;
+    }
+    
+    .vision-mission {
+        flex-direction: column;
+    }
+    
+    .about-section h2 {
+        font-size: 2.2rem;
+    }
+}
+
+/* ========================================
+   20. CONTACT PAGE STYLES
+======================================== */
+
+/* Contact Hero */
+.contact-hero {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #003d82 100%);
+    color: #fff;
+    padding: 5rem 5%;
+    text-align: center;
+}
+
+.contact-hero h1 {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    font-weight: normal;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.contact-hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Contact Main Container */
+.contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 5%;
+}
+
+/* Contact Grid Layout */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+}
+
+/* Contact Info Cards */
+.contact-info-section h2 {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-weight: normal;
+}
+
+.contact-info-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.contact-info-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 86, 179, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-info-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0, 86, 179, 0.1);
+}
+
+.contact-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #007bff 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.contact-icon i {
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.contact-info-content h3 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+    font-weight: normal;
+}
+
+.contact-info-content p,
+.contact-info-content a {
+    color: #495057;
+    font-size: 1rem;
+    text-decoration: none;
+    line-height: 1.6;
+}
+
+.contact-info-content a:hover {
+    color: var(--primary-color);
+}
+
+/* Contact Form */
+.contact-form-section h2 {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-weight: normal;
+}
+
+.contact-form {
+    background: #fff;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+}
+
+.form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.submit-button {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #007bff 100%);
+    color: #fff;
+    padding: 1rem 2.5rem;
+    border: none;
+    border-radius: 50px;
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+}
+
+.submit-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 86, 179, 0.3);
+}
+
+/* Map Section */
+.map-section {
+    margin-top: 2rem;
+}
+
+.map-section h2 {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-weight: normal;
+    text-align: center;
+}
+
+.map-container {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 450px;
+    border: none;
+}
+
+/* Contact Business Hours */
+.business-hours {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #003d82 100%);
+    color: #fff;
+    padding: 3rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+}
+
+.business-hours h3 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    font-weight: normal;
+}
+
+.hours-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.hours-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hours-item:last-child {
+    border-bottom: none;
+}
+
+/* Contact Page Responsive */
+@media (max-width: 768px) {
+    .contact-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-form {
+        padding: 1.5rem;
+    }
+}
+
+/* --- Product Page Responsive --- */
+@media (max-width: 768px) {
+    .products-nav-container {
+        justify-content: center;
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+    .products-nav-item {
+        font-size: 0.9rem;
+        padding: 0.6rem 0.8rem;
+    }
+    .product-item { flex-direction: column; text-align: center; }
+    .product-image { width: 100%; max-width: 350px; margin: 0 auto; }
+    .product-info p, .product-specs { text-align: left; }
+    .products-nav-indicator { bottom: -0.8rem; }
+}
+@media (max-width: 420px) {
+    .products-nav-container { gap: 0.5rem; }
+    .products-nav-item { font-size: 0.8rem; padding: 0.5rem 0.6rem; }
+}
+
+/* ==========================================================================
+   21. ADDITIONS (2026 rebuild) - same look, new elements
+   ========================================================================== */
+
+/* Font Awesome icons are inlined as SVG (no icon-font download) */
+i.fa-solid, i.fa-regular, i.fa-brands {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+    vertical-align: -0.125em;
+    font-style: normal;
+}
+i.fa-solid svg, i.fa-regular svg, i.fa-brands svg {
+    display: block;
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+}
+
+/* Content stays visible if the animation script is blocked or slow */
+html:not(.aos-ready) [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+a { color: var(--primary-color); }
+.content-section p a, .about-section p a { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Home: six product families, three per row on desktop (the old 400px cards only fit three on very wide screens) */
+.product-range-container { flex-wrap: wrap; }
+@media (min-width: 1025px) {
+    .product-range-container { gap: 3rem 2.5rem; padding: 0 2rem; }
+    .product-range-container .product-card { width: min(400px, calc((100% - 5rem) / 3)); }
+}
+.product-card p.product-card-text {
+    font-size: 0.98rem;
+    color: #6c757d;
+    padding: 0 1.5rem 1.5rem;
+    margin-top: -0.75rem;
+    line-height: 1.6;
+}
+.product-card-image { background: #f2f2f2; }
+
+/* Product rows: render first, 3D on tap */
+.product-image { position: relative; background: #f2f2f2; }
+.product-image img { display: block; }
+.view-3d {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #fff;
+    color: var(--primary-color);
+    border: 1px solid rgba(0, 86, 179, 0.2);
+    border-radius: 50px;
+    padding: 0.35rem 0.9rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.view-3d:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 86, 179, 0.18); }
+.view-3d[data-loading] { opacity: 0.7; pointer-events: none; }
+.product-image model-viewer { position: absolute; inset: 0; width: 100%; height: 100%; background-color: #f2f2f2; }
+.product-code {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: 0.4rem;
+}
+.product-info h3 a { color: inherit; text-decoration: none; }
+.product-info h3 a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.product-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; align-items: center; }
+.product-link { font-weight: 600; text-decoration: none; color: var(--primary-color); }
+.product-link:hover { text-decoration: underline; }
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #007bff 100%);
+    color: #fff;
+    padding: 0.85rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 86, 179, 0.3); color: #fff; }
+.btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.75rem 1.8rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    background: #fff;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 1rem;
+}
+.btn-outline:hover { background: var(--primary-color); color: #fff; }
+
+/* Breadcrumbs */
+.breadcrumbs { max-width: 1200px; margin: 0 auto; padding: 1.5rem 5% 0; font-size: 0.9rem; color: #6c757d; }
+.breadcrumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.breadcrumbs li:not(:last-child)::after { content: "/"; margin-left: 0.4rem; color: #adb5bd; }
+.breadcrumbs a { color: #6c757d; text-decoration: none; }
+.breadcrumbs a:hover { color: var(--primary-color); }
+
+/* Product detail page */
+.product-detail { max-width: 1200px; margin: 0 auto; padding: 2rem 5% 1rem; }
+.product-detail .product-item { align-items: flex-start; }
+.product-detail .product-item:hover { transform: none; }
+.product-detail .product-image { flex: 0 0 52%; height: auto; aspect-ratio: 4 / 3; }
+.product-detail .product-image img { position: absolute; inset: 0; opacity: 0; transition: opacity 0.25s ease; }
+.product-detail .product-image img.is-active { opacity: 1; position: relative; }
+.product-detail .product-item:hover .product-image img { transform: none; }
+.product-detail .product-info h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+.product-detail .size-line { color: #495057; font-size: 1.15rem; font-weight: 600; margin-bottom: 1rem; }
+.gallery-thumbs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6rem; margin-top: 0.8rem; list-style: none; }
+.gallery-thumbs button {
+    display: block; width: 100%; padding: 0; border: 2px solid transparent; border-radius: 8px;
+    overflow: hidden; background: #f2f2f2; cursor: pointer; aspect-ratio: 4 / 3;
+}
+.gallery-thumbs button img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gallery-thumbs button[aria-current="true"] { border-color: var(--primary-color); }
+.render-note { font-size: 0.8rem; color: #6c757d; margin-top: 0.6rem; }
+
+/* FAQ */
+.faq-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+.faq-list details {
+    background: #fff; border-radius: 12px; border: 1px solid rgba(0, 86, 179, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04); padding: 1.2rem 1.5rem;
+}
+.faq-list summary { cursor: pointer; font-weight: 600; color: var(--dark-color); list-style: none; position: relative; padding-right: 2rem; }
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary::after { content: "+"; position: absolute; right: 0; top: -0.15rem; font-size: 1.5rem; color: var(--primary-color); }
+.faq-list details[open] summary::after { content: "\2212"; }
+.faq-list details p { margin: 0.8rem 0 0; color: #495057; }
+
+/* Long-form text (guides, category pages) */
+.about-section ul, .about-section ol { color: #495057; font-size: 1.05rem; line-height: 1.8; margin: 0 0 1.5rem 1.4rem; }
+.about-section li { margin-bottom: 0.4rem; }
+.about-section h3 { font-family: var(--font-heading); font-weight: normal; font-size: 1.8rem; color: var(--dark-color); margin: 2rem 0 0.8rem; }
+.prose h2 { margin-top: 2.5rem; }
+.prose table { width: 100%; border-collapse: collapse; margin: 1.5rem 0 2rem; font-size: 0.98rem; display: block; overflow-x: auto; }
+.prose th, .prose td { border: 1px solid #dee2e6; padding: 0.7rem 0.9rem; text-align: left; vertical-align: top; color: #495057; }
+.prose th { background: #fff; color: var(--dark-color); }
+.prose strong { color: var(--dark-color); }
+.page-lead { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+
+/* Contact form feedback */
+.form-status { padding: 1rem 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; font-weight: 500; }
+.form-status[data-kind="err"] { background: #fdecec; color: #8a1c1c; }
+.form-note { font-size: 0.85rem; color: #6c757d; margin-top: 1rem; }
+.hp-field { position: absolute; left: -9999px; }
+.contact-icon.whatsapp { background: linear-gradient(135deg, #1a8f4b 0%, #25d366 100%); }
+
+/* Footer license badges with registration line */
+.license-badge { flex-direction: column; text-align: center; line-height: 1.2; font-size: 0.85rem; white-space: nowrap; text-decoration: none; padding: 0.6rem; min-width: 76px; }
+.licenses-container { flex-wrap: wrap; gap: 0.6rem; }
+.license-badge small { display: block; font-size: 0.75rem; color: #8b949e; margin-top: 0.3rem; }
+.footer-column h4 a, .footer-column h3 a { color: inherit; }
+.hero model-viewer .view-3d { right: 14px; bottom: 14px; }
+/* Long product names: balance the two lines instead of leaving one word on the second */
+.product-info h1, .product-info h2, .category-header h2 { text-wrap: balance; }
+/* Astro images carry width/height attributes: keep their aspect ratio when CSS sets only the width */
+.about-two-column .about-image img, .image-content img { height: auto; }
+
+@media (max-width: 900px) {
+    .product-detail .product-item { flex-direction: column; }
+    .product-detail .product-image { flex-basis: auto; width: 100%; max-width: none; }
+}
+@media (max-width: 768px) {
+    .product-detail .product-info h1 { font-size: 2.2rem; }
+    .product-image model-viewer { height: 100% !important; margin-top: 0; }
+    .gallery-thumbs { gap: 0.4rem; }
+    .breadcrumbs { padding-top: 1rem; }
+}
+.view-3d[hidden] { display: none; }

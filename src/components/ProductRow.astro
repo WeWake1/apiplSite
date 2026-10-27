@@ -1,0 +1,39 @@
+---
+// Old-site product row (.product-item): studio render first, the pallet's own 3D model on tap.
+import { Image } from 'astro:assets';
+import Fa from './Fa.astro';
+import { mainImage, modelUrl, productUrl, sizeLabel, type Product } from '../lib/catalog';
+
+interface Props {
+  product: Product;
+  summary: string;
+  heading?: 'h2' | 'h3';
+}
+const { product: p, summary, heading = 'h3' } = Astro.props;
+const img = mainImage(p);
+const H = heading;
+---
+
+<div class="product-item" id={p.slug}>
+  <div class="product-image" data-model={modelUrl(p)} data-name={p.name}>
+    <Image src={img.src} alt={img.alt} widths={[320, 480, 640]} sizes="300px" loading="lazy" />
+    <button type="button" class="view-3d" aria-label={`View the ${p.name} in 3D`}><Fa name="cube" /> 3D</button>
+  </div>
+  <div class="product-info">
+    <span class="product-code">{p.code}</span>
+    <H><a href={productUrl(p)}>{p.name}</a></H>
+    <p>{summary}</p>
+    <ul class="product-specs">
+      <li><strong>Dimensions:</strong> {sizeLabel(p, true)}</li>
+      <li><strong>Construction:</strong> {p.style}</li>
+      {p.entry && p.entry !== '-' && <li><strong>Entry:</strong> {p.entry}</li>}
+      {p.components && <li><strong>Components:</strong> {p.components}</li>}
+      <li><strong>Material:</strong> {p.wood}</li>
+      {p.loadKg && <li><strong>Load capacity:</strong> {p.loadKg.toLocaleString('en-IN')} kg</li>}
+    </ul>
+    <div class="product-actions">
+      <a class="btn-primary" href={productUrl(p)}>View details <Fa name="arrow-right" /></a>
+      <a class="product-link" href={`/contact/?product=${p.slug}#quote`}>Get a quote</a>
+    </div>
+  </div>
+</div>

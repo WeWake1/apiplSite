@@ -1,0 +1,463 @@
+[
+  {
+    "slug": "euro-pallet-1200x800",
+    "pallet": "epal1",
+    "category": "euro-pallets",
+    "code": "EU-1",
+    "name": "Euro-Size Pallet 1200 × 800",
+    "dims": {
+      "l": 1200,
+      "w": 800,
+      "h": 144
+    },
+    "entry": "4-way",
+    "style": "Block pallet, double deck, chamfered corners",
+    "wood": "Softwood (pine / spruce)",
+    "components": "11 boards, 9 blocks",
+    "use": "Exports to Europe, FMCG and retail distribution"
+  },
+  {
+    "slug": "euro-industrial-pallet-1200x1000",
+    "pallet": "epal2",
+    "category": "euro-pallets",
+    "code": "EU-2",
+    "name": "Euro-Size Industrial Pallet 1200 × 1000, Perimeter Base",
+    "dims": {
+      "l": 1200,
+      "w": 1000,
+      "h": 162
+    },
+    "entry": "4-way",
+    "style": "Block pallet, single-layer perimeter base, chamfered corners",
+    "wood": "Softwood (pine / spruce)",
+    "components": "17 boards, 9 blocks",
+    "use": "Bulky goods, roller conveyors, industrial exports"
+  },
+  {
+    "slug": "euro-industrial-pallet-1000x1200",
+    "pallet": "epal3",
+    "category": "euro-pallets",
+    "code": "EU-3",
+    "name": "Euro-Size Industrial Pallet 1000 × 1200",
+    "dims": {
+      "l": 1000,
+      "w": 1200,
+      "h": 144
+    },
+    "entry": "4-way",
+    "style": "Block pallet, double deck, chamfered corners",
+    "wood": "Softwood (pine / spruce)",
+    "components": "13 boards, 9 blocks",
+    "use": "Chemicals, building materials, bagged goods"
+  },
+  {
+    "slug": "cp1-type-pallet-1000x1200",
+    "pallet": "cp1",
+    "category": "cp-pallets",
+    "code": "CP1 type",
+    "name": "CP1-Type Chemical Pallet 1000 × 1200",
+    "dims": {
+      "l": 1000,
+      "w": 1200,
+      "h": 138
+    },
+    "entry": "4-way",
+    "style": "Block pallet, 3 bottom boards",
+    "wood": "Softwood (pine / spruce)",
+    "components": "15 boards, 9 blocks",
+    "use": "Bagged goods, cardboard boxes and cartons"
+  },
+  {
+    "slug": "cp2-type-pallet-800x1200",
+    "pallet": "cp2",
+    "category": "cp-pallets",
+    "code": "CP2 type",
+    "name": "CP2-Type Chemical Pallet 800 × 1200",
+    "dims": {
+      "l": 800,
+      "w": 1200,
+      "h": 138
+    },
+    "entry": "4-way",
+    "style": "Block pallet, 3 bottom boards",
+    "wood": "Softwood (pine / spruce)",
+    "components": "13 boards, 9 blocks",
+    "use": "Retail-type supply chains on the Euro footprint"
+  },
+  {
+    "slug": "cp3-type-pallet-1140x1140",
+    "pallet": "cp3",
+    "category": "cp-pallets",
+    "code": "CP3 type",
+    "name": "CP3-Type Chemical Pallet 1140 × 1140",
+    "dims": {
+      "l": 1140,
+      "w": 1140,
+      "h": 138
+    },
+    "entry": "4-way",
+    "style": "Block pallet, 3 bottom boards",
+    "wood": "Softwood (pine / spruce)",
+    "components": "15 boards, 9 blocks",
+    "use": "Drums, casks and octabins"
+  },
+  {
+    "slug": "cp4-type-pallet-1100x1300",
+    "pallet": "cp4",
+    "category": "cp-pallets",
+    "code": "CP4 type",
+    "name": "CP4-Type Chemical Pallet 1100 × 1300",
+    "dims": {
+      "l": 1100,
+      "w": 1300,
+      "h": 138
+    },
+    "entry": "4-way",
+    "style": "Block pallet, deck overhangs a 1200 × 1000 base",
+    "wood": "Softwood (pine / spruce)",
+    "components": "15 boards, 9 blocks",
+    "use": "Bagged goods such as polymer granules"
+  },
+  {
+    "slug": "cp5-type-pallet-760x1140",
+    "pallet": "cp5",
+    "category": "cp-pallets",
+    "code": "CP5 type",
+    "name": "CP5-Type Chemical Pallet 760 × 1140",
+    "dims": {
+      "l": 760,
+      "w": 1140,
+      "h": 138
+    },
+    "entry": "4-way",
+    "style": "Block pallet, 3 bottom boards, square corners",
+    "wood": "Softwood (pine / spruce)",
+    "components": "13 boards, 9 blocks",
+    "use": "Cartons and crates"
+  },
+  {
+    "slug": "cp6-type-pallet-1200x1000",
+    "pallet": "cp6",
+    "category": "cp-pallets",
+    "code": "CP6 type",
+    "name": "CP6-Type Chemical Pallet 1200 × 1000",
+    "dims": {
+      "l": 1200,
+      "w": 1000,
+      "h": 156
+    },
+    "entry": "4-way",
+    "style": "Block pallet, two-layer base",
+    "wood": "Softwood (pine / spruce)",
+    "components": "20 boards, 9 blocks",
+    "use": "Bagged bulk materials"
+  },
+  {
+    "slug": "cp7-type-pallet-1300x1100",
+    "pallet": "cp7",
+    "category": "cp-pallets",
+    "code": "CP7 type",
+    "name": "CP7-Type Chemical Pallet 1300 × 1100",
+    "dims": {
+      "l": 1300,
+      "w": 1100,
+      "h": 156
+    },
+    "entry": "4-way",
+    "style": "Block pallet, two-layer base",
+    "wood": "Softwood (pine / spruce)",
+    "components": "22 boards, 9 blocks",
+    "use": "Bagged bulk materials"
+  },
+  {
+    "slug": "cp8-type-pallet-1140x1140",
+    "pallet": "cp8",
+    "category": "cp-pallets",
+    "code": "CP8 type",
+    "name": "CP8-Type Chemical Pallet 1140 × 1140",
+    "dims": {
+      "l": 1140,
+      "w": 1140,
+      "h": 156
+    },
+    "entry": "4-way",
+    "style": "Block pallet, two-layer base, open deck centre",
+    "wood": "Softwood (pine / spruce)",
+    "components": "12 blocks, 4 stringer boards",
+    "use": "Large containers with a bottom outlet"
+  },
+  {
+    "slug": "cp9-type-pallet-1140x1140",
+    "pallet": "cp9",
+    "category": "cp-pallets",
+    "code": "CP9 type",
+    "name": "CP9-Type Chemical Pallet 1140 × 1140",
+    "dims": {
+      "l": 1140,
+      "w": 1140,
+      "h": 156
+    },
+    "entry": "4-way",
+    "style": "Block pallet, two-layer base",
+    "wood": "Softwood (pine / spruce)",
+    "components": "9 blocks, two-layer base",
+    "use": "Casks and flexible bulk containers (FIBCs)"
+  },
+  {
+    "slug": "pw01-pinewood-pallet-800x1200",
+    "pallet": "pw01",
+    "category": "pinewood-pallets",
+    "code": "PW-01",
+    "name": "Pinewood Block Pallet 800 × 1200",
+    "dims": {
+      "l": 800,
+      "w": 1200,
+      "h": 130
+    },
+    "entry": "4-way",
+    "style": "Block pallet, double deck, non-reversible",
+    "wood": "Pinewood, heat treatable to ISPM-15",
+    "components": "11 boards, 9 blocks"
+  },
+  {
+    "slug": "pw02-pinewood-pallet-1000x1200",
+    "pallet": "pw02",
+    "category": "pinewood-pallets",
+    "code": "PW-02",
+    "name": "Pinewood Block Pallet 1000 × 1200",
+    "dims": {
+      "l": 1000,
+      "w": 1200,
+      "h": 130
+    },
+    "entry": "4-way",
+    "style": "Block pallet, perimeter base, non-reversible",
+    "wood": "Pinewood, heat treatable to ISPM-15",
+    "components": "17 boards, 9 blocks"
+  },
+  {
+    "slug": "pw03-pinewood-pallet-1120x1120",
+    "pallet": "pw03",
+    "category": "pinewood-pallets",
+    "code": "PW-03",
+    "name": "Pinewood Block Pallet 1120 × 1120",
+    "dims": {
+      "l": 1120,
+      "w": 1120,
+      "h": 130
+    },
+    "entry": "4-way",
+    "style": "Block pallet, double deck, non-reversible",
+    "wood": "Pinewood, heat treatable to ISPM-15",
+    "components": "13 boards, 9 blocks"
+  },
+  {
+    "slug": "pw04-pinewood-pallet-1120x1120-full-base",
+    "pallet": "pw04",
+    "category": "pinewood-pallets",
+    "code": "PW-04",
+    "name": "Pinewood Block Pallet 1120 × 1120, Full Bottom Deck",
+    "dims": {
+      "l": 1120,
+      "w": 1120,
+      "h": 150
+    },
+    "entry": "4-way",
+    "style": "Block pallet, two-layer base with full bottom deck",
+    "wood": "Pinewood, heat treatable to ISPM-15",
+    "components": "20 boards, 9 blocks"
+  },
+  {
+    "slug": "pw05-pinewood-skid-pallet-1100x1100",
+    "pallet": "pw05",
+    "category": "pinewood-pallets",
+    "code": "PW-05",
+    "name": "Pinewood Skid Pallet 1100 × 1100",
+    "dims": {
+      "l": 1100,
+      "w": 1100,
+      "h": 130
+    },
+    "entry": "2-way",
+    "style": "Skid pallet on 3 runners, single face, flush",
+    "wood": "Pinewood, heat treatable to ISPM-15",
+    "components": "7 deck boards, 3 runners"
+  },
+  {
+    "slug": "pw06-pinewood-pallet-1140x1140-2-way",
+    "pallet": "pw06",
+    "category": "pinewood-pallets",
+    "code": "PW-06",
+    "name": "Pinewood 2-Way Pallet 1140 × 1140",
+    "dims": {
+      "l": 1140,
+      "w": 1140,
+      "h": 130
+    },
+    "entry": "2-way",
+    "style": "Stringer pallet on 4 stringers, flush",
+    "wood": "Pinewood, heat treatable to ISPM-15",
+    "components": "12 boards, 4 stringers"
+  },
+  {
+    "slug": "pw07-pinewood-pallet-1000x1000",
+    "pallet": "pw07",
+    "category": "pinewood-pallets",
+    "code": "PW-07",
+    "name": "Pinewood Block Pallet 1000 × 1000",
+    "dims": {
+      "l": 1000,
+      "w": 1000,
+      "h": 146
+    },
+    "entry": "4-way",
+    "style": "Block pallet, perimeter base, non-reversible",
+    "wood": "Pinewood, heat treatable to ISPM-15",
+    "components": "17 boards, 9 blocks"
+  },
+  {
+    "slug": "pw08-pinewood-pallet-1100x1100-chamfered",
+    "pallet": "pw08",
+    "category": "pinewood-pallets",
+    "code": "PW-08",
+    "name": "Pinewood Block Pallet 1100 × 1100, Chamfered",
+    "dims": {
+      "l": 1100,
+      "w": 1100,
+      "h": 146
+    },
+    "entry": "4-way",
+    "style": "Block pallet, perimeter base, chamfered bottom boards",
+    "wood": "Pinewood, heat treatable to ISPM-15",
+    "components": "17 boards, 9 blocks"
+  },
+  {
+    "slug": "hw01-hardwood-pallet-1000x1200",
+    "pallet": "hw01",
+    "category": "hardwood-pallets",
+    "code": "HW-01",
+    "name": "Hardwood Block Pallet 1000 × 1200",
+    "dims": {
+      "l": 1000,
+      "w": 1200,
+      "h": 161
+    },
+    "entry": "4-way",
+    "style": "Block pallet, perimeter base, double face, non-reversible",
+    "wood": "Seasoned hardwood",
+    "components": "18 boards, 9 blocks"
+  },
+  {
+    "slug": "hw02-hardwood-pallet-1200x1000",
+    "pallet": "hw02",
+    "category": "hardwood-pallets",
+    "code": "HW-02",
+    "name": "Hardwood Block Pallet 1200 × 1000",
+    "dims": {
+      "l": 1200,
+      "w": 1000,
+      "h": 161
+    },
+    "entry": "4-way",
+    "style": "Block pallet, double face, chamfered bottom boards",
+    "wood": "Seasoned hardwood",
+    "components": "14 boards, 9 blocks"
+  },
+  {
+    "slug": "hw03-hardwood-pallet-1200x1200-2-way",
+    "pallet": "hw03",
+    "category": "hardwood-pallets",
+    "code": "HW-03",
+    "name": "Hardwood 2-Way Pallet 1200 × 1200",
+    "dims": {
+      "l": 1200,
+      "w": 1200,
+      "h": 144
+    },
+    "entry": "2-way",
+    "style": "Stringer pallet, double face, flush",
+    "wood": "Seasoned hardwood",
+    "components": "12 boards, 3 stringers"
+  },
+  {
+    "slug": "hw04-hardwood-skid-pallet-1235x1200",
+    "pallet": "hw04",
+    "category": "hardwood-pallets",
+    "code": "HW-04",
+    "name": "Hardwood Skid Pallet 1235 × 1200",
+    "dims": {
+      "l": 1235,
+      "w": 1200,
+      "h": 122
+    },
+    "entry": "2-way",
+    "style": "Skid pallet on 4 runners, near-solid deck, single face",
+    "wood": "Seasoned hardwood",
+    "components": "10 deck boards, 4 runners"
+  },
+  {
+    "slug": "hw05-hardwood-pallet-1275x1275",
+    "pallet": "hw05",
+    "category": "hardwood-pallets",
+    "code": "HW-05",
+    "name": "Hardwood Block Pallet 1275 × 1275, Chamfered",
+    "dims": {
+      "l": 1275,
+      "w": 1275,
+      "h": 161
+    },
+    "entry": "4-way",
+    "style": "Block pallet, perimeter base, chamfered corners and bottom boards",
+    "wood": "Seasoned hardwood",
+    "components": "18 boards, 9 blocks"
+  },
+  {
+    "slug": "hw06-hardwood-pallet-1200x1200-full-base",
+    "pallet": "hw06",
+    "category": "hardwood-pallets",
+    "code": "HW-06",
+    "name": "Hardwood 2-Way Pallet 1200 × 1200, Full Bottom Deck",
+    "dims": {
+      "l": 1200,
+      "w": 1200,
+      "h": 144
+    },
+    "entry": "2-way",
+    "style": "Stringer pallet on 4 stringers, double face, flush",
+    "wood": "Seasoned hardwood",
+    "components": "16 boards, 4 stringers"
+  },
+  {
+    "slug": "gma-pallet-1220x1016",
+    "pallet": "gma",
+    "category": "gma-pallets",
+    "code": "GMA",
+    "name": "GMA Pallet 48 × 40 in",
+    "dims": {
+      "l": 1220,
+      "w": 1016,
+      "h": 132
+    },
+    "entry": "4-way (partial)",
+    "style": "Stringer pallet, 3 notched stringers",
+    "wood": "Pinewood, heat treatable to ISPM-15",
+    "components": "10 boards, 3 stringers",
+    "loadKg": 1000
+  },
+  {
+    "slug": "pallet-collar-1200x800",
+    "pallet": "collar",
+    "category": "pallet-collars",
+    "code": "PC-1208",
+    "name": "Wooden Pallet Collar 1200 × 800",
+    "dims": {
+      "l": 1200,
+      "w": 800,
+      "h": 195
+    },
+    "entry": "-",
+    "style": "Hinged collar, folds flat",
+    "wood": "Planed softwood with galvanised steel hinges",
+    "components": "4 boards, 4 corner hinges"
+  }
+]

@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SEO Action Plan – Ambica Patterns</title>
+<style>
+@font-face { font-family: Poppins; font-weight: 400; src: url('../../node_modules/@fontsource/poppins/files/poppins-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: Poppins; font-weight: 500; src: url('../../node_modules/@fontsource/poppins/files/poppins-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: Poppins; font-weight: 600; src: url('../../node_modules/@fontsource/poppins/files/poppins-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: Poppins; font-weight: 700; src: url('../../node_modules/@fontsource/poppins/files/poppins-latin-700-normal.woff2') format('woff2'); }
+@page { size: A4; margin: 18mm 17mm 20mm; @bottom-left { content: "Ambica Patterns · SEO Action Plan"; font: 8pt Poppins, sans-serif; color: #8a96a5; } @bottom-right { content: counter(page) " / " counter(pages); font: 8pt Poppins, sans-serif; color: #8a96a5; } }
+@page :first { margin: 0; @bottom-left { content: none } @bottom-right { content: none } }
+:root { --navy: #0d2b4e; --blue: #1c64b0; --light: #eef5fc; --wood: #9a6a32; --woodbg: #f8f2ea; --ink: #16202b; --muted: #5a6675; --line: #dfe4ea; --green: #1f8a4c; --red: #b42318; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: Poppins, sans-serif; font-size: 9.6pt; line-height: 1.55; color: var(--ink); margin: 0; }
+h1, h2, h3, h4 { color: var(--navy); line-height: 1.2; margin: 0 0 .5em; }
+h2 { font-size: 17pt; margin-top: 0; padding-top: 2mm; }
+h3 { font-size: 11.5pt; margin-top: 1.3em; }
+h4 { font-size: 10pt; margin-top: 1em; }
+p { margin: 0 0 .7em; }
+ul, ol { margin: 0 0 .8em; padding-left: 1.2em; }
+li { margin-bottom: .25em; }
+a { color: var(--blue); text-decoration: none; }
+strong { color: var(--navy); }
+.chapter { margin-top: 9mm; }
+.cover + .chapter { break-before: page; margin-top: 0; }
+h2, h3, h4 { break-after: avoid; }
+h2 { border-top: 2px solid var(--navy); padding-top: 4mm !important; }
+.avoid { break-inside: avoid; }
+.cover { height: 297mm; background: var(--navy); color: #dbe6f3; padding: 30mm 22mm; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+.cover h1 { color: #fff; font-size: 34pt; margin: 14mm 0 6mm; line-height: 1.08; }
+.cover .kicker { font-size: 9pt; letter-spacing: .2em; text-transform: uppercase; color: #86b4e3; }
+.cover .sub { font-size: 13pt; max-width: 140mm; color: #c8d6e8; }
+.cover .meta { margin-top: auto; font-size: 9.5pt; color: #a9bbd1; border-top: 1px solid rgb(255 255 255 / .15); padding-top: 6mm; }
+.cover .tri { position: absolute; right: -30mm; bottom: 40mm; width: 150mm; opacity: .12; }
+.lead { font-size: 10.6pt; color: var(--muted); }
+.box { border: 1px solid var(--line); border-radius: 3mm; padding: 4mm 5mm; margin: 3mm 0 4mm; break-inside: avoid; }
+.box h4 { margin-top: 0; }
+.box.blue { background: var(--light); border-color: #cfe0f3; }
+.box.wood { background: var(--woodbg); border-color: #ecdcc6; }
+.box.red { background: #fdf0ef; border-color: #f4cfcb; }
+.box.green { background: #ecf7f0; border-color: #c9e8d4; }
+.tag { display: inline-block; font-size: 7.4pt; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: .5mm 2mm; border-radius: 1mm; margin-right: 1.5mm; vertical-align: 1px; }
+.t-now { background: #fde8e7; color: var(--red); }
+.t-next { background: #fff3dc; color: #8a5a00; }
+.t-ongoing { background: #e3f0fb; color: var(--blue); }
+.t-done { background: #e2f4e8; color: var(--green); }
+.who { font-size: 8pt; color: var(--muted); }
+table { width: 100%; border-collapse: collapse; margin: 2mm 0 4mm; font-size: 8.8pt; break-inside: auto; }
+tr { break-inside: avoid; }
+th, td { text-align: left; vertical-align: top; padding: 2mm 2.5mm; border-bottom: 1px solid var(--line); }
+th { background: #f3f5f8; color: var(--navy); font-weight: 600; }
+td.k { white-space: nowrap; font-weight: 500; color: var(--navy); }
+.check { list-style: none; padding-left: 0; }
+.check li { padding-left: 6.5mm; position: relative; margin-bottom: 1.6mm; }
+.check li::before { content: ""; position: absolute; left: 0; top: .9mm; width: 3.4mm; height: 3.4mm; border: 1.3px solid var(--navy); border-radius: .8mm; }
+.done li::before { background: var(--green); border-color: var(--green); }
+.done li::after { content: ""; position: absolute; left: 1.15mm; top: 1.45mm; width: .9mm; height: 1.7mm; border: solid #fff; border-width: 0 1.4px 1.4px 0; transform: rotate(45deg); }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+.toc { columns: 2; column-gap: 10mm; padding-left: 1.2em; }
+.toc li { margin-bottom: 1.6mm; }
+.paste { font-family: ui-monospace, Menlo, monospace; font-size: 8.4pt; background: #fbfbfc; border: 1px dashed #c9d1db; border-radius: 2mm; padding: 3mm 4mm; white-space: pre-wrap; margin: 2mm 0 4mm; break-inside: avoid; }
+.num { font-size: 22pt; font-weight: 700; color: var(--navy); line-height: 1; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin: 4mm 0; }
+.stats div { border: 1px solid var(--line); border-radius: 3mm; padding: 4mm; }
+.stats span { display: block; font-size: 8pt; color: var(--muted); margin-top: 1.5mm; }
+.small { font-size: 8.2pt; color: var(--muted); }
+.src li { font-size: 8pt; word-break: break-all; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <svg class="tri" viewBox="0 0 2000 1733"><path fill="#86B4E3" d="M999 0 2000 1733H0Z"/><path fill="#0d2b4e" d="M661 659h350v1021H661zM1050 659h113a283 275.5 0 0 1 0 551h-113z"/></svg>
+  <div class="kicker">Ambica Patterns India Pvt Ltd · ambicapatterns.com</div>
+  <h1>SEO Action Plan</h1>
+  <p class="sub">Everything to do, step by step, so buyers searching for wooden pallets in Bengaluru, across India and abroad find Ambica Patterns first. Written in plain language.</p>
+  <div class="meta">Prepared 17 October 2026, updated 18 October 2026 · Covers the new website launch, Google Business Profile, listings, content, links, technical health and measurement · 90-day calendar included</div>
+</section>
+
+<section class="chapter">
+  <h2>How to use this plan</h2>
+  <p class="lead">SEO (search engine optimisation) means making it easy for Google to understand your business and confident enough to show it to buyers. There are no tricks. Google rewards websites that are fast, clear, trustworthy and genuinely useful, and businesses that are known and talked about across the web.</p>
+  <p>Each task in this plan has a label:</p>
+  <p><span class="tag t-done">Done</span> already built into the new website. Nothing to do except keep it that way.<br>
+  <span class="tag t-now">Do first</span> do these in the first week after the new site goes live. They have the biggest effect.<br>
+  <span class="tag t-next">Next</span> weeks 2–6.<br>
+  <span class="tag t-ongoing">Ongoing</span> small habits, weekly or monthly, that compound over time.</p>
+
+  <h3>Contents</h3>
+  <ol class="toc">
+    <li>SEO in plain words, and the myths to ignore</li>
+    <li>What the new website already does</li>
+    <li>Launch week: go live without losing anything</li>
+    <li>Google Business Profile: your biggest local lever</li>
+    <li>Listings and directories (NAP consistency)</li>
+    <li>Keywords: the words your buyers type</li>
+    <li>Content: what to write and how long</li>
+    <li>Links and reputation</li>
+    <li>Technical health check (monthly)</li>
+    <li>AI search: Google AI Overviews and chatbots</li>
+    <li>Measuring results</li>
+    <li>90-day calendar</li>
+    <li>Open items we need from you</li>
+    <li>Glossary and sources</li>
+  </ol>
+
+  <div class="box blue">
+    <h4>The short version</h4>
+    <ol style="margin:0">
+      <li>Publish the new website and connect it to Google Search Console.</li>
+      <li>Complete and keep improving your Google Business Profile, and collect reviews from every happy customer.</li>
+      <li>Make your name, address and phone identical everywhere online.</li>
+      <li>Keep adding genuinely useful pages: guides, real photos, case studies.</li>
+      <li>Earn mentions and links from real organisations: industry associations, customers, timber suppliers, trade press.</li>
+      <li>Check Search Console once a month and fix what it reports.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2>1. SEO in plain words</h2>
+  <p>Google works in three steps:</p>
+  <ol>
+    <li><strong>Crawl</strong>: Google's robot visits your pages by following links and reading your sitemap.</li>
+    <li><strong>Index</strong>: it stores what each page is about: the text, the headings, the images and the structured data.</li>
+    <li><strong>Rank</strong>: when someone searches, it orders the indexed pages by how relevant, useful and trustworthy they are, and how good the page is to use (speed, mobile friendliness).</li>
+  </ol>
+  <p>For a manufacturer like Ambica Patterns, three areas decide where you appear:</p>
+  <table>
+    <tr><th>Area</th><th>What it means</th><th>Where it is covered</th></tr>
+    <tr><td class="k">Website</td><td>Fast, mobile-friendly pages with clear text about each product, correct technical setup.</td><td>Sections 2, 3, 6, 7, 9</td></tr>
+    <tr><td class="k">Local presence</td><td>Your Google Business Profile, reviews and consistent business listings. This controls the map results ("pallet manufacturer near me").</td><td>Sections 4, 5</td></tr>
+    <tr><td class="k">Reputation</td><td>Other trustworthy websites mentioning and linking to you. Signals that you are a real, established business.</td><td>Section 8</td></tr>
+  </table>
+
+  <h3>Myths to ignore</h3>
+  <div class="box wood">
+    <h4>"A page needs at least X words"</h4>
+    <p>False. Google has said many times that word count is not a ranking factor. Google's John Mueller: adding more text does not make a page better, and matching a competitor's word count won't make you rank first. Google's Danny Sullivan has said there is no best word count.</p>
+    <p style="margin:0">What <em>is</em> true: pages that answer a buyer's questions completely tend to be longer, and that completeness is what ranks. So write until the question is fully answered, then stop. Section 6 gives practical length ranges that usually achieve that.</p>
+  </div>
+  <div class="cols">
+    <div class="box"><h4>"Repeat the keyword many times"</h4><p style="margin:0">Keyword stuffing is treated as spam. Use the words buyers use, naturally, in the title, headings and text.</p></div>
+    <div class="box"><h4>"Meta keywords tag helps"</h4><p style="margin:0">Google has ignored the meta keywords tag for over a decade. The new site does not use it.</p></div>
+    <div class="box"><h4>"Buy 1,000 backlinks"</h4><p style="margin:0">Bought or automated links break Google's spam policies and can get a site demoted or removed. Avoid anyone selling them.</p></div>
+    <div class="box"><h4>"SEO is a one-time job"</h4><p style="margin:0">The setup is one-time; results come from small, steady habits: reviews, new content, listings, monthly checks.</p></div>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2>2. What the new website already does</h2>
+  <p class="lead">The old site had almost no SEO foundations: a 34 MB 3D model on the home page, duplicate content on two domains, no sitemap, a contact form that went nowhere and the same placeholder image for every product. The rebuilt site fixes all of this.</p>
+  <div class="stats">
+    <div><div class="num">74 MB</div><span>home page download before (3D model, uncompressed photos, 5 script libraries)</span></div>
+    <div><div class="num">0.3 MB</div><span>home page download now</span></div>
+    <div><div class="num">44</div><span>pages Google can index, up from 4</span></div>
+  </div>
+  <p>Google's own Lighthouse audit (simulated mobile phone) now scores the home page <strong>Performance 99 · Accessibility 100 · Best Practices 100 · SEO 100</strong>, with the main content visible in about 1.7 seconds.</p>
+  <h3><span class="tag t-done">Done</span> Technical foundations</h3>
+  <ul class="check done">
+    <li><strong>One official address</strong>: https://ambicapatterns.com. The .in domain and www versions redirect (301) to it, so Google no longer sees two copies of your site.</li>
+    <li><strong>Old page addresses redirect</strong> (about.html → /about/ etc.), so existing links and bookmarks keep working.</li>
+    <li><strong>XML sitemap</strong> at /sitemap.xml listing every page, and a <strong>robots.txt</strong> pointing to it.</li>
+    <li><strong>Canonical tags</strong> on every page, telling Google the one true address of each page.</li>
+    <li><strong>Unique page titles and descriptions</strong> on every page, written for the searches buyers make.</li>
+    <li><strong>One clear H1 heading per page</strong> and a logical heading structure.</li>
+    <li><strong>Structured data</strong> (schema.org) that Google reads directly: LocalBusiness (name, address, phone, map location, hours), Product (each pallet with dimensions), BreadcrumbList, FAQPage and Article.</li>
+    <li><strong>Fast pages</strong>: static HTML, no heavy libraries, responsive WebP images in several sizes, self-hosted fonts, long-term caching and compression on Hostinger.</li>
+    <li><strong>Mobile-first layout</strong>, tested at phone width with no sideways scrolling.</li>
+    <li><strong>Descriptive image alt text</strong> on every product image ("CP3 Chemical Pallet, 1140 × 1140 × 138 mm – underside view").</li>
+    <li><strong>Social sharing tags</strong> (Open Graph) so links shared on WhatsApp and LinkedIn show a picture and title.</li>
+    <li><strong>Custom 404 page</strong> and a <strong>privacy policy</strong> for the enquiry form.</li>
+  </ul>
+  <h3><span class="tag t-done">Done</span> Content</h3>
+  <ul class="check done">
+    <li><strong>28 product pages</strong>: three Euro-size pallets (1200 × 800 and two 1200 × 1000 formats), nine CP-type pallets (CP1–CP9), GMA, 8 pinewood, 6 hardwood and the pallet collar. Each has 5 studio renders built from its real dimensions, a 3D model that loads only when the visitor taps it, a full specification table and an original description.</li>
+    <li><strong>Original design kept</strong>: the new pages use the same header, footer, fonts, colours, animations and tabbed products page as the old site, rebuilt for speed and SEO.</li>
+    <li><strong>6 category pages</strong> with buying advice and FAQs (e.g. "CP pallets", "Pinewood pallets").</li>
+    <li><strong>3 buyer guides</strong>: standard pallet sizes, ISPM-15 heat treatment, and Euro vs CP vs GMA pallets.</li>
+    <li><strong>Quality &amp; certifications page</strong>, an About page with real factory photos, and a working quote form that emails sales@ambicapatterns.in, plus WhatsApp buttons.</li>
+    <li><strong>Internal links</strong> between related products, categories and guides, so both buyers and Google can find every page.</li>
+  </ul>
+  <div class="box red">
+    <h4>Important: no EPAL claims anywhere</h4>
+    <p style="margin:0">Ambica Patterns does not hold an EPAL licence. The website calls these pallets "Euro-size" and "CP-type", shows only the ISPM-15 mark IN-081 HT and says plainly that they are not EPAL pallets. Keep it that way in the Business Profile, directories, IndiaMART listings and quotations: the EPAL name and oval are registered trademarks, and buyers who need exchangeable EPAL pallets must buy from a licensee.</p>
+  </div>
+  <div class="box red">
+    <h4>Important: copy was written fresh, not copied</h4>
+    <p style="margin:0">The product range and specifications match the reference site, but every description is original. Google detects copied text and shows only the original site, so copying would have made these pages invisible. Keep it that way: never paste descriptions from other websites.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2>3. Launch week: go live without losing anything</h2>
+  <h3><span class="tag t-now">Do first</span> Publish</h3>
+  <ul class="check">
+    <li>Run <code>npm run build</code> and upload the contents of the <code>dist</code> folder to <code>public_html</code> on Hostinger (the README in the project explains each step). Keep a backup of the old files.</li>
+    <li>In hPanel → Emails, create the mailbox <strong>website@ambicapatterns.com</strong> (the form sends from it). Then submit a test enquiry and confirm it arrives at sales@ambicapatterns.in.</li>
+    <li>In hPanel, <strong>purge the CDN cache</strong> so visitors see the new site immediately.</li>
+    <li>Check that <strong>ambicapatterns.in</strong> and <strong>www.ambicapatterns.com</strong> now redirect to https://ambicapatterns.com. If the .in domain is a separate website in hPanel, add a redirect for it there (hPanel → Domains → Redirects).</li>
+  </ul>
+  <h3><span class="tag t-now">Do first</span> Google Search Console (free)</h3>
+  <p>Search Console is Google's own dashboard for your site: what you rank for, how many clicks you get, and any problems it finds.</p>
+  <ol>
+    <li>Go to <strong>search.google.com/search-console</strong> and sign in with the company Google account.</li>
+    <li>Add a <strong>Domain property</strong> for <code>ambicapatterns.com</code>. Google gives you a TXT record; add it in hPanel → DNS Zone. Do the same for <code>ambicapatterns.in</code> so you can see its traffic move over.</li>
+    <li>Open <strong>Sitemaps</strong> and submit <code>https://ambicapatterns.com/sitemap.xml</code>.</li>
+    <li>Use <strong>URL Inspection</strong> → "Request indexing" for the home page, the products page and the six category pages.</li>
+    <li>In URL Inspection, click <strong>"Test live URL"</strong> → "View tested page" → Screenshot. It must show your real page. When we tested the current site with an automated browser, Hostinger's CDN served a "JS challenge" (bot check) page instead of the website. Real Googlebot is normally allowed through, but confirm it here. If Google sees the challenge, turn off bot protection / "under attack" mode in hPanel → Security, or ask Hostinger support to allow verified search engine bots.</li>
+  </ol>
+  <h3><span class="tag t-now">Do first</span> Bing Webmaster Tools (free)</h3>
+  <p>Bing also powers several AI assistants. At <strong>bing.com/webmasters</strong>, choose "Import from Google Search Console": it copies everything in one click.</p>
+  <h3><span class="tag t-next">Next</span> Google Analytics 4 (optional)</h3>
+  <p>Search Console shows Google traffic; Analytics shows what visitors do on the site. Create a GA4 property and paste its ID (G-XXXXXXX) into <code>src/data/site.ts</code> → <code>ga4Id</code>, then rebuild. If you add it, update the privacy policy to mention analytics.</p>
+</section>
+
+<section class="chapter">
+  <h2>4. Google Business Profile</h2>
+  <p class="lead">For searches like "pallet manufacturer Bangalore" or "wooden pallets near me", Google shows a map with three businesses above all websites. Those three come from Google Business Profile. Ambica Patterns already has a listing on Google Maps ("Ambica Patterns (INDIA) Pvt Ltd"); the job now is to claim it and make it the best in the area.</p>
+  <p>Google ranks local listings on three things: <strong>relevance</strong> (does the profile match the search), <strong>distance</strong> (how close you are to the searcher), and <strong>prominence</strong> (how well known and well reviewed you are). You cannot change distance, so everything below targets relevance and prominence.</p>
+  <h3><span class="tag t-now">Do first</span> Claim and complete</h3>
+  <ul class="check">
+    <li>At <strong>business.google.com</strong>, search for the listing and claim it (verification by phone, video or postcard). If someone else manages it, request ownership.</li>
+    <li><strong>Business name</strong>: exactly "Ambica Patterns India Pvt Ltd". Do not add keywords to the name; that breaks Google's rules.</li>
+    <li><strong>Primary category</strong>: "Pallet supplier". Add relevant secondary categories that Google offers, such as "Packaging company" or "Manufacturer".</li>
+    <li><strong>Address, phone, hours</strong>: identical to the website (see Section 5).</li>
+    <li><strong>Website</strong>: https://ambicapatterns.com/</li>
+    <li><strong>Description</strong>: paste the text below (under 750 characters).</li>
+    <li><strong>Products</strong>: add each pallet family with a render, a one-line description and a link to its page on the website.</li>
+    <li><strong>Photos</strong>: at least 20 real photos: factory exterior with signboard, yard, machines, heat-treatment chamber, finished stacks, loading, team. Real photos build trust far more than stock images. Add new ones every month.</li>
+  </ul>
+  <div class="paste">Ambica Patterns India Pvt Ltd has manufactured wooden pallets in Bengaluru since 2001: Euro-size pallets (1200 x 800 and 1200 x 1000), CP1 to CP9 type chemical pallets, GMA 48x40 pallets, pinewood and hardwood block, stringer and skid pallets, and hinged pallet collars. Export pallets are heat treated in our registered ISPM-15 facility and stamped IN-081 HT. ISO 9001 quality system; PEFC / FSC certified timber on request. Custom sizes built to your drawing, delivered across Karnataka and India. Call or WhatsApp for a quote.</div>
+  <h3><span class="tag t-ongoing">Ongoing</span> Reviews: the strongest local signal you control</h3>
+  <ul>
+    <li>Ask every satisfied customer for a review, ideally soon after a successful delivery. Aim for a steady flow (for example 2–4 a month) rather than a burst.</li>
+    <li>In Business Profile, use "Ask for reviews" to get your short review link, and send it on WhatsApp or email.</li>
+    <li><strong>Reply to every review</strong>, positive or negative, politely and within a few days.</li>
+    <li>Never buy reviews, review your own business or offer gifts in exchange. Google removes them and can suspend the profile.</li>
+  </ul>
+  <div class="paste">Thank you for choosing Ambica Patterns. If you are happy with our pallets and service, could you leave us a short Google review? It takes a minute and helps other buyers find us: [your review link]</div>
+  <h3><span class="tag t-ongoing">Ongoing</span> Posts</h3>
+  <p>Publish a short Update post every week or two: a new guide, a completed export order, new machinery, a certification renewal. Always add a photo and a link to the relevant page.</p>
+</section>
+
+<section class="chapter">
+  <h2>5. Listings and directories</h2>
+  <p class="lead">"NAP" means Name, Address, Phone. Google compares these details across the web to confirm you are a real business at a real place. Mismatches, such as an old phone number on Justdial or a different spelling of the address, weaken your local ranking. A few accurate listings beat hundreds of junk directory submissions.</p>
+  <h4>Use exactly this everywhere</h4>
+  <div class="paste">Ambica Patterns India Pvt Ltd
+No. 6/7, Hesarghatta Main Road, Near Railway Station, Chikkabanavara, Bengaluru 560090, Karnataka, India
++91 98868 37016  ·  sales@ambicapatterns.in  ·  https://ambicapatterns.com
+Monday – Saturday, 9:00 AM – 6:00 PM</div>
+  <h3><span class="tag t-next">Next</span> Listings to create or correct</h3>
+  <table>
+    <tr><th>Where</th><th>Why it matters</th></tr>
+    <tr><td class="k">Industry associations and chambers</td><td>Member directories of bodies you belong to (for example FKCCI, KASSIA or the Peenya Industries Association) usually allow a website link, a strong local signal.</td></tr>
+    <tr><td class="k">IndiaMART, TradeIndia, ExportersIndia</td><td>Indian B2B buyers search these directly. Use the same NAP, link to the website, add products with real photos and certifications.</td></tr>
+    <tr><td class="k">Justdial, Sulekha</td><td>Strong local directories; often already have an (outdated) listing. Claim and correct.</td></tr>
+    <tr><td class="k">Bing Places, Apple Business Connect</td><td>Map listings for Bing/Copilot and Apple Maps (iPhone users).</td></tr>
+    <tr><td class="k">LinkedIn company page</td><td>Where purchase and logistics managers look you up. Post updates; add the website.</td></tr>
+    <tr><td class="k">Facebook / Instagram (optional)</td><td>Only if someone will keep them active. Add the URLs to <code>src/data/site.ts</code> so they appear in the footer.</td></tr>
+    <tr><td class="k">Certification databases</td><td>ISO 9001 certifier's register and the PEFC / FSC public certificate search usually list the company; check details and website.</td></tr>
+    <tr><td class="k">Industry associations</td><td>Local and national industry or packaging associations you belong to (e.g. Peenya or KASSIA membership directories).</td></tr>
+  </table>
+  <h3><span class="tag t-next">Next</span> Clean up</h3>
+  <ul class="check">
+    <li>Search Google for "Ambica Patterns" and each phone number. Correct or close any listing with old details or duplicates.</li>
+    <li>Update the email signature, letterhead, quotations and invoices to show https://ambicapatterns.com.</li>
+  </ul>
+</section>
+
+<section class="chapter">
+  <h2>6. Keywords: the words your buyers type</h2>
+  <p class="lead">A keyword is simply what someone types into Google. The new site already targets the main ones. Use this table when writing new pages or Business Profile posts, and check Search Console every month to see which searches actually bring visitors.</p>
+  <table>
+    <tr><th>Buyers search for…</th><th>Page that answers it</th></tr>
+    <tr><td>wooden pallet manufacturer in Bangalore / Bengaluru, pallet suppliers near me</td><td>Home page + Business Profile</td></tr>
+    <tr><td>Euro pallet manufacturer, Euro-size pallet, 1200×800 pallet, 1200×1000 pallet</td><td>/products/euro-pallets/ and the three Euro-size pages (do not target "EPAL pallets": you are not a licensee)</td></tr>
+    <tr><td>CP1 to CP9 type pallets, chemical pallets</td><td>/products/cp-pallets/ and each CP-type page</td></tr>
+    <tr><td>pallet for drums, octabin pallet, FIBC pallet</td><td>CP3, CP9 pages</td></tr>
+    <tr><td>GMA pallet, 48×40 pallet, pallet for USA export</td><td>GMA page</td></tr>
+    <tr><td>pinewood pallets, 4-way pallet, 1200×1000 pallet, skid pallet</td><td>/products/pinewood-pallets/ and PW pages</td></tr>
+    <tr><td>hardwood pallets, heavy duty pallets, machinery skid</td><td>/products/hardwood-pallets/</td></tr>
+    <tr><td>heat treated pallets, ISPM 15 pallets, HT stamp</td><td>ISPM-15 guide, Quality page</td></tr>
+    <tr><td>pallet sizes, standard pallet dimensions</td><td>Pallet sizes guide</td></tr>
+    <tr><td>pallet collar, collapsible pallet box</td><td>Pallet collar page</td></tr>
+    <tr><td>custom wooden pallets, export pallets</td><td>Category pages + contact page</td></tr>
+  </table>
+  <h4>Free tools to find more</h4>
+  <ul>
+    <li><strong>Search Console → Performance</strong>: the real searches that already show your site. The best source once it has a few weeks of data.</li>
+    <li><strong>Google autocomplete and "People also ask"</strong>: type "wooden pallet" and note the suggestions. Each question is a possible guide or FAQ.</li>
+    <li><strong>Google Keyword Planner</strong> (free inside a Google Ads account): rough monthly search volumes.</li>
+  </ul>
+  <h4>How to use a keyword</h4>
+  <p>Put the main phrase in the page title, the H1 heading and the first paragraph, and use natural variations in the text ("Euro pallet", "Euro-size pallet", "1200 × 800 pallet"). One main topic per page, so two pages don't compete for the same search.</p>
+
+  <h2 style="margin-top:8mm">7. Content: what to write and how long</h2>
+  <p>Google's quality guidelines reward content that shows <strong>experience, expertise, authoritativeness and trust</strong> (E-E-A-T). As a manufacturer for 25 years you have something competitors who copy text do not: real knowledge and real photos. Use it.</p>
+  <h4>Practical length ranges (not rules)</h4>
+  <table>
+    <tr><th>Page type</th><th>Usually enough to answer fully</th></tr>
+    <tr><td>Product page</td><td>200–500 words + spec table + photos/renders</td></tr>
+    <tr><td>Category page</td><td>500–1,000 words, including buying advice and FAQs</td></tr>
+    <tr><td>Guide / article</td><td>800–2,000 words when the topic needs it</td></tr>
+    <tr><td>Case study</td><td>400–800 words with real photos and numbers</td></tr>
+  </table>
+  <h3><span class="tag t-ongoing">Ongoing</span> One or two new pages a month</h3>
+  <p>Ideas, roughly in order of value:</p>
+  <ol>
+    <li>Wooden pallet prices in India: what affects the cost (timber, size, treatment, quantity), with honest ranges.</li>
+    <li>Pallet load capacity explained: static, dynamic and racking loads.</li>
+    <li>How we heat treat pallets: a photo walkthrough of your own chamber and records.</li>
+    <li>Exporting to Europe: choosing pallets and avoiding rejected shipments.</li>
+    <li>One-way export pallets: when a Euro-size pallet is enough and when your buyer needs an EPAL pallet.</li>
+    <li>Wooden vs plastic pallets: honest pros and cons.</li>
+    <li>How many pallets fit in a 20 ft and 40 ft container.</li>
+    <li>Protecting pallets from moisture and mould in the monsoon.</li>
+    <li>Case studies by industry (pharma, auto parts, chemicals), with the customer's permission.</li>
+    <li>A "Team" or "Our factory" page with names, roles and photos: real people build trust.</li>
+  </ol>
+  <p class="small">New guides go in <code>src/content/guides/</code> as Markdown files; copy an existing guide as a template.</p>
+</section>
+
+<section class="chapter">
+  <h2>8. Links and reputation</h2>
+  <p class="lead">A link from another website to yours is like a recommendation. One link from a real, relevant organisation is worth more than thousands from junk sites, and junk links can hurt.</p>
+  <h3><span class="tag t-next">Next</span> Good links to go after</h3>
+  <ul class="check">
+    <li><strong>Customers and suppliers</strong>: many have "partners" or "suppliers" pages. Ask long-standing customers and your timber suppliers to link to you.</li>
+    <li><strong>Associations and chambers</strong> you are a member of: member directories usually allow a website link.</li>
+    <li><strong>Trade press</strong>: timber, packaging and logistics publications often publish manufacturer news (new capacity, certifications, export milestones). Send a short press note with photos.</li>
+    <li><strong>Exhibitions</strong>: exhibitor lists for logistics, warehousing and packaging shows link to exhibitors' websites.</li>
+    <li><strong>Your guides</strong>: useful guides (sizes, ISPM-15) get linked naturally by forums, students and buyers. Share them on LinkedIn.</li>
+  </ul>
+  <div class="box red">
+    <h4>Never do these (they break Google's spam policies)</h4>
+    <ul style="margin:0">
+      <li>Buying links or "backlink packages", link exchanges, private blog networks.</li>
+      <li>Mass-producing pages with AI or templates just to target keywords ("scaled content abuse").</li>
+      <li>Copying other sites' text or product descriptions.</li>
+      <li>Fake reviews, or keywords stuffed into your business name.</li>
+    </ul>
+  </div>
+
+  <h2 style="margin-top:8mm">9. Technical health check (30 minutes a month)</h2>
+  <ul class="check">
+    <li><strong>Search Console → Pages</strong>: are pages "Indexed"? Investigate anything under "Not indexed" that should be indexed.</li>
+    <li><strong>Search Console → Core Web Vitals</strong>: should say "Good". Targets: page content appears within 2.5 s (LCP), the page responds to taps within 200 ms (INP), and layout doesn't jump (CLS ≤ 0.1).</li>
+    <li><strong>Search Console → Enhancements</strong>: Breadcrumbs, FAQ and Product should be valid. Product may show "missing field offers / review": expected, because the site shows no prices. It is a warning, not a penalty.</li>
+    <li><strong>Security &amp; Manual actions</strong>: should say "No issues detected".</li>
+    <li><strong>PageSpeed Insights</strong> (pagespeed.web.dev): test the home page and one product page on mobile.</li>
+    <li>Never delete or rename a page without adding a 301 redirect in <code>public/.htaccess</code>.</li>
+    <li>New product images: always render them with <code>npm run render</code> (WebP, right size); never upload raw 5–8 MB photos again.</li>
+  </ul>
+
+  <h2 style="margin-top:8mm">10. AI search</h2>
+  <p>Google's AI Overviews and AI Mode, and assistants such as ChatGPT, Gemini and Copilot, increasingly answer questions directly. Google's own 2026 guidance for these features says optimising for them <strong>is still SEO</strong>: they use the normal Search index and quality systems, and special tricks (llms.txt files, "AI-specific" rewriting, special schema) are not needed for Google.</p>
+  <ul>
+    <li>Be the clearest source of facts about your products: specs in tables, plain answers to common questions (already done).</li>
+    <li>Keep company facts identical everywhere (Sections 4–5), because AI assistants cross-check sources.</li>
+    <li>Publish first-hand content competitors can't copy: your process, photos, numbers, case studies.</li>
+    <li>Search Console has a report for visibility in generative AI features; check it monthly once data appears.</li>
+  </ul>
+</section>
+
+<section class="chapter">
+  <h2>11. Measuring results</h2>
+  <p class="lead">SEO takes time. Expect the first movement in 4–8 weeks and solid results in 3–6 months, faster for local map results once reviews start coming in. Track the same few numbers every month:</p>
+  <table>
+    <tr><th>Number</th><th>Where</th><th>What good looks like</th></tr>
+    <tr><td class="k">Impressions and clicks</td><td>Search Console → Performance</td><td>Rising month on month</td></tr>
+    <tr><td class="k">Average position for key searches</td><td>Search Console → Performance → Queries</td><td>Moving towards the top 10, then top 3</td></tr>
+    <tr><td class="k">Indexed pages</td><td>Search Console → Pages</td><td>All 44 pages indexed</td></tr>
+    <tr><td class="k">Calls, direction requests, website clicks</td><td>Business Profile → Performance</td><td>Rising; compare month to month</td></tr>
+    <tr><td class="k">Reviews and average rating</td><td>Business Profile</td><td>Steady new reviews, rating above 4.5</td></tr>
+    <tr><td class="k">Quote form enquiries and WhatsApp chats</td><td>Your inbox / WhatsApp (or GA4 events)</td><td>The number that really matters</td></tr>
+  </table>
+  <p>Ask every new customer: "How did you find us?" and note the answer. It's the simplest and most reliable measurement there is.</p>
+
+  <h2 style="margin-top:8mm">12. 90-day calendar</h2>
+  <table>
+    <tr><th style="width:22%">When</th><th>Tasks</th></tr>
+    <tr><td class="k">Week 1</td><td>Publish site, create form mailbox, test form, purge CDN, check redirects. Set up Search Console (both domains) + sitemap + request indexing. Bing Webmaster Tools. Claim Business Profile.</td></tr>
+    <tr><td class="k">Week 2</td><td>Complete Business Profile: categories, description, hours, products, 20+ photos. Send review requests to 10 regular customers.</td></tr>
+    <tr><td class="k">Week 3</td><td>Association / chamber directory links. Claim/correct IndiaMART, TradeIndia, Justdial with identical NAP. LinkedIn company page.</td></tr>
+    <tr><td class="k">Week 4</td><td>Search for old listings and duplicates; fix them. First Business Profile post. Share one guide on LinkedIn.</td></tr>
+    <tr><td class="k">Weeks 5–6</td><td>Write guide #1 (pallet prices). Add real factory and heat-treatment photos to About / Quality pages. Ask 2–3 partners for links.</td></tr>
+    <tr><td class="k">Weeks 7–8</td><td>First monthly Search Console check. Note which searches bring impressions; improve those pages' titles and text.</td></tr>
+    <tr><td class="k">Weeks 9–10</td><td>Guide #2 (load capacity) or first case study. More review requests. Business Profile posts every 1–2 weeks.</td></tr>
+    <tr><td class="k">Weeks 11–12</td><td>Second monthly check. Press note to a trade publication. Review this plan and set the next 90 days.</td></tr>
+  </table>
+</section>
+
+<section class="chapter">
+  <h2>13. Open items we need from you</h2>
+  <p class="lead">These keep the website accurate. Some statements were written from your existing site and the information available; please confirm or correct them.</p>
+  <table>
+    <tr><th style="width:38%">Item</th><th>Why</th></tr>
+    <tr><td class="k">Which number is on WhatsApp</td><td>The WhatsApp buttons use +91 98868 37016. Change in <code>src/data/site.ts</code> if needed.</td></tr>
+    <tr><td class="k">IPPC registration code</td><td>The site and every render show <strong>IN-081 HT</strong>. Check it against your certificate (for example IN-081 or IN-81) and change <code>src/data/site.ts</code> and <code>tools/render/brand.json</code> if needed.</td></tr>
+    <tr><td class="k">Heat-treatment chamber on site?</td><td>The site says the ISPM-15 chamber is in your plant. Correct if treatment is done elsewhere.</td></tr>
+    <tr><td class="k">Delivery area, reply time, minimum order</td><td>The site says delivery across Karnataka and India, replies within one working day, small trial lots accepted.</td></tr>
+    <tr><td class="k">Timber</td><td>Pages say softwood (pine/spruce) and seasoned hardwood, graded before cutting; photos show imported timber bundles.</td></tr>
+    <tr><td class="k">PW-06 size</td><td>The reference site lists it as both 1140 × 1140 and 1100 × 1100 mm. The site uses 1140 × 1140 × 130 mm.</td></tr>
+    <tr><td class="k">Load ratings for pinewood / hardwood</td><td>Only the GMA page shows a load rating. The Euro-size pages no longer quote EPAL's figures, because those apply only to licensed EPAL pallets. If you have tested ratings, they can be added to each page.</td></tr>
+    <tr><td class="k">Social media links</td><td>Add to <code>site.ts</code> to show in footer and schema.</td></tr>
+    <tr><td class="k">ITC Anna font licence</td><td>The logo wordmark uses ITC Anna, a commercial font. Confirm your licence covers web use, or we switch the wordmark to an image.</td></tr>
+    <tr><td class="k">Photos, team, testimonials, client logos</td><td>Real people and real customers (with permission) are strong trust signals.</td></tr>
+  </table>
+
+  <h2 style="margin-top:8mm">14. Glossary</h2>
+  <table>
+    <tr><td class="k">301 redirect</td><td>A permanent forward from an old address to a new one; passes on ranking value.</td></tr>
+    <tr><td class="k">Backlink</td><td>A link from another website to yours.</td></tr>
+    <tr><td class="k">Canonical</td><td>A tag naming the official address of a page when copies exist.</td></tr>
+    <tr><td class="k">Core Web Vitals</td><td>Google's speed and stability measures: LCP (loading), INP (responsiveness), CLS (layout stability).</td></tr>
+    <tr><td class="k">Crawl / index</td><td>Google visiting your pages / storing them so they can appear in results.</td></tr>
+    <tr><td class="k">E-E-A-T</td><td>Experience, Expertise, Authoritativeness, Trust: what Google's quality raters look for.</td></tr>
+    <tr><td class="k">GBP</td><td>Google Business Profile: your listing on Google Maps and in local results.</td></tr>
+    <tr><td class="k">Meta title / description</td><td>The blue headline and grey text shown for your page in Google results.</td></tr>
+    <tr><td class="k">NAP</td><td>Name, Address, Phone: must match everywhere.</td></tr>
+    <tr><td class="k">Schema / structured data</td><td>Hidden labels that tell Google exactly what a page contains (a product, a business, an FAQ).</td></tr>
+    <tr><td class="k">SERP</td><td>Search engine results page.</td></tr>
+    <tr><td class="k">Sitemap</td><td>A file listing all your pages for Google: ambicapatterns.com/sitemap.xml.</td></tr>
+  </table>
+
+  <h3>Sources</h3>
+  <ul class="src">
+    <li>Google Search Central: SEO Starter Guide and Search Essentials, developers.google.com/search/docs</li>
+    <li>Google: March 2024 core update and new spam policies (scaled content abuse, site reputation abuse, expired domain abuse), developers.google.com/search/blog/2024/03/core-update-spam-policies</li>
+    <li>Search Engine Journal: "Google's New AI Search Guide Calls AEO And GEO 'Still SEO'", searchenginejournal.com/googles-new-ai-search-guide-calls-aeo-and-geo-still-seo/575026/</li>
+    <li>Search Engine Land: "Google publishes guide on optimizing for generative AI features", searchengineland.com/google-publishes-guide-on-optimizing-for-generative-ai-features-477671</li>
+    <li>Search Engine Land: Google May 2026 core update, searchengineland.com/google-may-2026-core-update-rollout-is-now-complete-479119</li>
+    <li>Search Engine Journal: "Is content length a ranking factor?", searchenginejournal.com/ranking-factors/content-length/</li>
+    <li>Core Web Vitals thresholds (LCP 2.5 s, INP 200 ms, CLS 0.1; INP replaced FID on 12 March 2024), web.dev/articles/vitals</li>
+    <li>Google Business Profile Help: "Tips to improve your local ranking on Google" (relevance, distance, prominence), support.google.com/business</li>
+  </ul>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /pallet-designer/
+Disallow: /contact.php
+
+Sitemap: https://ambicapatterns.com/sitemap.xml

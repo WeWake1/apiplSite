@@ -1,0 +1,165 @@
+---
+import { Image, getImage } from 'astro:assets';
+import { getCollection, getEntry, render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import ProductCard from '../../../components/ProductCard.astro';
+import Fa from '../../../components/Fa.astro';
+import { site, whatsappLink } from '../../../data/site';
+import {
+  categoryOf,
+  categoryUrl,
+  mainImage,
+  modelUrl,
+  productBySlug,
+  productImages,
+  productUrl,
+  products,
+  relatedProducts,
+  sizeLabel,
+  specRows,
+} from '../../../lib/catalog';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('products');
+  const missing = products.filter((p) => !entries.some((e) => e.id === p.slug)).map((p) => p.slug);
+  if (missing.length) throw new Error(`Missing product copy in src/content/products: ${missing.join(', ')}`);
+  return products.map((p) => ({ params: { category: p.category, slug: p.slug } }));
+}
+
+const p = productBySlug[Astro.params.slug!];
+const entry = (await getEntry('products', p.slug))!;
+const copy = entry.data;
+const { Content } = await render(entry);
+const cat = categoryOf(p);
+const images = productImages(p);
+const rows = specRows(p);
+const related = relatedProducts(p);
+const schemaImages = await Promise.all(images.map((i) => getImage({ src: i.src, width: 1200, format: 'jpg', quality: 82 })));
+const mm = (v: number) => ({ '@type': 'QuantitativeValue', value: v, unitCode: 'MMT' });
+const productSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: p.name,
+  description: copy.summary,
+  sku: p.code.replace(/\s+/g, '-'),
+  category: `Wooden pallets > ${cat.name}`,
+  brand: { '@type': 'Brand', name: site.name },
+  manufacturer: { '@id': `${site.url}/#business` },
+  url: new URL(productUrl(p), site.url).href,
+  image: schemaImages.map((i) => new URL(i.src, site.url).href),
+  material: p.wood,
+  depth: mm(p.dims.l),
+  width: mm(p.dims.w),
+  height: mm(p.dims.h),
+  additionalProperty: rows.map(([name, value]) => ({ '@type': 'PropertyValue', name, value })),
+};
+const waText = `Hello Ambica Patterns, I would like a quote for the ${p.name} (${p.code}, ${sizeLabel(p, true)}). Quantity: `;
+---
+
+<Base title={copy.metaTitle} description={copy.metaDescription} image={images[0].src} schema={[productSchema]} active="products" mainClass="products-main">
+  <Breadcrumbs items={[{ name: 'Products', href: '/products/' }, { name: cat.name, href: categoryUrl(cat.slug) }, { name: p.code }]} />
+
+  <div class="product-detail">
+    <div class="product-item">
+      <div>
+        <div class="product-image" data-model={modelUrl(p)} data-name={p.name} data-gallery>
+          {
+            images.map((img, i) => (
+              <Image
+                src={img.src}
+                alt={img.alt}
+                widths={[480, 800, 1200, 1600]}
+                sizes="(max-width: 900px) 92vw, 580px"
+                loading={i === 0 ? 'eager' : 'lazy'}
+                fetchpriority={i === 0 ? 'high' : 'auto'}
+                class={i === 0 ? 'is-active' : ''}
+                data-slide={i}
+              />
+            ))
+          }
+          <button type="button" class="view-3d" aria-label={`View the ${p.name} in 3D`}><Fa name="cube" /> View in 3D</button>
+        </div>
+        {
+          images.length > 1 && (
+            <ul class="gallery-thumbs" aria-label="Choose a view">
+              {images.map((img, i) => (
+                <li>
+                  <button type="button" data-thumb={i} aria-current={i === 0 ? 'true' : 'false'} aria-label={`Show ${img.alt}`}>
+                    <Image src={img.src} alt="" widths={[160, 240]} sizes="110px" loading="lazy" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+        <p class="render-note">Studio renders and 3D model built from the pallet's actual dimensions.</p>
+      </div>
+      <div class="product-info">
+        <span class="product-code">{p.code}</span>
+        <h1>{p.name}</h1>
+        <p class="size-line">{sizeLabel(p, true)}</p>
+        <p>{copy.summary}</p>
+        <ul class="product-specs">
+          {rows.map(([k, v]) => <li><strong>{k}:</strong> {v}</li>)}
+        </ul>
+        <div class="product-actions">
+          <a class="btn-primary" href={`/contact/?product=${p.slug}#quote`}>Request a Quote <Fa name="arrow-right" /></a>
+          <a class="btn-outline" href={whatsappLink(waText)} target="_blank" rel="noopener"><Fa name="whatsapp" set="brands" /> WhatsApp</a>
+        </div>
+        <p class="form-note">Custom sizes, timber grades and heat treatment available. Call <a href={`tel:${site.phones[0].tel}`}>{site.phones[0].display}</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="about-section" data-aos="fade-up">
+    <h2>About the {p.code}</h2>
+    <div class="prose"><Content /></div>
+    <h3>Key Features</h3>
+    <ul class="commitment-list">{copy.highlights.map((h) => <li><Fa name="circle-check" /> {h}</li>)}</ul>
+    <h3>Typical Applications</h3>
+    <div class="industries-grid">{copy.applications.map((a) => <span class="industry-tag">{a}</span>)}</div>
+  </section>
+
+  <section class="content-section">
+    <h2 data-aos="fade-up">Related Pallets</h2>
+    <div class="product-range-container">
+      {related.map((r, i) => <ProductCard href={productUrl(r)} title={r.name} image={mainImage(r)} text={`${r.code} · ${sizeLabel(r, true)}`} delay={i * 150} />)}
+    </div>
+  </section>
+
+  <section class="cta-section" data-aos="fade-up">
+    <h2>Get a Price for the {p.code}</h2>
+    <p>Send us the quantity and delivery location. We reply with a quote within one working day.</p>
+    <a href={`/contact/?product=${p.slug}#quote`} class="cta-button">Request a Quote <Fa name="arrow-right" /></a>
+  </section>
+</Base>
+
+<script>
+  for (const g of document.querySelectorAll<HTMLElement>('[data-gallery]')) {
+    const slides = [...g.querySelectorAll<HTMLImageElement>('img[data-slide]')];
+    const thumbs = [...(g.parentElement?.querySelectorAll<HTMLButtonElement>('[data-thumb]') ?? [])];
+    let cur = 0;
+    const show = (i: number) => {
+      if (g.querySelector('model-viewer')) return;
+      cur = (i + slides.length) % slides.length;
+      slides.forEach((s, k) => s.classList.toggle('is-active', k === cur));
+      thumbs.forEach((t, k) => t.setAttribute('aria-current', String(k === cur)));
+    };
+    thumbs.forEach((t, k) =>
+      t.addEventListener('click', () => {
+        const mv = g.querySelector('model-viewer');
+        if (mv) {
+          mv.remove();
+          const b = g.querySelector<HTMLButtonElement>('.view-3d');
+          if (b) b.hidden = false;
+        }
+        show(k);
+      }),
+    );
+    g.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('.view-3d, model-viewer')) return;
+      show(cur + 1);
+    });
+  }
+</script>

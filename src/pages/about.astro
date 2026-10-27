@@ -1,0 +1,137 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Fa from '../components/Fa.astro';
+import { categories, categoryUrl, products } from '../lib/catalog';
+import { site, yearsInBusiness } from '../data/site';
+import imgJourney from '../assets/photos/planed-boards.jpg';
+import imgQuality from '../assets/photos/timber-cutting-saw.jpg';
+
+const icons: Record<string, string> = {
+  'euro-pallets': 'pallet',
+  'cp-pallets': 'flask',
+  'pinewood-pallets': 'tree',
+  'hardwood-pallets': 'weight-hanging',
+  'gma-pallets': 'plane-departure',
+  'pallet-collars': 'boxes-stacked',
+};
+---
+
+<Base
+  title={`About Us: ${yearsInBusiness}+ Years of Pallet Manufacturing in Bengaluru`}
+  description={`Ambica Patterns India Pvt Ltd has manufactured wooden pallets in Bengaluru since ${site.founded}: Euro-size, CP-type, GMA, pinewood and hardwood pallets. ISPM-15 ${site.ippc}, ISO 9001, PEFC / FSC.`}
+  image={imgJourney}
+  active="about"
+>
+  <section class="about-hero" data-aos="fade-up">
+    <h1>About Ambica Patterns</h1>
+    <p class="tagline">Trusted manufacturer of high-quality wooden pallets, serving industries across India and international markets for over {yearsInBusiness} years.</p>
+  </section>
+
+  <section class="stats-section" data-aos="fade-up">
+    <div class="stat-item"><span class="stat-number">{yearsInBusiness}+</span><span class="stat-label">Years Experience</span></div>
+    <div class="stat-item"><span class="stat-number">1000+</span><span class="stat-label">Happy Clients</span></div>
+    <div class="stat-item"><span class="stat-number">{products.length}</span><span class="stat-label">Pallet Models</span></div>
+    <div class="stat-item"><span class="stat-number">ISPM-15</span><span class="stat-label">{site.ippc} Registered</span></div>
+  </section>
+
+  <section class="about-section" data-aos="fade-up">
+    <div class="about-two-column">
+      <div class="about-text">
+        <h2>Our Journey</h2>
+        <p>Founded in {site.founded} with a clear vision to support India's growing logistics and manufacturing ecosystem, Ambica Patterns India Pvt Ltd has steadily evolved into a dependable name in wooden pallets.</p>
+        <p>Over the years we have expanded our capabilities, registered our heat-treatment facility under ISPM-15, certified our quality system to ISO 9001 and added PEFC / FSC certified timber for customers who need it. We combine traditional craftsmanship with modern manufacturing to deliver reliable, durable and cost-effective pallet solutions.</p>
+      </div>
+      <div class="about-image">
+        <Image src={imgJourney} alt="Planed pallet boards at the Ambica Patterns workshop" widths={[480, 720, 960]} sizes="(max-width: 768px) 90vw, 45vw" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" data-aos="zoom-in"><hr /></div>
+
+  <section class="about-section" data-aos="fade-up">
+    <h2>What We Do</h2>
+    <p>We manufacture all types of wooden pallets, built to standard sizes or to the client's own specification, for strength, safety and efficiency in storage, handling and transport.</p>
+    <div class="services-grid">
+      {
+        categories.map((c, i) => (
+          <a href={categoryUrl(c.slug)} class="service-card" data-aos="fade-up" data-aos-delay={i * 100} style="text-decoration:none">
+            <Fa name={icons[c.slug] ?? 'pallet'} />
+            <h3>{c.name}</h3>
+            <p>{c.summary}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <div class="divider" data-aos="zoom-in"><hr /></div>
+
+  <section class="about-section" data-aos="fade-up">
+    <div class="about-two-column reverse">
+      <div class="about-text">
+        <h2>Quality &amp; Standards</h2>
+        <p>Quality is at the core of everything we do. Our manufacturing follows documented ISO 9001 quality checks so that every batch is consistent with the one before.</p>
+        <p>Export pallets are heat treated in our registered ISPM-15 facility and stamped with the IPPC mark "{site.ippc} HT", so they are accepted by customs in every country that follows the standard. Euro-size, CP-type and GMA pallets are built to the published dimensions and board layouts.</p>
+        <p>Our production facility is equipped with modern machinery and skilled manpower, so we can handle bulk orders and customised requirements efficiently. From raw material selection to final inspection, every step is carefully monitored. <a href="/quality-certifications/">Read about our quality checks</a>.</p>
+      </div>
+      <div class="about-image">
+        <Image src={imgQuality} alt="Cutting pallet boards to size at Ambica Patterns" widths={[480, 720, 960]} sizes="(max-width: 768px) 90vw, 45vw" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" data-aos="zoom-in"><hr /></div>
+
+  <section class="about-section" data-aos="fade-up">
+    <h2>Industries We Serve</h2>
+    <p>We cater to a wide range of industries, providing pallet solutions that meet the specific requirements of each sector.</p>
+    <div class="industries-grid">
+      <span class="industry-tag"><Fa name="industry" /> Manufacturing</span>
+      <span class="industry-tag"><Fa name="warehouse" /> Logistics &amp; Warehousing</span>
+      <span class="industry-tag"><Fa name="box" /> FMCG</span>
+      <span class="industry-tag"><Fa name="pills" /> Pharmaceuticals</span>
+      <span class="industry-tag"><Fa name="flask" /> Chemicals &amp; Polymers</span>
+      <span class="industry-tag"><Fa name="gears" /> Engineering &amp; Heavy Industries</span>
+      <span class="industry-tag"><Fa name="ship" /> Exporters &amp; Importers</span>
+    </div>
+  </section>
+
+  <div class="divider" data-aos="zoom-in"><hr /></div>
+
+  <section class="about-section" data-aos="fade-up">
+    <h2>Our Commitment</h2>
+    <p>At Ambica Patterns India Pvt Ltd we believe in responsible sourcing and sustainable manufacturing. Our pallets are produced from responsibly sourced timber, and we continuously work to reduce waste and improve resource efficiency.</p>
+    <ul class="commitment-list">
+      <li><Fa name="circle-check" /> Delivering products on time</li>
+      <li><Fa name="circle-check" /> Maintaining consistent quality</li>
+      <li><Fa name="circle-check" /> Offering cost-effective solutions</li>
+      <li><Fa name="circle-check" /> Building long-term partnerships</li>
+      <li><Fa name="circle-check" /> Sustainable manufacturing practices</li>
+      <li><Fa name="circle-check" /> PEFC / FSC certified timber on request</li>
+    </ul>
+  </section>
+
+  <div class="divider" data-aos="zoom-in"><hr /></div>
+
+  <section class="about-section" data-aos="fade-up">
+    <h2>Vision &amp; Mission</h2>
+    <div class="vision-mission">
+      <div class="vision-box" data-aos="fade-right">
+        <h3><Fa name="eye" /> Our Vision</h3>
+        <p>To be a leading wooden pallet manufacturer known for quality, reliability and innovation, supporting efficient logistics and sustainable growth across industries.</p>
+      </div>
+      <div class="mission-box" data-aos="fade-left">
+        <h3><Fa name="bullseye" /> Our Mission</h3>
+        <p>To provide high-quality pallet solutions that meet global standards while delivering value, trust and long-term satisfaction to our customers.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section" data-aos="fade-up">
+    <h2>Ready to Partner With Us?</h2>
+    <p>Let's discuss how we can provide the perfect pallet solutions for your business needs.</p>
+    <a href="/contact/#quote" class="cta-button">Get in Touch <Fa name="arrow-right" /></a>
+  </section>
+</Base>

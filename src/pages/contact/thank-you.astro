@@ -1,0 +1,16 @@
+---
+import Base from '../../layouts/Base.astro';
+import Fa from '../../components/Fa.astro';
+import { site, whatsappLink } from '../../data/site';
+---
+
+<Base title="Thank You" description="Your message has been sent to Ambica Patterns." noindex active="contact">
+  <section class="contact-hero">
+    <h1>Thank You!</h1>
+    <p>We have your request. Our sales team will reply within one working day.</p>
+  </section>
+  <section class="content-section">
+    <p>For anything urgent, call <a href={`tel:${site.phones[0].tel}`}>{site.phones[0].display}</a> or <a href={whatsappLink()} target="_blank" rel="noopener">message us on WhatsApp</a>.</p>
+    <p style="margin-top:2rem"><a class="btn-primary" href="/products/">Back to Products <Fa name="arrow-right" /></a></p>
+  </section>
+</Base>

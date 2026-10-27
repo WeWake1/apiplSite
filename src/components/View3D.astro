@@ -1,0 +1,57 @@
+---
+// Tap-to-load 3D: swaps a product render for <model-viewer> with that pallet's own GLB.
+// model-viewer (self-hosted, ~1 MB) is only downloaded on the first tap.
+---
+
+<script is:inline>
+  (function () {
+    var MV = '/vendor/model-viewer-4.3.1.min.js';
+    var loading = null;
+    function loadMV() {
+      if (window.customElements && customElements.get('model-viewer')) return Promise.resolve();
+      if (!loading) {
+        loading = new Promise(function (resolve, reject) {
+          var s = document.createElement('script');
+          s.type = 'module';
+          s.src = MV;
+          s.onload = function () { customElements.whenDefined('model-viewer').then(resolve); };
+          s.onerror = reject;
+          document.head.appendChild(s);
+        });
+      }
+      return loading;
+    }
+    window.__ambicaLoadModelViewer = loadMV;
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest && e.target.closest('.view-3d');
+      if (!btn) return;
+      e.preventDefault();
+      var box = btn.closest('.product-image');
+      if (!box || box.querySelector('model-viewer')) return;
+      if (!btn.dataset.label) btn.dataset.label = btn.lastChild.textContent;
+      btn.setAttribute('data-loading', '');
+      btn.lastChild.textContent = ' Loading…';
+      var img = box.querySelector('img.is-active') || box.querySelector('img');
+      loadMV().then(function () {
+        var mv = document.createElement('model-viewer');
+        mv.setAttribute('src', box.getAttribute('data-model'));
+        if (img) mv.setAttribute('poster', img.currentSrc || img.src);
+        mv.setAttribute('alt', '3D model of the ' + (box.getAttribute('data-name') || 'pallet'));
+        mv.setAttribute('camera-controls', '');
+        mv.setAttribute('auto-rotate', '');
+        mv.setAttribute('ar', '');
+        mv.setAttribute('shadow-intensity', '1');
+        mv.setAttribute('environment-image', 'neutral');
+        mv.setAttribute('camera-orbit', '-35deg 70deg 105%');
+        mv.setAttribute('interaction-prompt', 'none');
+        box.appendChild(mv);
+        btn.removeAttribute('data-loading');
+        btn.lastChild.textContent = btn.dataset.label;
+        btn.hidden = true;
+      }).catch(function () {
+        btn.removeAttribute('data-loading');
+        btn.lastChild.textContent = ' 3D unavailable';
+      });
+    });
+  })();
+</script>

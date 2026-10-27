@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import Fa from '../components/Fa.astro';
+import { categories, categoryUrl } from '../lib/catalog';
+---
+
+<Base title="Page Not Found" description="The page you were looking for could not be found." noindex>
+  <section class="about-hero"><h1>Page Not Found</h1><p class="tagline">It may have moved when we rebuilt our website. These links should get you back on track.</p></section>
+  <section class="about-section">
+    <div class="industries-grid">{categories.map((c) => <a class="industry-tag" style="text-decoration:none" href={categoryUrl(c.slug)}>{c.name}</a>)}</div>
+    <p style="margin-top:2rem"><a class="btn-primary" href="/">Back to Home <Fa name="arrow-right" /></a></p>
+  </section>
+</Base>

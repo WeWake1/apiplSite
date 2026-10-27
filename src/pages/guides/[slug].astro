@@ -1,0 +1,63 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import Fa from '../../components/Fa.astro';
+import { mainImage, productBySlug, productUrl, sizeLabel } from '../../lib/catalog';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  return (await getCollection('guides')).map((g) => ({ params: { slug: g.id }, props: { guide: g } }));
+}
+const { guide } = Astro.props;
+const { Content } = await render(guide);
+const d = guide.data;
+const img = mainImage(productBySlug[d.heroProduct]);
+const related = d.related.map((s) => productBySlug[s]).filter(Boolean);
+const fmt = (x: Date) => x.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+const article = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: d.title,
+  description: d.metaDescription,
+  datePublished: d.published.toISOString(),
+  dateModified: (d.updated ?? d.published).toISOString(),
+  author: { '@type': 'Organization', name: site.legalName, url: site.url },
+  publisher: { '@id': `${site.url}/#business` },
+  mainEntityOfPage: new URL(`/guides/${guide.id}/`, site.url).href,
+};
+---
+
+<Base title={d.metaTitle} description={d.metaDescription} image={img.src} type="article" schema={[article]}>
+  <section class="about-hero" data-aos="fade-up">
+    <h1>{d.title}</h1>
+    <p class="tagline">{d.summary}</p>
+  </section>
+  <Breadcrumbs items={[{ name: 'Guides', href: '/guides/' }, { name: d.title }]} />
+  <article class="about-section prose">
+    <p style="font-size:.9rem;color:#6c757d">By {site.legalName} · <time datetime={d.published.toISOString()}>{fmt(d.published)}</time></p>
+    <div class="about-image" style="margin:1rem 0 2rem;background:#f2f2f2;border-radius:12px">
+      <Image src={img.src} alt={img.alt} widths={[600, 900, 1200]} sizes="(max-width: 900px) 90vw, 1100px" loading="eager" />
+    </div>
+    <Content />
+  </article>
+  {
+    related.length > 0 && (
+      <section class="content-section">
+        <h2 data-aos="fade-up">Pallets Mentioned in This Guide</h2>
+        <div class="product-range-container">
+          {related.map((p, i) => (
+            <ProductCard href={productUrl(p)} title={p.name} image={mainImage(p)} text={`${p.code} · ${sizeLabel(p, true)}`} delay={i * 150} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+  <section class="cta-section" data-aos="fade-up">
+    <h2>Need Pallets for Your Next Shipment?</h2>
+    <p>Send us the size, quantity and destination. We reply with a quote within one working day.</p>
+    <a href="/contact/#quote" class="cta-button">Request a Quote <Fa name="arrow-right" /></a>
+  </section>
+</Base>

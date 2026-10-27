@@ -1,0 +1,26 @@
+---
+import JsonLd from './JsonLd.astro';
+import type { Faq } from '../data/categories';
+
+interface Props {
+  items: Faq[];
+}
+const { items } = Astro.props;
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<div class="faq-list">
+  {
+    items.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))
+  }
+</div>
+<JsonLd data={data} />

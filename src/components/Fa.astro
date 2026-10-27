@@ -1,0 +1,20 @@
+---
+// Font Awesome Free 6.7.2 icon, inlined as SVG (Icons: CC BY 4.0, https://fontawesome.com/license/free).
+// Same markup/classes as the old site's <i class="fa-solid fa-x">, without the web-font download.
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+interface Props {
+  name: string;
+  set?: 'solid' | 'brands' | 'regular';
+  class?: string;
+}
+const { name, set = 'solid', class: cls = '' } = Astro.props;
+// Resolved from the project root: during `astro build` this file runs from dist/.prerender,
+// so a path relative to import.meta.url would miss node_modules.
+const dir = join(process.cwd(), 'node_modules/@fortawesome/fontawesome-free/svgs');
+const svg = readFileSync(join(dir, set, `${name}.svg`), 'utf8').replace('<svg ', '<svg aria-hidden="true" focusable="false" ');
+const prefix = set === 'brands' ? 'fa-brands' : set === 'regular' ? 'fa-regular' : 'fa-solid';
+---
+
+<i class={`${prefix} fa-${name} ${cls}`.trim()} aria-hidden="true" set:html={svg} />

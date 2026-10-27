@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { mainImage, productBySlug } from '../../lib/catalog';
+
+const guides = (await getCollection('guides')).sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+
+<Base title="Pallet Guides: Sizes, ISPM-15 and CP vs Euro vs GMA" description="Practical guides for pallet buyers: standard pallet sizes, ISPM-15 heat treatment for export, and the differences between Euro, CP and GMA pallets.">
+  <section class="about-hero" data-aos="fade-up">
+    <h1>Pallet Buyer Guides</h1>
+    <p class="tagline">Straight answers to the questions purchase and logistics teams ask us most.</p>
+  </section>
+  <section class="content-section">
+    <div class="product-range-container">
+      {guides.map((g, i) => <ProductCard href={`/guides/${g.id}/`} title={g.data.title} image={mainImage(productBySlug[g.data.heroProduct])} text={g.data.summary} delay={i * 200} heading="h2" />)}
+    </div>
+  </section>
+</Base>

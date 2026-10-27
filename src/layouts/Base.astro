@@ -1,0 +1,222 @@
+---
+// Page shell in the original Ambica Patterns design: header, footer, Lenis smooth scroll,
+// AOS scroll animations. Libraries are bundled locally instead of loaded from CDNs.
+import '@fontsource/poppins/400.css';
+import '@fontsource/poppins/600.css';
+import 'aos/dist/aos.css';
+import '../styles/legacy.css';
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import Fa from '../components/Fa.astro';
+import JsonLd from '../components/JsonLd.astro';
+import View3D from '../components/View3D.astro';
+import { site, fullAddress } from '../data/site';
+import { mainImage, productBySlug } from '../lib/catalog';
+import itcAnna from '../fonts/itc-anna.otf?url';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: ImageMetadata;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  schema?: Record<string, unknown>[];
+  active?: 'home' | 'about' | 'products' | 'contact' | '';
+  mainClass?: string;
+}
+const { title, description, image, type = 'website', noindex = false, schema = [], active = '', mainClass } = Astro.props;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const fullTitle = title.includes('Ambica') || title.length > 46 ? title : `${title} | Ambica Patterns`;
+const og = await getImage({ src: image ?? mainImage(productBySlug['euro-pallet-1200x800']).src, width: 1200, height: 900, format: 'jpg', quality: 82 });
+const ogUrl = new URL(og.src, site.url).href;
+const year = new Date().getFullYear();
+const social = Object.entries(site.social).filter(([, url]) => url);
+const nav = [
+  { href: '/', label: 'Home', key: 'home' },
+  { href: '/about/', label: 'About Us', key: 'about' },
+  { href: '/products/', label: 'Products', key: 'products' },
+  { href: '/contact/', label: 'Contact Us', key: 'contact' },
+];
+const business = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': `${site.url}/#business`,
+  name: site.legalName,
+  alternateName: site.name,
+  description: site.description,
+  url: site.url,
+  logo: `${site.url}/icon-512.png`,
+  image: ogUrl,
+  telephone: site.phones[0].tel,
+  email: site.email,
+  foundingDate: String(site.founded),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    addressLocality: site.address.locality,
+    addressRegion: site.address.region,
+    postalCode: site.address.postalCode,
+    addressCountry: site.address.country,
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng },
+  hasMap: site.mapsUrl,
+  openingHours: site.hours.schema,
+  areaServed: ['IN', 'Worldwide'],
+  sameAs: social.map(([, u]) => u),
+};
+---
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="author" content={site.legalName} />
+    <meta name="theme-color" content="#0056b3" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href={itcAnna} as="font" type="font/otf" crossorigin />
+    <meta property="og:site_name" content={site.legalName} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:locale" content="en_IN" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="geo.region" content="IN-KA" />
+    <meta name="geo.placename" content="Bengaluru" />
+    <meta name="geo.position" content={`${site.geo.lat};${site.geo.lng}`} />
+    {site.googleSiteVerification && <meta name="google-site-verification" content={site.googleSiteVerification} />}
+    <JsonLd data={business} />
+    {schema.map((s) => <JsonLd data={s} />)}
+    {
+      site.ga4Id && (
+        <>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${site.ga4Id}`} />
+          <script is:inline define:vars={{ id: site.ga4Id }}>
+            window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', id);
+          </script>
+        </>
+      )
+    }
+    <noscript><style>[data-aos]{opacity:1!important;transform:none!important}</style></noscript>
+  </head>
+  <body id="top">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header>
+      <div class="logo">
+        <a href="/">Ambica Patterns India Pvt Ltd</a>
+      </div>
+      <nav aria-label="Main">
+        <ul>
+          {nav.map((n) => <li><a href={n.href} class={active === n.key ? 'active' : undefined} aria-current={active === n.key ? 'page' : undefined}>{n.label}</a></li>)}
+        </ul>
+      </nav>
+      <button class="hamburger-menu" aria-label="Open Navigation Menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <main id="main-content" class={mainClass}>
+      <slot />
+    </main>
+
+    <footer class="site-footer-new">
+      <div class="footer-main">
+        <div class="footer-heading">
+          <h2>{site.tagline}</h2>
+        </div>
+        <div class="footer-grid">
+          <div class="footer-column">
+            <h3>Contact Us</h3>
+            <p><Fa name="location-dot" /><a href={site.mapsUrl} target="_blank" rel="noopener">No.6/7, Hesarghatta Main Road,<br />Near Railway Station, Chikkabanavara<br />Bangalore -560090, Karnataka, India</a></p>
+            <p><Fa name="phone" /> <a href={`tel:${site.phones[0].tel}`}>{site.phones[0].display}</a><br /><a href={`tel:${site.phones[1].tel}`}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {site.phones[1].display}</a></p>
+            <p><Fa name="envelope" /> <a href={`mailto:${site.email}`}>{site.email}</a></p>
+          </div>
+          <div class="footer-column">
+            <h3><a href="/quality-certifications/">Licenses</a></h3>
+            <div class="licenses-container">
+              {site.certifications.map((c) => <a class="license-badge" href="/quality-certifications/">{c.badge}{c.sub && <small>{c.sub}</small>}</a>)}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom-new">
+        <div class="copyright-text">© {year} {site.legalName}. All Rights Reserved.</div>
+        <div class="footer-bottom-right">
+          {
+            social.length > 0 && (
+              <div class="social-icons-bottom">
+                {social.map(([n, url]) => (
+                  <a href={url} aria-label={n} target="_blank" rel="noopener">
+                    <Fa name={n === 'facebook' ? 'facebook-f' : n} set="brands" />
+                  </a>
+                ))}
+              </div>
+            )
+          }
+          <a href="#top" class="back-to-top" id="back-to-top-button">Back to Top <Fa name="arrow-up" /></a>
+        </div>
+      </div>
+    </footer>
+
+    <View3D />
+    <script>
+      import Lenis from 'lenis';
+      import AOS from 'aos';
+
+      // --- Lenis smooth scrolling (same settings as the original site), off for reduced motion
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let lenis: Lenis | null = null;
+      if (!reduce) {
+        lenis = new Lenis({ lerp: 0.07, duration: 1.2 });
+        const raf = (time: number) => {
+          lenis!.raf(time);
+          requestAnimationFrame(raf);
+        };
+        requestAnimationFrame(raf);
+      }
+
+      // --- Hamburger menu
+      const hamburger = document.querySelector<HTMLButtonElement>('.hamburger-menu');
+      const nav = document.querySelector('header nav');
+      hamburger?.addEventListener('click', () => {
+        const open = !nav?.classList.contains('is-open');
+        nav?.classList.toggle('is-open', open);
+        hamburger.classList.toggle('is-active', open);
+        hamburger.setAttribute('aria-expanded', String(open));
+        hamburger.setAttribute('aria-label', open ? 'Close Navigation Menu' : 'Open Navigation Menu');
+        document.body.classList.toggle('body-no-scroll', open);
+        if (lenis) (open ? lenis.stop() : lenis.start());
+      });
+
+      // --- On-scroll animations. html.aos-ready switches the hidden start state on,
+      // so content is never left invisible if this script fails.
+      try {
+        document.documentElement.classList.add('aos-ready');
+        AOS.init({ duration: 800, easing: 'ease-in-out', once: false, offset: 100, disable: reduce });
+        window.addEventListener('load', () => AOS.refresh());
+      } catch {
+        document.documentElement.classList.remove('aos-ready');
+      }
+
+      // --- Back to top
+      document.getElementById('back-to-top-button')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (lenis) lenis.scrollTo(0, { duration: 1.5 });
+        else window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      });
+    </script>
+  </body>
+</html>

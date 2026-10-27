@@ -1,0 +1,78 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import ProductRow from '../../../components/ProductRow.astro';
+import ProductCard from '../../../components/ProductCard.astro';
+import Faq from '../../../components/Faq.astro';
+import Fa from '../../../components/Fa.astro';
+import JsonLd from '../../../components/JsonLd.astro';
+import { categories, categoryUrl, mainImage, productBySlug, productsIn, productUrl } from '../../../lib/catalog';
+import { categoryBySlug } from '../../../data/categories';
+import { site } from '../../../data/site';
+
+export function getStaticPaths() {
+  return categories.map((c) => ({ params: { category: c.slug } }));
+}
+const c = categoryBySlug[Astro.params.category!];
+const items = productsIn(c.slug);
+const copy = Object.fromEntries((await getCollection('products')).map((e) => [e.id, e.data.summary]));
+const others = categories.filter((x) => x.slug !== c.slug);
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: c.name,
+  itemListElement: items.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: new URL(productUrl(p), site.url).href, name: p.name })),
+};
+---
+
+<Base title={c.metaTitle} description={c.metaDescription} image={mainImage(productBySlug[c.heroProduct]).src} active="products" mainClass="products-main">
+  <Breadcrumbs items={[{ name: 'Products', href: '/products/' }, { name: c.name }]} />
+  <div class="category-content" style="padding-top:2rem">
+    <div class="category-header" data-aos="fade-up">
+      <h1>{c.name}</h1>
+      <p class="category-description">{c.summary}</p>
+    </div>
+    <section class="about-section" style="padding:0 0 3rem">
+      {c.intro.map((t) => <p>{t}</p>)}
+    </section>
+    <div class="products-list">
+      {items.map((p) => <ProductRow product={p} summary={copy[p.slug]} heading="h2" />)}
+    </div>
+  </div>
+
+  <section class="about-section" data-aos="fade-up">
+    {
+      c.sections.map((s) => (
+        <>
+          <h2>{s.heading}</h2>
+          {s.paragraphs?.map((t) => <p>{t}</p>)}
+          {s.bullets && (
+            <ul>
+              {s.bullets.map((b) => (
+                <li>{b}</li>
+              ))}
+            </ul>
+          )}
+        </>
+      ))
+    }
+    <h2>Frequently Asked Questions</h2>
+    <Faq items={c.faqs} />
+  </section>
+
+  <section class="content-section">
+    <h2 data-aos="fade-up">Other Pallet Families</h2>
+    <div class="product-range-container">
+      {others.slice(0, 3).map((o, i) => <ProductCard href={categoryUrl(o.slug)} title={o.name} image={mainImage(productBySlug[o.heroProduct])} text={o.summary} delay={i * 200} />)}
+    </div>
+    <p style="margin-top:2rem"><a href="/products/">See all {categories.length} pallet families</a></p>
+  </section>
+
+  <section class="cta-section" data-aos="fade-up">
+    <h2>Need {c.name.toLowerCase()} for your next shipment?</h2>
+    <p>Send us the size, quantity and destination. We reply with a quote within one working day.</p>
+    <a href="/contact/#quote" class="cta-button">Request a Quote <Fa name="arrow-right" /></a>
+  </section>
+  <JsonLd data={itemList} />
+</Base>

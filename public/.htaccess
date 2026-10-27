@@ -1,0 +1,48 @@
+# Ambica Patterns – rules for Hostinger (LiteSpeed/Apache).
+# HTTPS is already forced by Hostinger's CDN, so no HTTPS rule here (it could loop).
+
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # One address for Google: https://ambicapatterns.com (no www, no .in duplicate)
+  RewriteCond %{HTTP_HOST} ^(www\.)?ambicapatterns\.in$ [NC,OR]
+  RewriteCond %{HTTP_HOST} ^www\.ambicapatterns\.com$ [NC]
+  RewriteRule ^(.*)$ https://ambicapatterns.com/$1 [R=301,L]
+
+  # Pages from the old site
+  RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+  RewriteRule ^index\.html$ / [R=301,L]
+  RewriteRule ^about\.html$ /about/ [R=301,L,NC]
+  RewriteRule ^products\.html$ /products/ [R=301,L,NC]
+  RewriteRule ^contact\.html$ /contact/ [R=301,L,NC]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+  # Pages: always revalidate so updates show up immediately
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+  # Un-hashed static files (favicons etc.): one week. Hashed /_astro/ files get a year (see _astro/.htaccess).
+  <FilesMatch "\.(png|jpe?g|webp|avif|svg|ico|webmanifest|woff2?|otf)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/xml application/javascript application/json image/svg+xml application/manifest+json
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+  AddType image/avif .avif
+  AddType application/manifest+json .webmanifest
+  AddType font/woff2 .woff2
+</IfModule>

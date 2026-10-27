@@ -1,0 +1,163 @@
+---
+import Base from '../../layouts/Base.astro';
+import Fa from '../../components/Fa.astro';
+import { categories, productsIn } from '../../lib/catalog';
+import { site, whatsappLink } from '../../data/site';
+---
+
+<Base
+  title="Contact Us & Get a Quote | Pallet Manufacturer Bengaluru"
+  description={`Request a quote for wooden pallets from Ambica Patterns, Chikkabanavara, Bengaluru. Call ${site.phones[0].display}, WhatsApp us or email ${site.email}.`}
+  active="contact"
+>
+  <section class="contact-hero" data-aos="fade-up">
+    <h1>Get In Touch</h1>
+    <p>We're here to help with all your wooden pallet and packaging needs. Reach out for quotes, inquiries, or custom design consultations.</p>
+  </section>
+
+  <div class="contact-container">
+    <div class="contact-grid">
+      <div class="contact-info-section" data-aos="fade-right">
+        <h2>Contact Information</h2>
+        <div class="contact-info-cards">
+          <div class="contact-info-card">
+            <div class="contact-icon"><Fa name="location-dot" /></div>
+            <div class="contact-info-content">
+              <h3>Our Address</h3>
+              <a href={site.mapsUrl} target="_blank" rel="noopener">No.6/7, Hesarghatta Main Road,<br />Near Railway Station, Chikkabanavara<br />Bangalore - 560090, Karnataka, India</a>
+            </div>
+          </div>
+          <div class="contact-info-card">
+            <div class="contact-icon"><Fa name="phone" /></div>
+            <div class="contact-info-content">
+              <h3>Call Us</h3>
+              <p>{site.phones.map((p) => <><a href={`tel:${p.tel}`}>{p.display}</a><br /></>)}</p>
+            </div>
+          </div>
+          <div class="contact-info-card">
+            <div class="contact-icon whatsapp"><Fa name="whatsapp" set="brands" /></div>
+            <div class="contact-info-content">
+              <h3>WhatsApp</h3>
+              <a href={whatsappLink()} target="_blank" rel="noopener">Chat with our sales team</a>
+            </div>
+          </div>
+          <div class="contact-info-card">
+            <div class="contact-icon"><Fa name="envelope" /></div>
+            <div class="contact-info-content">
+              <h3>Email Us</h3>
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            </div>
+          </div>
+          <div class="contact-info-card">
+            <div class="contact-icon"><Fa name="clock" /></div>
+            <div class="contact-info-content">
+              <h3>Business Hours</h3>
+              <p>{site.hours.label}<br />{site.hours.closed}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-section" data-aos="fade-left" id="quote">
+        <h2>Send Us a Message</h2>
+        <form class="contact-form" action="/contact.php" method="POST" data-quote-form>
+          <div class="form-status" role="status" hidden data-status></div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Your Name *</label>
+              <input type="text" id="name" name="name" required maxlength="100" autocomplete="name" placeholder="John Doe" />
+            </div>
+            <div class="form-group">
+              <label for="company">Company Name</label>
+              <input type="text" id="company" name="company" maxlength="120" autocomplete="organization" placeholder="Your Company" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" required maxlength="160" autocomplete="email" placeholder="john@company.com" />
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number *</label>
+              <input type="tel" id="phone" name="phone" required maxlength="30" autocomplete="tel" placeholder="+91 98765 43210" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="product">Product Interest</label>
+              <select id="product" name="product">
+                <option value="">Select a pallet</option>
+                {
+                  categories.map((c) => (
+                    <optgroup label={c.name}>
+                      {productsIn(c.slug).map((p) => (
+                        <option value={p.slug}>{p.code}: {p.dims.l} × {p.dims.w} mm</option>
+                      ))}
+                    </optgroup>
+                  ))
+                }
+                <option value="custom">Custom size / other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="quantity">Quantity</label>
+              <input type="text" id="quantity" name="quantity" maxlength="40" placeholder="e.g. 500 per month" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="message">Your Message *</label>
+            <textarea id="message" name="message" required maxlength="4000" placeholder="Tell us about your requirements: size, load, quantity, delivery location, timeline, heat treatment..."></textarea>
+          </div>
+          <div class="hp-field" aria-hidden="true">
+            <label for="website">Leave this empty</label>
+            <input id="website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
+          <input type="hidden" name="started" value="" data-started />
+          <button type="submit" class="submit-button">Send Message <Fa name="paper-plane" /></button>
+          <p class="form-note">We use your details only to reply to this enquiry. See our <a href="/privacy-policy/">privacy policy</a>.</p>
+        </form>
+      </div>
+    </div>
+
+    <div class="map-section" data-aos="fade-up">
+      <h2>Find Us</h2>
+      <div class="map-container">
+        <iframe src={site.mapsEmbed} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Ambica Patterns India Pvt Ltd location map"></iframe>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-quote-form]');
+  if (form) {
+    const started = form.querySelector<HTMLInputElement>('[data-started]');
+    if (started) started.value = String(Date.now());
+    const params = new URLSearchParams(location.search);
+    const select = form.querySelector<HTMLSelectElement>('#product');
+    const want = params.get('product');
+    if (want && select && [...select.options].some((o) => o.value === want)) select.value = want;
+    const status = form.querySelector<HTMLElement>('[data-status]');
+    const fail = (msg: string) => {
+      if (!status) return;
+      status.hidden = false;
+      status.dataset.kind = 'err';
+      status.textContent = msg;
+    };
+    if (params.has('error')) fail('Sorry, your message could not be sent. Please check the required fields, or call or WhatsApp us.');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector<HTMLButtonElement>('button[type=submit]');
+      if (btn) btn.disabled = true;
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) throw new Error(data.error || 'could not send');
+        location.href = '/contact/thank-you/';
+      } catch (err) {
+        fail(`Sorry, the message could not be sent (${(err as Error).message}). Please call or WhatsApp us instead.`);
+        if (btn) btn.disabled = false;
+      }
+    });
+  }
+</script>

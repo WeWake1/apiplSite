@@ -68,9 +68,11 @@ def out_of_type(node, kind):
 # ================================================================ materials (Cycles)
 WOODS = {
     "pine": dict(tex="Wood096", grain="v", tile=0.95, sat=1.75, hue=(0.503, 0.511), val=(1.02, 1.12),
-                 contrast=-0.25, rough=(0.55, 0.85), knot=(0.22, 0.42), knot_tone="#C99E68"),
+                 contrast=-0.25, rough=(0.55, 0.85), knot=(0.22, 0.42), knot_tone="#C99E68",
+                 web_gain=(0.513, 0.52, 0.509)),
     "hard": dict(tex="Wood060", grain="u", tile=0.8, sat=1.0, hue=(0.497, 0.505), val=(0.92, 1.08),
-                 contrast=-0.05, rough=(0.6, 0.9), knot=(0.03, 0.08), knot_tone="#5A3A26"),
+                 contrast=-0.05, rough=(0.6, 0.9), knot=(0.03, 0.08), knot_tone="#5A3A26",
+                 web_gain=(0.704, 0.913, 1.288)),
 }
 
 
@@ -779,6 +781,14 @@ def save_rgb(a, path, q=84):
     bpy.data.images.remove(im)
 
 
+def web_grade(a, kind):
+    """Per-channel gain in linear light, calibrated so the GLB in <model-viewer> (legacy environment,
+    exposure 1) matches the mean wood colour of the Cycles renders. Also applies in AR viewers."""
+    lin = np.where(a <= 0.04045, a / 12.92, ((a + 0.055) / 1.055) ** 2.4)
+    lin = np.clip(lin * np.array(WOODS[kind]["web_gain"], dtype=np.float32), 0, 1)
+    return np.where(lin <= 0.0031308, lin * 12.92, 1.055 * lin ** (1 / 2.4) - 0.055).astype(np.float32)
+
+
 def bake_web_textures():
     """1K side-grain albedo per wood (graded like the render shader) + procedural end grain."""
     outdir = os.path.join(args.textures, "web")
@@ -803,14 +813,14 @@ def bake_web_textures():
             k0, k1 = spec["knot"]
             km = np.clip((k1 - lum) / (k1 - k0), 0, 1)[..., None] * 0.7
             tone = np.array([int(spec["knot_tone"][i:i + 2], 16) / 255 for i in (1, 3, 5)], dtype=np.float32)
-            save_rgb(np.clip(a * (1 - km) + tone * km, 0, 1), side)
+            save_rgb(web_grade(np.clip(a * (1 - km) + tone * km, 0, 1), kind), side)
         if not os.path.exists(end):
             n = 512
             yy, xx = np.mgrid[0:n, 0:n].astype(np.float32) / n
             r = np.hypot(xx - 0.35, yy - 0.82) * 38 + 0.6 * np.sin(xx * 9) * np.cos(yy * 7)
             ring = 0.5 + 0.5 * np.sin(r * 2 * np.pi) ** 3
             light = np.array([0.86, 0.72, 0.52] if kind == "pine" else [0.42, 0.28, 0.18], dtype=np.float32)
-            save_rgb((light * 0.82 + light * 0.18 * ring[..., None]).astype(np.float32), end)
+            save_rgb(web_grade((light * 0.82 + light * 0.18 * ring[..., None]).astype(np.float32), kind), end)
         made[kind] = (side, end)
     return made
 

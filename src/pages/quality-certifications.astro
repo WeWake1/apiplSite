@@ -20,7 +20,7 @@ const faqs = [
 ];
 ---
 
-<Base
+<Base cta={{ title: 'Ask for Our Certificates', text: 'We can share copies of our registration and certificates with your purchase or quality team.', label: 'Contact Us' }}
   title={`Quality & Certifications: ISPM-15 ${site.ippc}, ISO 9001, PEFC / FSC`}
   description={`Ambica Patterns is a registered ISPM-15 heat-treatment provider (${site.ippc}) with an ISO 9001 quality system and PEFC / FSC certified timber. How we check every pallet.`}
 >
@@ -81,9 +81,4 @@ const faqs = [
     <Faq items={faqs} />
   </section>
 
-  <section class="cta-section" data-aos="fade-up">
-    <h2>Ask for Our Certificates</h2>
-    <p>We can share copies of our registration and certificates with your purchase or quality team.</p>
-    <a href="/contact/#quote" class="cta-button">Contact Us <Fa name="arrow-right" /></a>
-  </section>
 </Base>

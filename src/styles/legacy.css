@@ -1583,3 +1583,229 @@ a { color: var(--primary-color); }
     .breadcrumbs { padding-top: 1rem; }
 }
 .view-3d[hidden] { display: none; }
+
+/* Industries We Serve: each sector's load drawn on a small wooden pallet */
+.industries-showcase {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+}
+
+.ind-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid rgba(0, 86, 179, 0.12);
+    border-radius: 14px;
+    padding: 1.25rem 1.25rem 1.4rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ind-card:hover {
+    border-color: rgba(0, 86, 179, 0.35);
+    box-shadow: 0 12px 30px rgba(0, 86, 179, 0.1);
+}
+
+.ind-art {
+    background: linear-gradient(180deg, #eef4fb 0%, #e3edf9 100%);
+    border-radius: 10px;
+    padding: 0.9rem 1.2rem 0.4rem;
+    margin-bottom: 1.1rem;
+}
+
+.ind-art svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.ind-art svg * {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.ind-goods > *,
+.ind-goods g > * {
+    fill: #fff;
+    stroke: var(--primary-color);
+    stroke-width: 2.2;
+}
+
+.ind-goods .tape,
+.ind-goods .line,
+.ind-goods .soft {
+    fill: none;
+}
+
+.ind-goods .soft {
+    stroke-opacity: 0.35;
+}
+
+.ind-goods .tape {
+    stroke-width: 1.6;
+    stroke-opacity: 0.55;
+}
+
+.ind-goods .accent {
+    fill: none;
+    stroke: #d9822b;
+    stroke-width: 3;
+}
+
+.ind-goods .accent-fill {
+    fill: #cfe0f5;
+}
+
+.ind-pallet > * {
+    fill: #d8b483;
+    stroke: #8a6236;
+    stroke-width: 1.6;
+}
+
+.ind-pallet .grain {
+    fill: none;
+    stroke-width: 1;
+    stroke-opacity: 0.45;
+}
+
+.ind-goods {
+    transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* A forklift lift: the load rises off its pallet on hover */
+.ind-card:hover .ind-goods {
+    transform: translateY(-5px);
+}
+
+.about-section .ind-name {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    font-weight: normal;
+    line-height: 1.25;
+    color: var(--dark-color);
+    margin: 0 0 0.5rem;
+}
+
+.about-section .ind-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #6c757d;
+    margin: 0 0 1rem;
+    flex: 1;
+}
+
+.ind-link {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.ind-link span {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.ind-link:hover span,
+.ind-card:hover .ind-link span {
+    transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ind-goods,
+    .ind-link span {
+        transition: none;
+    }
+}
+
+@media (max-width: 1024px) {
+    .industries-showcase {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 560px) {
+    .industries-showcase {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .ind-card {
+        display: grid;
+        grid-template-columns: 110px 1fr;
+        column-gap: 1rem;
+        align-items: start;
+        padding: 1rem;
+    }
+    .ind-art {
+        grid-row: span 3;
+        margin: 0;
+        padding: 0.6rem 0.6rem 0.2rem;
+    }
+}
+
+/* Closing call to action, now part of the footer under the tagline */
+.footer-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #003d82 100%);
+    border-radius: 16px;
+    padding: 2.25rem 2.5rem;
+    margin-top: 2.5rem;
+}
+
+.footer-cta h2 {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: normal;
+    color: #fff;
+    margin: 0 0 0.4rem;
+}
+
+.footer-cta p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.05rem;
+    margin: 0;
+    max-width: 560px;
+}
+
+.footer-cta .cta-button {
+    flex-shrink: 0;
+}
+
+.footer-guides {
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .footer-cta {
+        padding: 1.75rem 1.5rem;
+    }
+    .footer-cta h2 {
+        font-size: 1.8rem;
+    }
+}
+
+.footer-guide-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-guide-list li {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.footer-guide-list a {
+    color: #adb5bd;
+    text-decoration: none;
+}
+
+.footer-guide-list a:hover {
+    color: #fff;
+}

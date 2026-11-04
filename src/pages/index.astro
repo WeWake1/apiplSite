@@ -1,10 +1,10 @@
 ---
 import { Image, getImage } from 'astro:assets';
-import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import ProductCard from '../components/ProductCard.astro';
 import Faq from '../components/Faq.astro';
 import Fa from '../components/Fa.astro';
+import Industries from '../components/Industries.astro';
 import { categories, categoryUrl, mainImage, modelUrl, productBySlug, products } from '../lib/catalog';
 import { site, yearsInBusiness } from '../data/site';
 
@@ -20,7 +20,6 @@ import g7 from '../assets/photos/factory-euro-pallet.jpg';
 const heroProduct = productBySlug['euro-pallet-1200x800'];
 const hero = mainImage(heroProduct);
 const heroPoster = await getImage({ src: hero.src, width: 1000, format: 'webp', quality: 80 });
-const guides = (await getCollection('guides')).sort((a, b) => a.data.title.localeCompare(b.data.title));
 const gallery = [
   [g1, 'Bundles of sawn softwood timber in the Ambica Patterns yard'],
   [g2, 'Wrapped bundle of timber ready for pallet production'],
@@ -32,24 +31,6 @@ const gallery = [
 ] as const;
 const galleryImgs = await Promise.all(gallery.map(async ([src, alt]) => ({ img: await getImage({ src, height: 350, format: 'webp', quality: 72 }), alt })));
 
-const reasons = [
-  ['fire-flame-curved', 'In-House Heat Treatment', `Registered ISPM-15 facility ${site.ippc}: export pallets are heat treated and IPPC stamped on site, without waiting on a third party.`],
-  ['ruler-combined', 'Built to Standard Sizes', 'Euro-size, CP-type and GMA pallets built to the published dimensions and board layouts, plus custom sizes to your drawing.'],
-  ['tree', 'Graded Timber', 'Softwood and seasoned hardwood graded before cutting, so load-bearing boards are free of large knots, splits and bark.'],
-  ['clipboard-check', 'ISO 9001 Quality', 'Documented checks from timber intake to dispatch keep every batch consistent with the one before.'],
-  ['truck', 'On-Time Delivery', 'From our plant on Hesarghatta Main Road in north Bengaluru, close to the Peenya industrial belt, we deliver across Karnataka and India.'],
-  ['recycle', 'Responsible Sourcing', 'PEFC / FSC certified timber on request, efficient cutting and offcuts put to use.'],
-];
-const industries = [
-  ['industry', 'Manufacturing'],
-  ['warehouse', 'Logistics & Warehousing'],
-  ['box', 'FMCG'],
-  ['pills', 'Pharmaceuticals'],
-  ['flask', 'Chemicals & Polymers'],
-  ['gears', 'Engineering & Heavy Industries'],
-  ['car', 'Automotive'],
-  ['ship', 'Exporters & Importers'],
-];
 const faqs = [
   { q: 'Where is Ambica Patterns located?', a: 'Our factory is at No. 6/7, Hesarghatta Main Road, near Chikkabanavara Railway Station, Bengaluru 560090, Karnataka.' },
   { q: 'Do you make pallets in custom sizes?', a: 'Yes. Send your product size, load weight and handling method and we will propose a design and quote.' },
@@ -78,7 +59,7 @@ const faqs = [
       auto-rotate
       ar
       shadow-intensity="1"
-      environment-image="neutral"
+      environment-image="legacy"
       camera-orbit="-35deg 70deg 105%"
       interaction-prompt="none"
       style="width: 45%; height: 600px; border-radius: 12px; background-color: #f2f2f2; position: relative;"
@@ -96,7 +77,8 @@ const faqs = [
       <p>
         Ambica Patterns India Pvt Ltd has been a cornerstone of the packaging industry, delivering robust and reliable wooden pallets. Every
         pallet is built in our own plant at Chikkabanavara, north Bengaluru: we hold timber stock on site, cut boards and blocks to size,
-        assemble each model to its drawing and heat treat export pallets in our registered chamber before they leave the gate.
+        assemble each model to its drawing and heat treat export pallets in our registered chamber before they leave the gate. From here,
+        close to the Peenya industrial belt, we deliver across Karnataka and the rest of India.
       </p>
       <p>
         Our commitment to quality and precision engineering ensures your goods are transported safely and efficiently, from a 1200 × 800
@@ -142,54 +124,16 @@ const faqs = [
   </section>
 
   <section class="about-section" data-aos="fade-up">
-    <h2>Why Choose Ambica Patterns</h2>
-    <p>
-      A pallet only gets noticed when it fails: a rejected shipment, a broken board in the racking, a container held at customs. Since {site.founded}
-      we have built our process around making sure that never happens to our customers.
-    </p>
-    <div class="services-grid">
-      {
-        reasons.map(([icon, t, d], i) => (
-          <div class="service-card" data-aos="fade-up" data-aos-delay={(i % 3) * 100}>
-            <Fa name={icon} />
-            <h3>{t}</h3>
-            <p>{d}</p>
-          </div>
-        ))
-      }
-    </div>
-    <p style="margin-top:2rem"><a href="/quality-certifications/">See our quality checks and certifications</a></p>
-  </section>
-
-  <div class="divider" data-aos="zoom-in"><hr /></div>
-
-  <section class="about-section" data-aos="fade-up">
     <h2>Industries We Serve</h2>
     <p>We cater to a wide range of industries, providing pallet solutions that meet the specific requirements of each sector.</p>
-    <div class="industries-grid">
-      {industries.map(([icon, name]) => <span class="industry-tag"><Fa name={icon} /> {name}</span>)}
-    </div>
+    <Industries />
   </section>
 
   <div class="divider" data-aos="zoom-in"><hr /></div>
-
-  <section class="content-section">
-    <h2 data-aos="fade-up">Pallet Buyer Guides</h2>
-    <p data-aos="fade-up">Straight answers to the questions purchase and logistics teams ask us most.</p>
-    <div class="product-range-container">
-      {guides.map((g, i) => <ProductCard href={`/guides/${g.id}/`} title={g.data.title} image={mainImage(productBySlug[g.data.heroProduct])} text={g.data.summary} delay={i * 200} />)}
-    </div>
-  </section>
 
   <section class="about-section" data-aos="fade-up">
     <h2>Frequently Asked Questions</h2>
     <Faq items={faqs} />
-  </section>
-
-  <section class="cta-section" data-aos="fade-up">
-    <h2>Ready to Partner With Us?</h2>
-    <p>Let's discuss how we can provide the perfect pallet solutions for your business needs.</p>
-    <a href="/contact/#quote" class="cta-button">Get in Touch <Fa name="arrow-right" /></a>
   </section>
 </Base>
 

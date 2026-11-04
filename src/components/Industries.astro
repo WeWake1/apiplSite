@@ -1,0 +1,102 @@
+---
+// "Industries We Serve": each sector is drawn as its typical load sitting on a small wooden pallet,
+// with the pallet family we usually supply for it. Used on the home and about pages.
+import { categoryUrl } from '../lib/catalog';
+
+interface Props {
+  heading?: 'h2' | 'h3';
+}
+const { heading = 'h3' } = Astro.props;
+const H = heading;
+
+// Outline of a spur gear with `n` flat-topped teeth, as an SVG path.
+function gear(cx: number, cy: number, outer: number, inner: number, n: number) {
+  const pts: string[] = [];
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * 2 * Math.PI;
+    const s = Math.PI / n;
+    for (const [r, da] of [[inner, -s * 0.55], [outer, -s * 0.3], [outer, s * 0.3], [inner, s * 0.55]] as const) {
+      pts.push(`${(cx + r * Math.cos(a + da)).toFixed(1)} ${(cy + r * Math.sin(a + da)).toFixed(1)}`);
+    }
+  }
+  return `M${pts.join('L')}Z`;
+}
+
+// Goods are drawn on a 120 × 100 canvas; the pallet below them is shared (deck at y = 78).
+const industries = [
+  {
+    name: 'Manufacturing',
+    text: 'Raw material in, finished goods out, and parts moving between lines and plants.',
+    link: ['Pinewood pallets', categoryUrl('pinewood-pallets')],
+    goods: `<rect x="26" y="38" width="68" height="40" rx="2"/><path d="M26 51h68M26 64h68"/><path class="soft" d="M30 42l60 32M90 42L30 74"/><rect x="26" y="38" width="68" height="40" rx="2" class="line"/>`,
+  },
+  {
+    name: 'Logistics & Warehousing',
+    text: 'Standard footprints that fit racking, trucks, containers and hand pallet trucks.',
+    link: ['Euro-size pallets', categoryUrl('euro-pallets')],
+    goods: `<rect x="22" y="56" width="36" height="22" rx="1.5"/><rect x="62" y="56" width="36" height="22" rx="1.5"/><rect x="34" y="32" width="36" height="24" rx="1.5"/><path class="tape" d="M40 56v22M80 56v22M52 32v24"/><path class="line" d="M78 22h18m-6-6 6 6-6 6"/>`,
+  },
+  {
+    name: 'FMCG',
+    text: 'Light, consistent pallets for high-volume cartons, cases and bottled goods.',
+    link: ['GMA pallets', categoryUrl('gma-pallets')],
+    goods: `${[22, 38, 54, 70, 86]
+      .map((x) => `<path d="M${x + 4} 46v-6h4v6c4 2 5 4 5 8v24h-14v-24c0-4 1-6 5-8z"/><path class="tape" d="M${x + 1} 60h12"/>`)
+      .join('')}`,
+  },
+  {
+    name: 'Pharmaceuticals',
+    text: 'Clean, heat-treated pallets for packed medicines and regulated export consignments.',
+    link: ['Euro-size pallets', categoryUrl('euro-pallets')],
+    goods: `<rect x="24" y="48" width="34" height="30" rx="1.5"/><rect x="62" y="48" width="34" height="30" rx="1.5"/><path class="accent" d="M41 56v14M34 63h14M79 56v14M72 63h14"/><g transform="rotate(-30 60 28)"><rect x="46" y="22" width="28" height="12" rx="6"/><path class="tape" d="M60 22v12"/></g>`,
+  },
+  {
+    name: 'Chemicals & Polymers',
+    text: 'CP1 to CP9 pallets sized for drums, sacks, octabins and IBCs.',
+    link: ['CP-type pallets', categoryUrl('cp-pallets')],
+    goods: `${[24, 62]
+      .map((x) => `<path d="M${x} 34v40c0 3 6 4 17 4s17-1 17-4V34"/><ellipse cx="${x + 17}" cy="34" rx="17" ry="4"/><path class="tape" d="M${x} 48c0 3 6 4 17 4s17-1 17-4M${x} 62c0 3 6 4 17 4s17-1 17-4"/>`)
+      .join('')}`,
+  },
+  {
+    name: 'Engineering & Heavy Industries',
+    text: 'Hardwood pallets and skids for machinery, castings and heavy fabricated parts.',
+    link: ['Hardwood pallets', categoryUrl('hardwood-pallets')],
+    goods: `<path d="${gear(60, 52, 25, 20, 10)}"/><circle class="accent-fill" cx="60" cy="52" r="8"/>`,
+  },
+  {
+    name: 'Automotive',
+    text: 'Pallets with stackable collars for components, spares and returnable packaging.',
+    link: ['Pallet collars', categoryUrl('pallet-collars')],
+    goods: `${[40, 80]
+      .map((x) => `<circle cx="${x}" cy="58" r="19"/><circle class="accent-fill" cx="${x}" cy="58" r="8"/><path class="tape" d="M${x} 39v6M${x} 71v6M${x - 19} 58h6M${x + 13} 58h6"/>`)
+      .join('')}`,
+  },
+  {
+    name: 'Exporters & Importers',
+    text: 'ISPM-15 heat treated and stamped IN-081 HT, accepted at customs worldwide.',
+    link: ['ISPM-15 heat treatment', '/quality-certifications/'],
+    goods: `<rect x="30" y="54" width="60" height="24" rx="1.5"/><path class="tape" d="M60 54v24"/><circle cx="60" cy="31" r="17"/><path class="tape" d="M43 31h34M60 14c-6 5-8 11-8 17s2 12 8 17c6-5 8-11 8-17s-2-12-8-17z"/>`,
+  },
+];
+
+const pallet = `<path d="M8 78h104v6H8z"/><path d="M12 84h12v8H12zM54 84h12v8H54zM96 84h12v8H96z"/><path d="M8 92h104v5H8z"/><path class="grain" d="M18 81h22M70 81h28M20 94.5h30M66 94.5h34"/>`;
+---
+
+<div class="industries-showcase">
+  {
+    industries.map((ind, i) => (
+      <article class="ind-card" data-aos="fade-up" data-aos-delay={(i % 4) * 100}>
+        <div class="ind-art">
+          <svg viewBox="0 0 120 100" role="img" aria-label={`${ind.name}: typical load on a wooden pallet`}>
+            <g class="ind-goods" set:html={ind.goods} />
+            <g class="ind-pallet" set:html={pallet} />
+          </svg>
+        </div>
+        <H class="ind-name">{ind.name}</H>
+        <p class="ind-text">{ind.text}</p>
+        <a class="ind-link" href={ind.link[1]}>{ind.link[0]} <span aria-hidden="true">→</span></a>
+      </article>
+    ))
+  }
+</div>

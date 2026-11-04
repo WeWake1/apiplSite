@@ -57,7 +57,7 @@ const productSchema = {
 const waText = `Hello Ambica Patterns, I would like a quote for the ${p.name} (${p.code}, ${sizeLabel(p, true)}). Quantity: `;
 ---
 
-<Base title={copy.metaTitle} description={copy.metaDescription} image={images[0].src} schema={[productSchema]} active="products" mainClass="products-main">
+<Base cta={{ title: `Get a Price for the ${p.code}`, text: 'Send us the quantity and delivery location. We reply with a quote within one working day.', href: `/contact/?product=${p.slug}#quote`, label: 'Request a Quote' }} title={copy.metaTitle} description={copy.metaDescription} image={images[0].src} schema={[productSchema]} active="products" mainClass="products-main">
   <Breadcrumbs items={[{ name: 'Products', href: '/products/' }, { name: cat.name, href: categoryUrl(cat.slug) }, { name: p.code }]} />
 
   <div class="product-detail">
@@ -128,11 +128,6 @@ const waText = `Hello Ambica Patterns, I would like a quote for the ${p.name} ($
     </div>
   </section>
 
-  <section class="cta-section" data-aos="fade-up">
-    <h2>Get a Price for the {p.code}</h2>
-    <p>Send us the quantity and delivery location. We reply with a quote within one working day.</p>
-    <a href={`/contact/?product=${p.slug}#quote`} class="cta-button">Request a Quote <Fa name="arrow-right" /></a>
-  </section>
 </Base>
 
 <script>

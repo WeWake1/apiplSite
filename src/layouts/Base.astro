@@ -7,6 +7,7 @@ import 'aos/dist/aos.css';
 import '../styles/legacy.css';
 import type { ImageMetadata } from 'astro';
 import { getImage } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import Fa from '../components/Fa.astro';
 import JsonLd from '../components/JsonLd.astro';
 import View3D from '../components/View3D.astro';
@@ -23,13 +24,20 @@ interface Props {
   schema?: Record<string, unknown>[];
   active?: 'home' | 'about' | 'products' | 'contact' | '';
   mainClass?: string;
+  // Call to action shown in the footer under the tagline; pages override the wording, false hides it.
+  cta?: { title: string; text: string; href?: string; label?: string } | false;
 }
-const { title, description, image, type = 'website', noindex = false, schema = [], active = '', mainClass } = Astro.props;
+const defaultCta = {
+  title: 'Ready to Partner With Us?',
+  text: "Let's discuss how we can provide the perfect pallet solutions for your business needs.",
+};
+const { title, description, image, type = 'website', noindex = false, schema = [], active = '', mainClass, cta = defaultCta } = Astro.props;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const fullTitle = title.includes('Ambica') || title.length > 46 ? title : `${title} | Ambica Patterns`;
 const og = await getImage({ src: image ?? mainImage(productBySlug['euro-pallet-1200x800']).src, width: 1200, height: 900, format: 'jpg', quality: 82 });
 const ogUrl = new URL(og.src, site.url).href;
 const year = new Date().getFullYear();
+const guides = (await getCollection('guides')).sort((a, b) => a.data.title.localeCompare(b.data.title));
 const social = Object.entries(site.social).filter(([, url]) => url);
 const nav = [
   { href: '/', label: 'Home', key: 'home' },
@@ -136,6 +144,17 @@ const business = {
       <div class="footer-main">
         <div class="footer-heading">
           <h2>{site.tagline}</h2>
+          {
+            cta && (
+              <div class="footer-cta">
+                <div>
+                  <h2>{cta.title}</h2>
+                  <p>{cta.text}</p>
+                </div>
+                <a href={cta.href ?? '/contact/#quote'} class="cta-button">{cta.label ?? 'Get in Touch'} <Fa name="arrow-right" /></a>
+              </div>
+            )
+          }
         </div>
         <div class="footer-grid">
           <div class="footer-column">
@@ -149,6 +168,10 @@ const business = {
             <div class="licenses-container">
               {site.certifications.map((c) => <a class="license-badge" href="/quality-certifications/">{c.badge}{c.sub && <small>{c.sub}</small>}</a>)}
             </div>
+            <h3 class="footer-guides"><a href="/guides/">Buyer Guides</a></h3>
+            <ul class="footer-guide-list">
+              {guides.map((g) => <li><a href={`/guides/${g.id}/`}>{g.data.title}</a></li>)}
+            </ul>
           </div>
         </div>
       </div>

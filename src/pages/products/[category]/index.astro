@@ -26,7 +26,7 @@ const itemList = {
 };
 ---
 
-<Base title={c.metaTitle} description={c.metaDescription} image={mainImage(productBySlug[c.heroProduct]).src} active="products" mainClass="products-main">
+<Base cta={{ title: `Need ${c.name.toLowerCase()} for your next shipment?`, text: 'Send us the size, quantity and destination. We reply with a quote within one working day.', label: 'Request a Quote' }} title={c.metaTitle} description={c.metaDescription} image={mainImage(productBySlug[c.heroProduct]).src} active="products" mainClass="products-main">
   <Breadcrumbs items={[{ name: 'Products', href: '/products/' }, { name: c.name }]} />
   <div class="category-content" style="padding-top:2rem">
     <div class="category-header" data-aos="fade-up">
@@ -69,10 +69,5 @@ const itemList = {
     <p style="margin-top:2rem"><a href="/products/">See all {categories.length} pallet families</a></p>
   </section>
 
-  <section class="cta-section" data-aos="fade-up">
-    <h2>Need {c.name.toLowerCase()} for your next shipment?</h2>
-    <p>Send us the size, quantity and destination. We reply with a quote within one working day.</p>
-    <a href="/contact/#quote" class="cta-button">Request a Quote <Fa name="arrow-right" /></a>
-  </section>
   <JsonLd data={itemList} />
 </Base>

@@ -7,7 +7,11 @@ the ones the drawings call for:
   * EPAL "chamfered lower edge boards": upper outer edge, only between the blocks,
     with curved run-outs (disc cutter profile)
   * GMA stringer notches with rounded corners
-No other bevels, no random jitter.
+No other bevels, no random jitter. (The wood shader softens edges by ~1.2 mm for the light only,
+the way a real sawn arris catches it; the geometry stays sharp.)
+Realism: per-board tone variation, rough-sawn fibres and faint band-saw marks in the shader, steel nail
+heads, and a luminance contrast curve on pine renders. The web GLB gets baked ambient occlusion (2nd UV set)
+and per-wood colour gains calibrated so <model-viewer> (legacy environment) matches the renders.
 
 Run (one pallet per Blender process):
   Blender --background --factory-startup --python tools/render/render_pallet.py -- \
@@ -67,10 +71,10 @@ def out_of_type(node, kind):
 
 # ================================================================ materials (Cycles)
 WOODS = {
-    "pine": dict(tex="Wood096", grain="v", tile=0.95, sat=1.75, hue=(0.503, 0.511), val=(1.02, 1.12),
+    "pine": dict(tex="Wood096", grain="v", tile=0.95, sat=1.75, hue=(0.494, 0.516), val=(0.88, 1.16),
                  contrast=-0.25, rough=(0.55, 0.85), knot=(0.22, 0.42), knot_tone="#C99E68",
-                 web_gain=(0.513, 0.52, 0.509)),
-    "hard": dict(tex="Wood060", grain="u", tile=0.8, sat=1.0, hue=(0.497, 0.505), val=(0.92, 1.08),
+                 web_gain=(0.465, 0.47, 0.456)),
+    "hard": dict(tex="Wood060", grain="u", tile=0.8, sat=1.0, hue=(0.494, 0.508), val=(0.86, 1.1),
                  contrast=-0.05, rough=(0.6, 0.9), knot=(0.03, 0.08), knot_tone="#5A3A26",
                  web_gain=(0.704, 0.913, 1.288)),
 }
@@ -165,10 +169,11 @@ def wood_material(name, kind="pine", tint=1.0):
     deknot.inputs[7].default_value = (*srgb(spec["knot_tone"]), 1)
     base = out_of_type(deknot, "RGBA")
     endc = n.new("ShaderNodeVectorMath"); endc.operation = "ADD"
-    l.new(tc.outputs["Object"], endc.inputs[0]); endc.inputs[1].default_value = (0, 0.11, 0.07)
+    l.new(tc.outputs["Object"], endc.inputs[0]); endc.inputs[1].default_value = (0, 0.075, 0.06)
     ring = n.new("ShaderNodeTexWave"); ring.wave_type = "RINGS"; ring.rings_direction = "X"
-    ring.inputs["Scale"].default_value = 70
-    ring.inputs["Distortion"].default_value = 2.0
+    ring.inputs["Scale"].default_value = 40
+    ring.inputs["Distortion"].default_value = 0.6
+    ring.inputs["Detail"].default_value = 1.5
     l.new(endc.outputs[0], ring.inputs["Vector"])
     rr = n.new("ShaderNodeValToRGB")
     rr.color_ramp.elements[0].color = (0.78, 0.66, 0.52, 1)
@@ -181,16 +186,77 @@ def wood_material(name, kind="pine", tint=1.0):
     l.new(is_end.outputs[0], final.inputs["Factor"])
     l.new(base, final.inputs[6])
     l.new(out_of_type(ring_col, "RGBA"), final.inputs[7])
-    l.new(out_of_type(final, "RGBA"), bsdf.inputs["Base Color"])
+    # rough-sawn fibres: fine noise stretched along the grain (object space, metres)
+    fsc = n.new("ShaderNodeVectorMath"); fsc.operation = "MULTIPLY"
+    l.new(tc.outputs["Object"], fsc.inputs[0])
+    fsc.inputs[1].default_value = (12, 260, 260)   # the grain runs along object X (see uv() above)
+    fib = n.new("ShaderNodeTexNoise")
+    fib.inputs["Scale"].default_value = 1.0
+    fib.inputs["Detail"].default_value = 3
+    fib.inputs["Roughness"].default_value = 0.6
+    l.new(fsc.outputs[0], fib.inputs["Vector"])
+    # broad, soft blotches (handling marks, uneven drying) so no board is perfectly even
+    blot = n.new("ShaderNodeTexNoise")
+    blot.inputs["Scale"].default_value = 3.5
+    blot.inputs["Detail"].default_value = 3
+    l.new(tc.outputs["Object"], blot.inputs["Vector"])
+    bmap = n.new("ShaderNodeMapRange")
+    bmap.inputs["From Min"].default_value, bmap.inputs["From Max"].default_value = 0.35, 0.75
+    bmap.inputs["To Min"].default_value, bmap.inputs["To Max"].default_value = 1.04, 0.9
+    l.new(blot.outputs["Fac"], bmap.inputs["Value"])
+    fmap = n.new("ShaderNodeMapRange")
+    fmap.inputs["From Min"].default_value, fmap.inputs["From Max"].default_value = 0.3, 0.7
+    fmap.inputs["To Min"].default_value, fmap.inputs["To Max"].default_value = 0.94, 1.03
+    l.new(fib.outputs["Fac"], fmap.inputs["Value"])
+    tone = n.new("ShaderNodeValToRGB")
+    tone.color_ramp.interpolation = "EASE"
+    tone.color_ramp.elements[0].color = (1.07, 1.06, 1.04, 1)
+    tone.color_ramp.elements[1].position = 0.6
+    tone.color_ramp.elements[1].color = (1.0, 1.0, 1.0, 1)
+    el = tone.color_ramp.elements.new(1.0)
+    el.color = (0.88, 0.8, 0.7, 1)
+    l.new(r2.outputs[0], tone.inputs["Fac"])
+    shade = n.new("ShaderNodeMath"); shade.operation = "MULTIPLY"
+    l.new(bmap.outputs[0], shade.inputs[0]); l.new(fmap.outputs[0], shade.inputs[1])
+    toned = n.new("ShaderNodeMix"); toned.data_type = "RGBA"; toned.blend_type = "MULTIPLY"
+    toned.inputs["Factor"].default_value = 1.0
+    l.new(out_of_type(final, "RGBA"), toned.inputs[6])
+    shade_rgb = n.new("ShaderNodeCombineColor")
+    for i in range(3):
+        l.new(shade.outputs[0], shade_rgb.inputs[i])
+    tint = n.new("ShaderNodeMix"); tint.data_type = "RGBA"; tint.blend_type = "MULTIPLY"
+    tint.inputs["Factor"].default_value = 1.0
+    l.new(shade_rgb.outputs[0], tint.inputs[6]); l.new(tone.outputs["Color"], tint.inputs[7])
+    l.new(out_of_type(tint, "RGBA"), toned.inputs[7])
+    l.new(out_of_type(toned, "RGBA"), bsdf.inputs["Base Color"])
     rmap = n.new("ShaderNodeMapRange")
     rmap.inputs["To Min"].default_value, rmap.inputs["To Max"].default_value = spec["rough"]
     l.new(rough.outputs["Color"], rmap.inputs["Value"])
-    l.new(rmap.outputs[0], bsdf.inputs["Roughness"])
+    radd = n.new("ShaderNodeMath"); radd.operation = "MULTIPLY_ADD"; radd.use_clamp = True
+    l.new(fib.outputs["Fac"], radd.inputs[0]); radd.inputs[1].default_value = 0.2
+    l.new(rmap.outputs[0], radd.inputs[2])
+    l.new(radd.outputs[0], bsdf.inputs["Roughness"])
     bsdf.inputs["Specular IOR Level"].default_value = 0.3
+    # band-saw marks: faint ridges across the grain every ~5 mm, slightly wavy
+    saw = n.new("ShaderNodeTexWave"); saw.wave_type = "BANDS"; saw.bands_direction = "X"
+    saw.inputs["Scale"].default_value = 63
+    saw.inputs["Distortion"].default_value = 1.5
+    saw.inputs["Detail"].default_value = 1
+    l.new(tc.outputs["Object"], saw.inputs["Vector"])
+    hgt = n.new("ShaderNodeMath"); hgt.operation = "MULTIPLY_ADD"
+    l.new(fib.outputs["Fac"], hgt.inputs[0]); hgt.inputs[1].default_value = 0.25
+    l.new(disp.outputs["Color"], hgt.inputs[2])
+    hgt2 = n.new("ShaderNodeMath"); hgt2.operation = "MULTIPLY_ADD"
+    l.new(saw.outputs["Fac"], hgt2.inputs[0]); hgt2.inputs[1].default_value = 0.18
+    l.new(hgt.outputs[0], hgt2.inputs[2])
+    bev = n.new("ShaderNodeBevel")
+    bev.samples = 8
+    bev.inputs["Radius"].default_value = 0.0012
     bump = n.new("ShaderNodeBump")
-    bump.inputs["Strength"].default_value = 0.25
+    bump.inputs["Strength"].default_value = 0.4
     bump.inputs["Distance"].default_value = 0.0005
-    l.new(disp.outputs["Color"], bump.inputs["Height"])
+    l.new(hgt2.outputs[0], bump.inputs["Height"])
+    l.new(bev.outputs["Normal"], bump.inputs["Normal"])
     l.new(bump.outputs["Normal"], bsdf.inputs["Normal"])
     return m
 
@@ -239,7 +305,7 @@ MATS = {
     "block": wood_material("block_pine", "pine", tint=0.96),
     "block_hard": wood_material("block_hard", "hard", tint=0.97),
 }
-NAIL = plain_material("nail", "#5E5E5A", metallic=0.8, roughness=0.45)
+NAIL = plain_material("nail", "#8A8985", metallic=0.9, roughness=0.5)
 STEEL = plain_material("galvanised", "#B6BABD", metallic=1.0, roughness=0.32)
 
 ROOT = bpy.data.objects.new("pallet", None)
@@ -645,7 +711,7 @@ scene.world = world
 world.use_nodes = True
 wbg = world.node_tree.nodes["Background"]
 wbg.inputs["Color"].default_value = (*srgb("#F4F4F4"), 1)
-wbg.inputs["Strength"].default_value = 0.6
+wbg.inputs["Strength"].default_value = 0.4
 
 
 def area(name, loc, size, power, look_at=(0, 0, 0.07)):
@@ -659,7 +725,7 @@ def area(name, loc, size, power, look_at=(0, 0, 0.07)):
 
 
 area("key", (-2.2, -2.6, 3.4), 3.5, 300)
-area("fill", (3.0, -1.6, 1.8), 3.0, 66)
+area("fill", (3.0, -1.6, 1.8), 3.0, 50)
 area("rim", (0.8, 3.2, 2.4), 2.5, 105)
 cam_data = bpy.data.cameras.new("cam")
 cam_data.lens = 75
@@ -755,6 +821,15 @@ def upsample(a, h, w):
     return np.stack([np.interp(xi, np.arange(w0), tmp[y]) for y in range(h)], axis=0)
 
 
+def photo_contrast(lin, gamma=1.25):
+    """Studio-photo contrast: a power curve on luminance pivoting on the #F2F2F2 background, so the
+    background stays put while the wood's mid-tones and the shadows under the deck get deeper.
+    Scaling RGB by the luminance ratio keeps the hue and saturation of the wood."""
+    lum = np.maximum(lin @ np.array([0.2126, 0.7152, 0.0722], dtype=np.float32), 1e-6)
+    target = BG_LIN * np.power(np.clip(lum / BG_LIN, 0, None), gamma)
+    return lin * (target / lum)[..., None]
+
+
 def save_png(lin, path):
     out = np.clip(lin, 0, 1)
     s = np.where(out <= 0.0031308, out * 12.92, 1.055 * np.power(out, 1 / 2.4) - 0.055)
@@ -838,6 +913,61 @@ def web_material(name, path):
     return m
 
 
+def occlusion_output(mat):
+    """The glTF exporter's "glTF Material Output" group: whatever feeds Occlusion becomes occlusionTexture."""
+    g = bpy.data.node_groups.get("glTF Material Output")
+    if g is None:
+        g = bpy.data.node_groups.new("glTF Material Output", "ShaderNodeTree")
+        g.interface.new_socket("Occlusion", in_out="INPUT", socket_type="NodeSocketFloat")
+    node = mat.node_tree.nodes.new("ShaderNodeGroup")
+    node.node_tree = g
+    return node
+
+
+def bake_occlusion(ob, size=2048):
+    """Bake ambient occlusion (pallet + floor) into a second UV set and wire it up as the glTF
+    occlusion map, so the 3D viewer shows the soft contact shadows in the gaps and under the deck."""
+    me = ob.data
+    main_uv = me.uv_layers.active.name
+    ao_uv = me.uv_layers.new(name="AO")
+    me.uv_layers.active = ao_uv
+    bpy.ops.object.mode_set(mode="EDIT")
+    bpy.ops.mesh.select_all(action="SELECT")
+    bpy.ops.uv.smart_project(angle_limit=math.radians(60), island_margin=0.012)
+    bpy.ops.object.mode_set(mode="OBJECT")
+    img = bpy.data.images.new("ao_" + NAME, size, size, alpha=False)
+    img.generated_color = (1, 1, 1, 1)
+    wired = []
+    scratch = bpy.data.images.new("ao_scratch", 8, 8)
+    for mat in me.materials:
+        if mat is None:
+            continue
+        n, l = mat.node_tree.nodes, mat.node_tree.links
+        if mat.name.startswith("mark_"):
+            # stamps are transparent around the mark: bake them into a throwaway image, never their own
+            t = n.new("ShaderNodeTexImage"); t.image = scratch
+            n.active = t
+            continue
+        uvn = n.new("ShaderNodeUVMap"); uvn.uv_map = "AO"
+        t = n.new("ShaderNodeTexImage"); t.image = img
+        l.new(uvn.outputs["UV"], t.inputs["Vector"])
+        n.active = t
+        wired.append((mat, t))
+    ground.hide_render = False
+    world.light_settings.distance = 0.12   # metres: contact shadows only, not the whole underside
+    cy.samples = 128
+    scene.render.bake.margin = 24
+    bpy.ops.object.bake(type="AO")
+    for mat, t in wired:
+        sep = mat.node_tree.nodes.new("ShaderNodeSeparateColor")
+        mat.node_tree.links.new(t.outputs["Color"], sep.inputs["Color"])
+        mat.node_tree.links.new(sep.outputs["Red"], occlusion_output(mat).inputs["Occlusion"])
+    img.filepath_raw = os.path.join(args.out, NAME + "-ao.png")
+    img.file_format = "PNG"
+    img.save()
+    me.uv_layers.active = me.uv_layers[main_uv]
+
+
 def export_glb(path):
     tex = bake_web_textures()
     wmats = {k: (web_material(f"{k}_side", s), web_material(f"{k}_end", e)) for k, (s, e) in tex.items()}
@@ -908,6 +1038,7 @@ def export_glb(path):
     bpy.ops.object.join()
     joined = bpy.context.view_layer.objects.active
     joined.name = NAME
+    bake_occlusion(joined)
     os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
     bpy.ops.export_scene.gltf(filepath=path, export_format="GLB", use_selection=True, export_apply=True,
                               export_yup=True, export_image_format="WEBP", export_image_quality=80,
@@ -968,7 +1099,9 @@ for v in wanted:
         ob.hide_render = True
     plate = render_linear(base + "_p.exr", 24, scale=1.0 if cfg["el"] < 15 else 0.25)
     lum = upsample(plate.mean(axis=2), beauty.shape[0], beauty.shape[1])[..., None]
-    save_png(beauty / np.maximum(lum, 1e-4) * BG_LIN, base + ".png")
+    # dark hardwood already has the contrast; the curve would crush it and hide the IPPC mark
+    gamma = 1.0 if R["_wood"] == "hard" else 1.25
+    save_png(photo_contrast(beauty / np.maximum(lum, 1e-4) * BG_LIN, gamma), base + ".png")
     print("WROTE", base + ".png")
 
 if args.glb:

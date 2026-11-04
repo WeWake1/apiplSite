@@ -30,6 +30,10 @@ ErrorDocument 404 /404.html
   <FilesMatch "\.(html|xml|txt)$">
     Header set Cache-Control "public, max-age=0, must-revalidate"
   </FilesMatch>
+  # 3D models keep the same file name when re-rendered: revalidate (a cheap 304 when unchanged)
+  <FilesMatch "\.glb$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
   # Un-hashed static files (favicons etc.): one week. Hashed /_astro/ files get a year (see _astro/.htaccess).
   <FilesMatch "\.(png|jpe?g|webp|avif|svg|ico|webmanifest|woff2?|otf)$">
     Header set Cache-Control "public, max-age=604800"
@@ -45,4 +49,5 @@ ErrorDocument 404 /404.html
   AddType image/avif .avif
   AddType application/manifest+json .webmanifest
   AddType font/woff2 .woff2
+  AddType model/gltf-binary .glb
 </IfModule>

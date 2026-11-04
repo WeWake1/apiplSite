@@ -129,3 +129,18 @@ cd ../palletEuroSite && npm install && npm run build # Pallet Euro
 ```
 
 Cloning Pallet Euro into a folder called `palletEuroSite` keeps the same layout as the old Mac.
+
+## 9. Updates since the handoff (1–4 November 2026)
+
+- Home page: "Why Choose Ambica Patterns" and "Pallet Buyer Guides" sections removed. The guides are now linked from the footer of every page, which is better for SEO than one home-page section.
+- "Industries We Serve" (home and about) redesigned in `src/components/Industries.astro`: each sector's load drawn on a small pallet, with a link to the pallet range that sector buys.
+- Each page's call to action now sits in the footer under the tagline. It is set by the `cta` prop on `Base.astro`, and `cta={false}` hides it (contact pages).
+- Lenis smooth scroll is now very light (`lerp: 0.25`).
+- Renders made more realistic in `tools/render/render_pallet.py`:
+  - edges softened by about 1.2 mm in the shader only (the geometry stays sharp, so no visible bevels)
+  - board-to-board tone variation, rough-sawn fibres and faint band-saw marks
+  - steel nail heads and deeper studio shadows
+  - a contrast curve on pine renders
+- 3D models (GLB) get baked ambient occlusion and per-wood colour gains (`web_gain`), calibrated so `<model-viewer>` with `environment-image="legacy"` matches the renders. If the render look changes, recalibrate `web_gain`.
+- `cwebp` must be installed (`brew install webp`) before `npm run render`, because the script deletes the old images before converting the new ones.
+- Deploy: `npm run deploy:zip` builds the site and makes `deploy/ambica-site-<date>.zip`. See the README's Hostinger section.

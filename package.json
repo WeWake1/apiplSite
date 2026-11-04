@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "render": "tools/render/render_all.sh"
+    "render": "tools/render/render_all.sh",
+    "deploy:zip": "tools/deploy/make_zip.sh"
   },
   "dependencies": {
     "@fontsource/poppins": "5.2.6",

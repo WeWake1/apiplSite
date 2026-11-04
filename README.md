@@ -44,7 +44,7 @@ Requires Node 22.22 or newer.
 
 **Edit a product description:** edit `src/content/products/<slug>.md`. `metaTitle` must stay within 65 characters and `metaDescription` within 170 (the build checks this).
 
-**Add a guide:** copy a file in `src/content/guides/`, change the front matter and text. It appears on /guides/, in the sitemap and on the home page automatically.
+**Add a guide:** copy a file in `src/content/guides/`, change the front matter and text. It appears on /guides/, in the sitemap and in the footer of every page automatically.
 
 **Add a new pallet:**
 1. Add a build recipe to `tools/render/pallets.py` (copy a similar pallet; every board, block and stringer is listed in millimetres) and run `python3 tools/render/pallets.py`. Its table must say `ok` for the new pallet: that checks the outside dimensions, overlaps and floating parts.
@@ -74,8 +74,8 @@ Needs Blender 5.x at `/Applications/Blender.app` (override with `BLENDER=/path/t
 
 The built site is plain static files plus one small PHP file for the quote form, so it runs on any Hostinger web hosting plan (Single, Premium, Business). Those plans include PHP and read `.htaccess` (LiteSpeed). If your plan cannot run PHP, the pages still work; switch the form's `action` in `src/pages/contact/index.astro` to a form service such as Formspree.
 
-1. `npm run build`
-2. In hPanel → File Manager (or FTP), open `public_html` for **ambicapatterns.com**. Back up the current files, then upload **the contents of `dist/`** (including the hidden `.htaccess` and `_astro/.htaccess`).
+1. `npm run deploy:zip` builds the site and packs `dist/` into `deploy/ambica-site-<date>.zip` (hidden `.htaccess` files included).
+2. In hPanel → File Manager, open `public_html` for **ambicapatterns.com**. Back up the current files (select all → Compress → download the archive), delete them, then upload the zip, right-click it → **Extract** into `public_html`, and delete the zip. (Or upload the contents of `dist/` by FTP, including the hidden `.htaccess` and `_astro/.htaccess`.)
 3. Make sure the mailbox `website@ambicapatterns.com` exists (hPanel → Emails). The quote form sends from it to `sales@ambicapatterns.in`; change both at the top of `public/contact.php` if needed.
 4. hPanel → Performance → CDN → **Purge cache**.
 5. Check:

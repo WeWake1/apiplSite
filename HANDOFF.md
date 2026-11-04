@@ -21,7 +21,7 @@ Both are Astro 7 static sites for Hostinger. Each repo has its own README with d
 ## 2. Decisions already made (do not re-ask)
 
 ### Ambica Patterns
-- It must look exactly like the old site: ITC Anna headings, blue #0056b3, the same header and footer, Lenis smooth scroll, AOS animations, and the tabbed Swiper products page with product rows. The old site is kept in `legacy-site/` for reference.
+- It started as a rebuild of the old site's look (ITC Anna headings, blue #0056b3, the same header and footer, AOS animations, a tabbed products page with product rows). Since November 2026 the owner has been changing it: see section 9. The old site is kept in `legacy-site/` for reference.
 - **Ambica does NOT hold an EPAL licence.** Never show the EPAL oval, "EPAL licensed", CP stamps or EPAL-pool claims.
   - The EPAL and CP sizes are kept but renamed "Euro-size Pallet 1200 × 800" and "CP3-type Chemical Pallet".
   - Their pages say plainly that they are not EPAL pallets.
@@ -135,7 +135,7 @@ Cloning Pallet Euro into a folder called `palletEuroSite` keeps the same layout 
 - Home page: "Why Choose Ambica Patterns" and "Pallet Buyer Guides" sections removed. The guides are now linked from the footer of every page, which is better for SEO than one home-page section.
 - "Industries We Serve" (home and about) redesigned in `src/components/Industries.astro`: each sector's load drawn on a small pallet, with a link to the pallet range that sector buys.
 - Each page's call to action now sits in the footer under the tagline. It is set by the `cta` prop on `Base.astro`, and `cta={false}` hides it (contact pages).
-- Lenis smooth scroll is now very light (`lerp: 0.25`).
+- Lenis smooth scroll removed completely (4 Nov, owner's request).
 - Renders made more realistic in `tools/render/render_pallet.py`:
   - edges softened by about 1.2 mm in the shader only (the geometry stays sharp, so no visible bevels)
   - board-to-board tone variation, rough-sawn fibres and faint band-saw marks
@@ -144,3 +144,58 @@ Cloning Pallet Euro into a folder called `palletEuroSite` keeps the same layout 
 - 3D models (GLB) get baked ambient occlusion and per-wood colour gains (`web_gain`), calibrated so `<model-viewer>` with `environment-image="legacy"` matches the renders. If the render look changes, recalibrate `web_gain`.
 - `cwebp` must be installed (`brew install webp`) before `npm run render`, because the script deletes the old images before converting the new ones.
 - Deploy: `npm run deploy:zip` builds the site and makes `deploy/ambica-site-<date>.zip`. See the README's Hostinger section.
+
+### 4 November 2026
+- Owner's answers:
+  - The WhatsApp number is +91 98868 37016 (already in `site.ts`).
+  - The IPPC code is IN-081.
+  - PW-06 is 1140 × 1140.
+  - The ITC Anna web licence is held.
+  - No team photos or testimonials yet.
+- Products page: plain tabs instead of Swiper. Only the chosen family is in the page, and `#hash` deep links work. Each tab links to the family's own page, so it still works without JavaScript. The `swiper` and `lenis` packages are uninstalled.
+- ITC Anna is now used only for the logo, the footer tagline, page H1s and main section H2s. Product names and all smaller headings use Poppins.
+- About page: "What We Do" is now a numbered index of the six families (with renders), and Vision & Mission are two typographic statements.
+- Hero proposal (waiting for the owner's OK): `src/components/HeroBuild.astro`, previewed at `/hero-preview/` (noindex, unlinked).
+  - The film comes from `render_pallet.py --recipe epal1 --name hero --views "" --anim <out>.mp4`, which also writes a JSON of the screen positions of the pallet corners for the dimension lines.
+  - Assets are in `public/hero/`.
+  - Delete `src/pages/hero-preview.astro` before deploying.
+- Render look: a comparison with Jay Wood's renders is in progress. Plan: brighter, high-key, paler straight-grain spruce, top-lit, white background, eased edges (needs the owner's OK).
+- Later on 4 Nov:
+  - Floating WhatsApp button on every page (product pages pre-type their pallet).
+  - Industries shown as a compact strip.
+  - Fade-ins only on headings and images (0.4 s, once).
+  - Meta captions about renders removed.
+  - Hero: tagline and subtext only. Labels run along their dimension lines. The film blends into the page (`mix-blend-mode: darken`, film background lighter than or equal to the page). No nails before the boards. A branding iron presses the IPPC mark.
+- New render look in `render_pallet.py` (waiting for the owner's OK on one test pallet before re-rendering all 28):
+  - the texture's own pale colour (no saturation boost or orange knots)
+  - 3 mm eased edges (a real bevel, applied before the GLB join)
+  - an overhead softbox
+  - white background (`--bg`)
+  - `--exposure 1.4` (via the floor albedo, because output is normalised to the floor)
+  - small bright nails
+  - camera at 24° with larger framing
+  - `snap_bg()`, so near-background pixels become exactly the background
+  - Measured against Jay Wood's EPAL 1: wood mean (211,182,150) vs (208,183,151), the same saturation.
+  - `--pine-tex Wood095` is the rejected or alternative texture.
+
+### 5 November 2026 (owner approved the new render look)
+- All 28 products re-rendered in the new look and the GLBs re-exported. `web_gain` was recalibrated for the white viewer: the Euro pallet measures (211,184,150) against the render's (211,184,151).
+- Knots: `KNOT_MAP` + `grain_strip()` in `render_pallet.py`. One deck board per pallet (two on large decks) and the odd block or bottom board show a few knots; the rest show clear wood. This applies to the GLBs too.
+- IPPC stamp redrawn with thinner lines and an open wheat ear (`make_stamps.py`), with lighter wear in the shader. The quality-page close-up was re-rendered (`src/assets/brand/ippc-mark-in-081-ht.webp`).
+- Hero is live on the home page (`HeroBuild.astro`), and `/hero-preview/` is deleted.
+  - The film uses a small steel hand stamp (`stamp_tool()`).
+  - The dimension labels are plain text. "144 mm" sits to the left of its line.
+- Text rewrites applied as the owner chose them: home, about, guides, pinewood summary.
+- About "Our Commitment" is now a statement plus a two-column tick list.
+- ITC Anna is kept only on the header logo, the footer tagline and the hero headline. Everything else uses Poppins.
+- Phones:
+  - The logo shows "Ambica Patterns" under 600 px.
+  - Heading sizes and section padding are tighter.
+  - Contact cards stack.
+  - The products tab bar fades at the right edge.
+  - The hamburger is a 44 px tap target.
+  - The menu CSS is scoped to `header nav`. Breadcrumbs had been inheriting the off-screen mobile-menu position.
+  - `img { max-width: 100% }`.
+  - All 46 pages pass at 320, 360, 390, 414 and 768 px: no horizontal overflow and nothing off-screen.
+- Home gallery strip: the photos load before it is reached, and it starts moving only once they are decoded. This fixes the jump when scrolling to it fast.
+- Image panels and the 3D viewer are white.

@@ -1,6 +1,6 @@
 ---
-// Page shell in the original Ambica Patterns design: header, footer, Lenis smooth scroll,
-// AOS scroll animations. Libraries are bundled locally instead of loaded from CDNs.
+// Page shell in the original Ambica Patterns design: header, footer, AOS scroll animations.
+// Libraries are bundled locally instead of loaded from CDNs. (No smooth scrolling: native scroll by request.)
 import '@fontsource/poppins/400.css';
 import '@fontsource/poppins/600.css';
 import 'aos/dist/aos.css';
@@ -11,7 +11,7 @@ import { getCollection } from 'astro:content';
 import Fa from '../components/Fa.astro';
 import JsonLd from '../components/JsonLd.astro';
 import View3D from '../components/View3D.astro';
-import { site, fullAddress } from '../data/site';
+import { site, fullAddress, whatsappLink } from '../data/site';
 import { mainImage, productBySlug } from '../lib/catalog';
 import itcAnna from '../fonts/itc-anna.otf?url';
 
@@ -26,12 +26,14 @@ interface Props {
   mainClass?: string;
   // Call to action shown in the footer under the tagline; pages override the wording, false hides it.
   cta?: { title: string; text: string; href?: string; label?: string } | false;
+  // Message pre-typed in the floating WhatsApp button (product pages name their pallet)
+  whatsappText?: string;
 }
 const defaultCta = {
   title: 'Ready to Partner With Us?',
   text: "Let's discuss how we can provide the perfect pallet solutions for your business needs.",
 };
-const { title, description, image, type = 'website', noindex = false, schema = [], active = '', mainClass, cta = defaultCta } = Astro.props;
+const { title, description, image, type = 'website', noindex = false, schema = [], active = '', mainClass, cta = defaultCta, whatsappText } = Astro.props;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const fullTitle = title.includes('Ambica') || title.length > 46 ? title : `${title} | Ambica Patterns`;
 const og = await getImage({ src: image ?? mainImage(productBySlug['euro-pallet-1200x800']).src, width: 1200, height: 900, format: 'jpg', quality: 82 });
@@ -122,7 +124,7 @@ const business = {
 
     <header>
       <div class="logo">
-        <a href="/">Ambica Patterns India Pvt Ltd</a>
+        <a href="/" aria-label="Ambica Patterns India Pvt Ltd, home">Ambica Patterns<span class="logo-rest"> India Pvt Ltd</span></a>
       </div>
       <nav aria-label="Main">
         <ul>
@@ -194,22 +196,15 @@ const business = {
       </div>
     </footer>
 
+    <a class="wa-float" href={whatsappLink(whatsappText)} target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
+      <Fa name="whatsapp" set="brands" />
+    </a>
+
     <View3D />
     <script>
-      import Lenis from 'lenis';
       import AOS from 'aos';
 
-      // --- Lenis smooth scrolling, kept very light (close to native wheel scrolling), off for reduced motion
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let lenis: Lenis | null = null;
-      if (!reduce) {
-        lenis = new Lenis({ lerp: 0.25 });
-        const raf = (time: number) => {
-          lenis!.raf(time);
-          requestAnimationFrame(raf);
-        };
-        requestAnimationFrame(raf);
-      }
 
       // --- Hamburger menu
       const hamburger = document.querySelector<HTMLButtonElement>('.hamburger-menu');
@@ -221,14 +216,14 @@ const business = {
         hamburger.setAttribute('aria-expanded', String(open));
         hamburger.setAttribute('aria-label', open ? 'Close Navigation Menu' : 'Open Navigation Menu');
         document.body.classList.toggle('body-no-scroll', open);
-        if (lenis) (open ? lenis.stop() : lenis.start());
       });
 
-      // --- On-scroll animations. html.aos-ready switches the hidden start state on,
+      // --- On-scroll animations (headings and images only). html.aos-ready switches the hidden start state on,
       // so content is never left invisible if this script fails.
       try {
         document.documentElement.classList.add('aos-ready');
-        AOS.init({ duration: 800, easing: 'ease-in-out', once: false, offset: 100, disable: reduce });
+        // quick and only once: just headings and images carry data-aos (owner found the slow fades tiring)
+        AOS.init({ duration: 400, easing: 'ease-out', once: true, offset: 40, disable: reduce });
         window.addEventListener('load', () => AOS.refresh());
       } catch {
         document.documentElement.classList.remove('aos-ready');
@@ -237,8 +232,7 @@ const business = {
       // --- Back to top
       document.getElementById('back-to-top-button')?.addEventListener('click', (e) => {
         e.preventDefault();
-        if (lenis) lenis.scrollTo(0, { duration: 1.5 });
-        else window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+        window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
       });
     </script>
   </body>

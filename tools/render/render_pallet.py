@@ -47,6 +47,13 @@ ap.add_argument("--textures", default=os.path.join(HERE, "textures"))
 ap.add_argument("--glb", default="", help="also export a web GLB model to this path")
 ap.add_argument("--blend", action="store_true")
 ap.add_argument("--detail-index", type=int, default=0, help="view 9: which marking to frame (0 = first)")
+ap.add_argument("--anim", default="", help="render the board-by-board assembly animation to this .mp4 (home hero)")
+ap.add_argument("--bg", default="#FFFFFF", help="background colour of the output (the film uses the page colour)")
+ap.add_argument("--pine-tex", default="Wood096", help="ambientCG texture for pine/spruce (Wood096, Wood095, ...)")
+ap.add_argument("--exposure", type=float, default=1.4, help="brightness of the pallet against the background")
+ap.add_argument("--anim-res", type=int, default=1280)
+ap.add_argument("--anim-only", default="", help="comma-separated frame numbers to render (quick tests)")
+ap.add_argument("--anim-samples", type=int, default=40)
 args = ap.parse_args(argv)
 
 RECIPES = json.load(open(args.recipes))
@@ -70,14 +77,27 @@ def out_of_type(node, kind):
 
 
 # ================================================================ materials (Cycles)
-WOODS = {
-    "pine": dict(tex="Wood096", grain="v", tile=0.95, sat=1.75, hue=(0.494, 0.516), val=(0.88, 1.16),
-                 contrast=-0.25, rough=(0.55, 0.85), knot=(0.22, 0.42), knot_tone="#C99E68",
-                 web_gain=(0.465, 0.47, 0.456)),
-    "hard": dict(tex="Wood060", grain="u", tile=0.8, sat=1.0, hue=(0.494, 0.508), val=(0.86, 1.1),
-                 contrast=-0.05, rough=(0.6, 0.9), knot=(0.03, 0.08), knot_tone="#5A3A26",
-                 web_gain=(0.704, 0.913, 1.288)),
+# Clean, fresh-sawn look (owner, Nov 2026): pale straight-grain spruce, the texture's own colour, only
+# slight differences between boards. knot_amt pulls dark knots toward knot_tone; tone = per-board tint
+# range (pale .. warm); fib = rough-sawn fibre shading range.
+GRAIN = {"Wood096": "v", "Wood095": "u"}
+# Where across each texture (u, 0..1 per tile) a board strip is free of knots, and strips with a few
+# knots. Measured from the colour map (dark-blob density per column). Owner: only a few knots per pallet.
+KNOT_MAP = {
+    "Wood096": dict(clear=[(0.125, 0.281), (0.906, 1.062)], knotty=[0.33, 0.49]),
 }
+WOODS = {
+    "pine": dict(tex=args.pine_tex, grain=GRAIN.get(args.pine_tex, "v"), tile=0.95, sat=1.2, hue=(0.498, 0.502),
+                 val=(0.98, 1.04), contrast=-0.08, rough=(0.6, 0.85), knot=(0.22, 0.42), knot_tone="#A88356",
+                 knot_amt=0.3, tone=((1.02, 1.02, 1.01), (0.95, 0.93, 0.9)), fib=(0.97, 1.02),
+                 web_gain=(0.847, 0.862, 0.862)),
+    "hard": dict(tex="Wood060", grain="u", tile=0.8, sat=1.25, hue=(0.496, 0.506), val=(0.92, 1.08),
+                 contrast=-0.05, rough=(0.6, 0.9), knot=(0.03, 0.08), knot_tone="#5A3A26",
+                 knot_amt=0.5, tone=((1.03, 1.02, 1.0), (0.92, 0.88, 0.84)), fib=(0.95, 1.03),
+                 web_gain=(0.954, 1.196, 1.603)),
+}
+CURVE = 1.0        # photo_contrast gamma (1.0 = off); the high-key look gets its contrast from the top light
+EDGE_MM = 3.0      # every board and block edge is eased (rounded) by this much, as on real sawn timber
 
 
 def wood_material(name, kind="pine", tint=1.0):
@@ -101,11 +121,12 @@ def wood_material(name, kind="pine", tint=1.0):
     l.new(oi.outputs["Random"], r2m.inputs[0]); r2m.inputs[1].default_value = 17.31
     r2 = n.new("ShaderNodeMath"); r2.operation = "FRACT"
     l.new(r2m.outputs[0], r2.inputs[0])
+    gu = n.new("ShaderNodeAttribute"); gu.attribute_type = "OBJECT"; gu.attribute_name = "grain_u"
 
     def uv(across, along):
         ua = n.new("ShaderNodeMath"); ua.operation = "MULTIPLY_ADD"
         l.new(across, ua.inputs[0]); ua.inputs[1].default_value = 1.0 / tile
-        l.new(oi.outputs["Random"], ua.inputs[2])
+        l.new(gu.outputs["Fac"], ua.inputs[2])
         vb = n.new("ShaderNodeMath"); vb.operation = "MULTIPLY_ADD"
         l.new(along, vb.inputs[0]); vb.inputs[1].default_value = 1.0 / tile
         l.new(r2.outputs[0], vb.inputs[2])
@@ -161,7 +182,7 @@ def wood_material(name, kind="pine", tint=1.0):
     l.new(col.outputs["Color"], lum.inputs["Color"])
     kmask = n.new("ShaderNodeMapRange")
     kmask.inputs["From Min"].default_value, kmask.inputs["From Max"].default_value = spec["knot"]
-    kmask.inputs["To Min"].default_value, kmask.inputs["To Max"].default_value = 0.7, 0.0
+    kmask.inputs["To Min"].default_value, kmask.inputs["To Max"].default_value = spec["knot_amt"], 0.0
     l.new(lum.outputs["Val"], kmask.inputs["Value"])
     deknot = n.new("ShaderNodeMix"); deknot.data_type = "RGBA"
     l.new(kmask.outputs[0], deknot.inputs["Factor"])
@@ -195,29 +216,19 @@ def wood_material(name, kind="pine", tint=1.0):
     fib.inputs["Detail"].default_value = 3
     fib.inputs["Roughness"].default_value = 0.6
     l.new(fsc.outputs[0], fib.inputs["Vector"])
-    # broad, soft blotches (handling marks, uneven drying) so no board is perfectly even
-    blot = n.new("ShaderNodeTexNoise")
-    blot.inputs["Scale"].default_value = 3.5
-    blot.inputs["Detail"].default_value = 3
-    l.new(tc.outputs["Object"], blot.inputs["Vector"])
-    bmap = n.new("ShaderNodeMapRange")
-    bmap.inputs["From Min"].default_value, bmap.inputs["From Max"].default_value = 0.35, 0.75
-    bmap.inputs["To Min"].default_value, bmap.inputs["To Max"].default_value = 1.04, 0.9
-    l.new(blot.outputs["Fac"], bmap.inputs["Value"])
     fmap = n.new("ShaderNodeMapRange")
     fmap.inputs["From Min"].default_value, fmap.inputs["From Max"].default_value = 0.3, 0.7
-    fmap.inputs["To Min"].default_value, fmap.inputs["To Max"].default_value = 0.94, 1.03
+    fmap.inputs["To Min"].default_value, fmap.inputs["To Max"].default_value = spec["fib"]
     l.new(fib.outputs["Fac"], fmap.inputs["Value"])
     tone = n.new("ShaderNodeValToRGB")
     tone.color_ramp.interpolation = "EASE"
-    tone.color_ramp.elements[0].color = (1.07, 1.06, 1.04, 1)
+    tone.color_ramp.elements[0].color = (*spec["tone"][0], 1)
     tone.color_ramp.elements[1].position = 0.6
     tone.color_ramp.elements[1].color = (1.0, 1.0, 1.0, 1)
     el = tone.color_ramp.elements.new(1.0)
-    el.color = (0.88, 0.8, 0.7, 1)
+    el.color = (*spec["tone"][1], 1)
     l.new(r2.outputs[0], tone.inputs["Fac"])
-    shade = n.new("ShaderNodeMath"); shade.operation = "MULTIPLY"
-    l.new(bmap.outputs[0], shade.inputs[0]); l.new(fmap.outputs[0], shade.inputs[1])
+    shade = fmap
     toned = n.new("ShaderNodeMix"); toned.data_type = "RGBA"; toned.blend_type = "MULTIPLY"
     toned.inputs["Factor"].default_value = 1.0
     l.new(out_of_type(final, "RGBA"), toned.inputs[6])
@@ -249,14 +260,10 @@ def wood_material(name, kind="pine", tint=1.0):
     hgt2 = n.new("ShaderNodeMath"); hgt2.operation = "MULTIPLY_ADD"
     l.new(saw.outputs["Fac"], hgt2.inputs[0]); hgt2.inputs[1].default_value = 0.18
     l.new(hgt.outputs[0], hgt2.inputs[2])
-    bev = n.new("ShaderNodeBevel")
-    bev.samples = 8
-    bev.inputs["Radius"].default_value = 0.0012
     bump = n.new("ShaderNodeBump")
     bump.inputs["Strength"].default_value = 0.4
     bump.inputs["Distance"].default_value = 0.0005
     l.new(hgt2.outputs[0], bump.inputs["Height"])
-    l.new(bev.outputs["Normal"], bump.inputs["Normal"])
     l.new(bump.outputs["Normal"], bsdf.inputs["Normal"])
     return m
 
@@ -279,7 +286,7 @@ def stamp_material(name, path):
     b = n["Principled BSDF"]
     t = n.new("ShaderNodeTexImage")
     t.image = bpy.data.images.load(path, check_existing=True)
-    t.interpolation = "Cubic"
+    t.interpolation = "Linear"     # crisper thin lines than Cubic at this size
     l.new(t.outputs["Color"], b.inputs["Base Color"])
     b.inputs["Roughness"].default_value = 0.88
     noise = n.new("ShaderNodeTexNoise")
@@ -287,14 +294,14 @@ def stamp_material(name, path):
     noise.inputs["Detail"].default_value = 4.0
     ramp = n.new("ShaderNodeValToRGB")
     ramp.color_ramp.elements[0].position = 0.30
-    ramp.color_ramp.elements[0].color = (0.55, 0.55, 0.55, 1)
+    ramp.color_ramp.elements[0].color = (0.84, 0.84, 0.84, 1)   # light wear only: heavy wear blurred the mark
     ramp.color_ramp.elements[1].position = 0.62
     l.new(noise.outputs["Fac"], ramp.inputs["Fac"])
     mul = n.new("ShaderNodeMath"); mul.operation = "MULTIPLY"
     l.new(t.outputs["Alpha"], mul.inputs[0])
     l.new(out_of_type(ramp, "RGBA"), mul.inputs[1])
     mul2 = n.new("ShaderNodeMath"); mul2.operation = "MULTIPLY"
-    l.new(mul.outputs[0], mul2.inputs[0]); mul2.inputs[1].default_value = 0.93
+    l.new(mul.outputs[0], mul2.inputs[0]); mul2.inputs[1].default_value = 0.96
     l.new(mul2.outputs[0], b.inputs["Alpha"])
     return m
 
@@ -305,7 +312,7 @@ MATS = {
     "block": wood_material("block_pine", "pine", tint=0.96),
     "block_hard": wood_material("block_hard", "hard", tint=0.97),
 }
-NAIL = plain_material("nail", "#8A8985", metallic=0.9, roughness=0.5)
+NAIL = plain_material("nail", "#B4B3AE", metallic=0.9, roughness=0.38)
 STEEL = plain_material("galvanised", "#B6BABD", metallic=1.0, roughness=0.32)
 
 ROOT = bpy.data.objects.new("pallet", None)
@@ -464,8 +471,18 @@ def build_part(p, recipe, z_offset=0.0):
     me = bpy.data.meshes.new(p["name"])
     bm.to_mesh(me)
     bm.free()
+    me.shade_smooth()
+    me.set_sharp_from_angle(angle=math.radians(30))
     ob = bpy.data.objects.new(p["name"], me)
     ob.matrix_world = M
+    if EDGE_MM > 0:
+        bv = ob.modifiers.new("eased edges", "BEVEL")
+        bv.width = EDGE_MM * MM
+        bv.segments = 3
+        bv.limit_method = "ANGLE"
+        bv.angle_limit = math.radians(30)
+        bv.use_clamp_overlap = True
+        bv.harden_normals = True
     hard = recipe["_wood"] == "hard"
     if p.get("wood") == "block":
         mat = MATS["block_hard"] if hard else MATS["block"]
@@ -473,6 +490,7 @@ def build_part(p, recipe, z_offset=0.0):
         mat = MATS["hard"] if p.get("wood") == "hard" else MATS["pine"]
     ob.data.materials.append(mat)
     ob["grain_kind"] = "hard" if (p.get("wood") == "hard" or (p.get("wood") == "block" and hard)) else "pine"
+    ob["grain_u"] = grain_strip(p, recipe)
     return link(ob, "wood")
 
 
@@ -480,7 +498,7 @@ def nail_head(x, y, z, down=False):
     me = bpy.data.meshes.get("nail_head")
     if me is None:
         bm = bmesh.new()
-        bmesh.ops.create_cone(bm, cap_ends=True, segments=10, radius1=3.6 * MM, radius2=3.2 * MM, depth=0.7 * MM)
+        bmesh.ops.create_cone(bm, cap_ends=True, segments=12, radius1=2.9 * MM, radius2=2.6 * MM, depth=0.6 * MM)
         me = bpy.data.meshes.new("nail_head")
         bm.to_mesh(me)
         bm.free()
@@ -640,8 +658,27 @@ def prep(recipe):
     return recipe
 
 
+def grain_strip(p, recipe):
+    """Centre (u) of the texture strip a part shows. With a knot map: one deck board per pallet (two on
+    pallets with many deck boards) and the odd block or bottom board show a few knots; the rest are clear."""
+    kind = "hard" if (p.get("wood") == "hard" or (p.get("wood") == "block" and recipe["_wood"] == "hard")) else "pine"
+    spec = WOODS[kind]
+    km = KNOT_MAP.get(spec["tex"]) if kind == "pine" else None
+    if not km:
+        return random.random()
+    width_u = (min(p["x"][1] - p["x"][0], p["y"][1] - p["y"][0]) if p.get("role") != "block" else
+               max(p["x"][1] - p["x"][0], p["y"][1] - p["y"][0])) * MM / spec["tile"]
+    if p["name"] in recipe.get("_knotty", ()) or (p.get("role") != "top" and random.random() < 0.15):
+        return random.choice(km["knotty"]) + random.uniform(-0.01, 0.01)
+    lo, hi = random.choice(km["clear"])
+    a, b = lo + width_u / 2, hi - width_u / 2
+    return random.uniform(a, b) if b > a else (lo + hi) / 2
+
+
 def build_recipe(recipe, z_offset=0.0, marks=None):
     prep(recipe)
+    tops = [p["name"] for p in recipe["parts"] if p.get("role") == "top"]
+    recipe["_knotty"] = set(random.sample(tops, min(len(tops), 1 if len(tops) <= 6 else 2))) if tops else set()
     for p in recipe["parts"]:
         build_part(p, recipe, z_offset)
     place_nails(recipe["parts"], z_offset)
@@ -704,7 +741,9 @@ def clear_pallet():
 # ================================================================ studio
 bpy.ops.mesh.primitive_plane_add(size=60, location=(0, 0, 0))
 ground = bpy.context.active_object
-ground.data.materials.append(plain_material("floor", "#F2F2F2", roughness=0.9))
+FLOOR_LIN = 0.72 / args.exposure   # floor albedo; lower = the pallet reads brighter against the background
+ground.data.materials.append(plain_material("floor", "#FFFFFF", roughness=0.9))
+ground.data.materials[0].node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (FLOOR_LIN,) * 3 + (1,)
 ground.data.materials[0].node_tree.nodes["Principled BSDF"].inputs["Specular IOR Level"].default_value = 0.1
 world = bpy.data.worlds.new("studio")
 scene.world = world
@@ -724,9 +763,10 @@ def area(name, loc, size, power, look_at=(0, 0, 0.07)):
     ob.rotation_euler = (Vector(look_at) - Vector(loc)).to_track_quat("-Z", "Y").to_euler()
 
 
-area("key", (-2.2, -2.6, 3.4), 3.5, 300)
-area("fill", (3.0, -1.6, 1.8), 3.0, 50)
-area("rim", (0.8, 3.2, 2.4), 2.5, 105)
+area("top", (0.0, -0.3, 3.0), 4.0, 420)      # overhead softbox: tops brightest, sides a step darker
+area("key", (-2.2, -2.6, 3.4), 3.5, 150)
+area("fill", (3.0, -1.6, 1.8), 3.0, 35)
+area("rim", (0.8, 3.2, 2.4), 2.5, 80)
 cam_data = bpy.data.cameras.new("cam")
 cam_data.lens = 75
 cam_data.sensor_width = 36
@@ -770,11 +810,11 @@ def frame(local_corners, elev, margin):
 
 
 VIEWS = {
-    1: dict(rot=0, el=27, margin=0.80),
-    2: dict(rot=-76, el=27, margin=0.80),
-    3: dict(rot=24, el=6, margin=0.86),
-    4: dict(rot=-8, el=62, margin=0.78),
-    5: dict(rot=0, el=30, margin=0.80, flip=True),
+    1: dict(rot=0, el=24, margin=0.86),
+    2: dict(rot=-76, el=24, margin=0.86),
+    3: dict(rot=24, el=6, margin=0.9),
+    4: dict(rot=-8, el=62, margin=0.84),
+    5: dict(rot=0, el=30, margin=0.86, flip=True),
     9: dict(el=9, margin=0.92, detail=True),   # close-up of the first marking; only when asked for (--views 9)
 }
 COLLAR_VIEWS = {
@@ -828,6 +868,14 @@ def photo_contrast(lin, gamma=1.25):
     lum = np.maximum(lin @ np.array([0.2126, 0.7152, 0.0722], dtype=np.float32), 1e-6)
     target = BG_LIN * np.power(np.clip(lum / BG_LIN, 0, None), gamma)
     return lin * (target / lum)[..., None]
+
+
+def snap_bg(lin, lo=0.012, hi=0.035):
+    """Pixels within ~1 % of the background become exactly the background (render noise, faint floor
+    gradients), blending back to the render by ~3.5 %, so a white panel or the page shows no box."""
+    d = np.max(np.abs(lin - BG_RGB), axis=2, keepdims=True) / max(float(BG_RGB.max()), 1e-6)
+    w = np.clip((d - lo) / (hi - lo), 0.0, 1.0)
+    return BG_RGB + (lin - BG_RGB) * w
 
 
 def save_png(lin, path):
@@ -886,7 +934,7 @@ def bake_web_textures():
             a = mean + (a - mean) * spec["sat"]
             a = a * (spec["val"][0] + spec["val"][1]) / 2
             k0, k1 = spec["knot"]
-            km = np.clip((k1 - lum) / (k1 - k0), 0, 1)[..., None] * 0.7
+            km = np.clip((k1 - lum) / (k1 - k0), 0, 1)[..., None] * spec["knot_amt"]
             tone = np.array([int(spec["knot_tone"][i:i + 2], 16) / 255 for i in (1, 3, 5)], dtype=np.float32)
             save_rgb(web_grade(np.clip(a * (1 - km) + tone * km, 0, 1), kind), side)
         if not os.path.exists(end):
@@ -987,6 +1035,7 @@ def export_glb(path):
     bpy.context.view_layer.objects.active = obs[0]
     bpy.ops.object.make_single_user(object=True, obdata=True)
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+    bpy.ops.object.convert(target="MESH")   # bake in the eased-edge bevels (join would drop modifiers)
     for ob, kind in OBJECTS:
         me = ob.data
         if kind == "wood":
@@ -999,7 +1048,9 @@ def export_glb(path):
             # transforms are applied: recover the grain axis from the object's name-free geometry
             xs = [v.co.x for v in me.vertices]; ys = [v.co.y for v in me.vertices]
             along_x = (max(xs) - min(xs)) >= (max(ys) - min(ys)) if ob.get("grain_axis") is None else ob["grain_axis"] == "x"
-            ru, rv = random.random(), random.random()
+            ru, rv = ob.get("grain_u", random.random()), random.random()
+            xs_ = [v.co.x for v in me.vertices]; ys_ = [v.co.y for v in me.vertices]
+            mid_across = (min(ys_) + max(ys_)) / 2 if along_x else (min(xs_) + max(xs_)) / 2   # strip centre = part centre
             for poly in me.polygons:
                 n = poly.normal
                 gx, gy = (abs(n.x), abs(n.y)) if along_x else (abs(n.y), abs(n.x))   # along / across grain
@@ -1013,7 +1064,7 @@ def export_glb(path):
                     if end_face:
                         u, v = c_ / 0.18 + ru, co.z / 0.18 + rv
                     elif nz >= gy:
-                        u, v = c_ / tile + ru, a_ / tile + rv
+                        u, v = (c_ - mid_across) / tile + ru, a_ / tile + rv
                     else:
                         u, v = co.z / tile + ru, a_ / tile + rv
                     uvl.data[li].uv = (u, v)
@@ -1048,7 +1099,8 @@ def export_glb(path):
 
 
 # ================================================================ render views
-BG_LIN = srgb("#F2F2F2")[0]
+BG_RGB = np.array(srgb(args.bg), dtype=np.float32)           # the output background, per channel
+BG_LIN = float(BG_RGB @ np.array([0.2126, 0.7152, 0.0722]))   # its luminance (contrast curve pivot)
 os.makedirs(args.out, exist_ok=True)
 prep(R)
 is_collar = bool(R["parts"]) and all(p["role"] == "collar" for p in R["parts"])
@@ -1100,9 +1152,216 @@ for v in wanted:
     plate = render_linear(base + "_p.exr", 24, scale=1.0 if cfg["el"] < 15 else 0.25)
     lum = upsample(plate.mean(axis=2), beauty.shape[0], beauty.shape[1])[..., None]
     # dark hardwood already has the contrast; the curve would crush it and hide the IPPC mark
-    gamma = 1.0 if R["_wood"] == "hard" else 1.25
-    save_png(photo_contrast(beauty / np.maximum(lum, 1e-4) * BG_LIN, gamma), base + ".png")
+    gamma = CURVE
+    save_png(snap_bg(photo_contrast(beauty / np.maximum(lum, 1e-4) * BG_RGB, gamma)), base + ".png")
     print("WROTE", base + ".png")
+
+def ease_out(t):
+    t = min(max(t, 0.0), 1.0)
+    return 1 - (1 - t) ** 4
+
+
+def stamp_tool(decals):
+    """A small steel hand stamp (a hot steel block a little larger than the mark, short neck, round
+    knob) lined up with the visible IPPC mark. Returns (root empty, (contact position, outward
+    direction), hot-face BSDF)."""
+    if not decals:
+        return None, None, None
+    def facing(ob):
+        pts = [ob.matrix_world @ v.co for v in ob.data.vertices]
+        c = sum(pts, Vector()) / len(pts)
+        return (cam.location - c).normalized().dot(ob.matrix_world.to_3x3() @ ob.data.polygons[0].normal)
+    dec = max(decals, key=facing)
+    pts = [dec.matrix_world @ v.co for v in dec.data.vertices]
+    c = sum(pts, Vector()) / len(pts)
+    n = (dec.matrix_world.to_3x3() @ dec.data.polygons[0].normal).normalized()
+    up = Vector((0, 0, 1))
+    right = up.cross(n).normalized()
+    w = max((p - c).dot(right) for p in pts) * 2 + 0.012
+    h = max((p - c).dot(up) for p in pts) * 2 + 0.012
+    depth = 0.018
+    steel = plain_material("stamp_steel", "#5A5B5E", metallic=1.0, roughness=0.35)
+    hot = plain_material("stamp_face", "#2A2A2A", metallic=1.0, roughness=0.5)
+    hb = hot.node_tree.nodes["Principled BSDF"]
+    hb.inputs["Emission Color"].default_value = (1.0, 0.18, 0.02, 1)
+    knob_m = plain_material("stamp_knob", "#2B2B2D", metallic=0.6, roughness=0.3)
+    root = bpy.data.objects.new("stamp_tool", None)
+    scene.collection.objects.link(root)
+    # brand head: a block whose face lies on the mark; local +Z points away from the pallet
+    q = n.to_track_quat("Z", "Y")
+    root.rotation_euler = q.to_euler()
+    def part(name, mesh, mats, loc):
+        ob = bpy.data.objects.new(name, mesh)
+        scene.collection.objects.link(ob)
+        ob.parent = root
+        ob.location = loc
+        for m in mats:
+            ob.data.materials.append(m)
+        return ob
+    bm = bmesh.new()
+    bmesh.ops.create_cube(bm, size=1.0)
+    bmesh.ops.scale(bm, vec=(w, h, depth), verts=bm.verts)
+    for f in bm.faces:
+        f.material_index = 1 if f.normal.z < -0.9 else 0      # the face that touches the wood glows
+    me = bpy.data.meshes.new("iron_head")
+    bm.to_mesh(me)
+    bm.free()
+    head = part("stamp_head", me, [steel, hot], Vector((0, 0, depth / 2)))
+    bv = head.modifiers.new("b", "BEVEL"); bv.width = 0.0015; bv.segments = 2
+    # short neck and a round knob straight out from the head: a stubby hand stamp
+    def solid(name, r1, r2, length, z0, mat, segs=28):
+        bm = bmesh.new()
+        bmesh.ops.create_cone(bm, cap_ends=True, segments=segs, radius1=r1, radius2=r2, depth=length)
+        me = bpy.data.meshes.new(name)
+        bm.to_mesh(me)
+        bm.free()
+        for f in me.polygons:
+            f.use_smooth = True
+        return part(name, me, [mat], Vector((0, 0, z0 + length / 2)))
+    solid("stamp_neck", 0.011, 0.008, 0.026, depth, steel)
+    knob = solid("stamp_knob", 0.016, 0.019, 0.026, depth + 0.026, knob_m)
+    kb = knob.modifiers.new("b", "BEVEL"); kb.width = 0.006; kb.segments = 4
+    contact = c + n * 0.0004
+    root.location = contact
+    return root, (contact, n), hb
+
+
+def assembly_animation(path):
+    """Board-by-board assembly for the home hero: bottom boards, blocks, cross boards and deck boards
+    drop into place layer by layer, the nail heads pop in, then a small hot steel hand stamp presses
+    the IPPC mark onto the corner block, which glows and cools. Same studio look as view 1; pass --bg with the
+    page colour so the film blends into the page."""
+    fps = 30
+    scene.render.resolution_x, scene.render.resolution_y = args.anim_res, args.anim_res * 3 // 4
+    only = {int(f) for f in args.anim_only.split(",") if f}
+    clear_pallet()
+    build_recipe(R)
+    ROOT.rotation_euler = (0, 0, 0)
+    ROOT.location = (0, 0, 0)
+    cfg = VIEWS[1]
+    local = [Vector((sx * LX / 2 * MM, sy * WY / 2 * MM, z * MM)) for sx in (-1, 1) for sy in (-1, 1) for z in (0, H)]
+    global RES_X, RES_Y
+    RES_X, RES_Y = scene.render.resolution_x, scene.render.resolution_y
+    frame(local, cfg["el"], 0.74)
+    roles = {p["name"]: p["role"] for p in R["parts"]}
+    order = ["bottom", "block", "cross", "stringer", "top"]
+    starts = {"bottom": 6, "block": 22, "cross": 46, "stringer": 46, "top": 64}
+    stagger = {"bottom": 5, "block": 2, "cross": 5, "stringer": 5, "top": 4}
+    track = []   # (object, start frame, kind)
+    seen = {}
+    wood = sorted([ob for ob, k in OBJECTS if k == "wood"], key=lambda o: (o.location.x, o.location.y))
+    for ob in wood:
+        role = roles.get(ob.name.split(".")[0], "top")
+        role = role if role in order else "top"
+        i = seen.get(role, 0)
+        seen[role] = i + 1
+        track.append((ob, starts[role] + i * stagger[role], "drop"))
+    nails = sorted([ob for ob, k in OBJECTS if k == "nail" and ob.location.z > H * MM * 0.5], key=lambda o: o.location.x)
+    hidden = [ob for ob, k in OBJECTS if k == "nail" and ob.location.z <= H * MM * 0.5]   # underside nails: never seen
+    for i, ob in enumerate(nails):
+        track.append((ob, 90 + int(12 * i / max(len(nails) - 1, 1)), "pop"))
+    decals = [ob for ob, k in OBJECTS if k == "decal"]
+    base = {ob: ob.location.copy() for ob, _, _ in track}
+    for ob in decals:
+        base[ob] = ob.location.copy()
+    stamp_bsdfs = [m.node_tree.nodes["Principled BSDF"] for m in _stamp_mats.values()]
+    for b in stamp_bsdfs:
+        b.inputs["Emission Color"].default_value = (1.0, 0.22, 0.03, 1)
+    approach, contact, release, end = 108, 122, 131, 172
+    brand_at = contact + 2
+    out_dir = os.path.join(args.out, NAME + "-anim")
+    os.makedirs(out_dir, exist_ok=True)
+    for ob, _ in OBJECTS:
+        ob.hide_render = True
+    plate = render_linear(os.path.join(out_dir, "plate.exr"), 24, scale=0.25)
+    gamma = CURVE
+    for ob, _ in OBJECTS:
+        ob.hide_render = False
+    for ob in hidden:
+        ob.hide_render = True
+    iron, iron_out, iron_hot = stamp_tool(decals)
+    lum = None
+    for f in range(end):
+        if only and f not in only:
+            continue
+        for ob, start, kind in track:
+            t = (f - start) / 18.0
+            if kind == "drop":
+                ob.hide_render = f < start
+                ob.location = base[ob] + Vector((0, 0, 1.1 * (1 - ease_out(t))))
+            else:
+                k = ease_out((f - start) / 4.0)
+                ob.hide_render = k <= 0
+                ob.scale = (k, k, k)
+        for ob in decals:
+            ob.hide_render = f < brand_at
+        if iron:
+            if f < approach or f > release + 18:
+                d = None
+            elif f < contact:
+                d = 1 - ease_out((f - approach) / (contact - approach))
+            elif f <= release:
+                d = -0.004 * math.sin(math.pi * (f - contact) / (release - contact))   # a firm press
+            else:
+                d = ((f - release) / 18.0) ** 2
+            for ob in iron.children_recursive + [iron]:
+                ob.hide_render = d is None
+            if d is not None:
+                iron.location = iron_out[0] + iron_out[1] * (0.45 * d)
+            iron_hot.inputs["Emission Strength"].default_value = 2.5 if f <= release else 2.5 * max(0.0, 1 - (f - release) / 12)
+        glow = max(0.0, 1 - (f - brand_at) / 26.0) if f >= brand_at else 0.0
+        for b in stamp_bsdfs:
+            b.inputs["Emission Strength"].default_value = 6.0 * glow
+        bpy.context.view_layer.update()
+        beauty = render_linear(os.path.join(out_dir, "b.exr"), args.anim_samples)
+        if lum is None:
+            lum = upsample(plate.mean(axis=2), beauty.shape[0], beauty.shape[1])[..., None]
+        save_png(snap_bg(photo_contrast(beauty / np.maximum(lum, 1e-4) * BG_RGB, gamma)), os.path.join(out_dir, f"{f:04d}.png"))
+        print("FRAME", f, flush=True)
+    # where the finished pallet's corners land on screen (0..1, y down), for the hero's dimension lines
+    from bpy_extras.object_utils import world_to_camera_view
+    corners = {}
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            for z in (0, H):
+                p = ROOT.matrix_world @ Vector((sx * LX / 2 * MM, sy * WY / 2 * MM, z * MM))
+                v = world_to_camera_view(scene, cam, p)
+                corners[f"{'L' if sx < 0 else 'R'}{'F' if sy < 0 else 'B'}{'T' if z else 'B'}"] = [round(v.x, 4), round(1 - v.y, 4)]
+    json.dump({"fps": fps, "frames": end, "size": [scene.render.resolution_x, scene.render.resolution_y], "corners": corners,
+               "dims_mm": [LX, WY, H]}, open(os.path.splitext(path)[0] + ".json", "w"), indent=1)
+    if not only:
+        encode_video(out_dir, end, fps, path)
+
+
+def encode_video(frames_dir, count, fps, path):
+    """PNG frames -> H.264 MP4 with Blender's own FFmpeg (no separate install needed)."""
+    vs = bpy.data.scenes.new("encode")
+    vs.render.resolution_x, vs.render.resolution_y = scene.render.resolution_x, scene.render.resolution_y
+    vs.render.resolution_percentage = 100
+    vs.render.fps = fps
+    vs.frame_start, vs.frame_end = 1, count
+    ed = vs.sequence_editor_create()
+    strips = ed.strips if hasattr(ed, "strips") else ed.sequences   # Blender 5 renamed sequences -> strips
+    st = strips.new_image("frames", os.path.join(frames_dir, "0000.png"), channel=1, frame_start=1)
+    for f in range(1, count):
+        st.elements.append(f"{f:04d}.png")
+    if hasattr(vs.render.image_settings, "media_type"):   # Blender 5: video is a media type
+        vs.render.image_settings.media_type = "VIDEO"
+    vs.render.image_settings.file_format = "FFMPEG"
+    vs.render.ffmpeg.format = "MPEG4"
+    vs.render.ffmpeg.codec = "H264"
+    vs.render.ffmpeg.constant_rate_factor = "HIGH"
+    vs.render.ffmpeg.ffmpeg_preset = "BEST"
+    vs.render.ffmpeg.gopsize = 30
+    vs.view_settings.view_transform = "Standard"
+    vs.render.filepath = path
+    with bpy.context.temp_override(scene=vs):
+        bpy.ops.render.render(animation=True, scene=vs.name)
+    print("WROTE", path)
+
+
+if args.anim:
+    assembly_animation(args.anim)
 
 if args.glb:
     clear_pallet()

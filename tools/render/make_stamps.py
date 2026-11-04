@@ -22,15 +22,16 @@ FONT = "'Arial Narrow', 'Helvetica Neue', Arial, sans-serif"
 
 
 def wheat(cx, top, bottom):
-    """Stylised IPPC wheat ear: stem + paired grains + top grain."""
-    parts = [f'<line x1="{cx}" y1="{bottom}" x2="{cx}" y2="{top + 14}" stroke="{INK}" stroke-width="5" stroke-linecap="round"/>']
-    step = (bottom - top - 40) / 4
-    for i in range(4):
-        y = top + 26 + i * step
+    """Stylised IPPC wheat ear: thin stem, three pairs of slim, well-spaced grains and a top grain.
+    Kept open so it stays readable at the size it is branded on a block (no merging into a blob)."""
+    parts = [f'<line x1="{cx}" y1="{bottom}" x2="{cx}" y2="{top + 16}" stroke="{INK}" stroke-width="3.2" stroke-linecap="round"/>']
+    step = (bottom - top - 50) / 2
+    for i in range(3):
+        y = top + 34 + i * step
         for side in (-1, 1):
-            parts.append(f'<ellipse cx="{cx + side * 11}" cy="{y}" rx="7" ry="15" fill="{INK}" '
-                         f'transform="rotate({side * 32} {cx + side * 11} {y})"/>')
-    parts.append(f'<ellipse cx="{cx}" cy="{top + 9}" rx="6.5" ry="13" fill="{INK}"/>')
+            parts.append(f'<ellipse cx="{cx + side * 12}" cy="{y}" rx="4.6" ry="12.5" fill="{INK}" '
+                         f'transform="rotate({side * 34} {cx + side * 12} {y})"/>')
+    parts.append(f'<ellipse cx="{cx}" cy="{top + 10}" rx="4.4" ry="11" fill="{INK}"/>')
     return "\n".join(parts)
 
 
@@ -38,15 +39,15 @@ def ippc_svg(country, code, treatment):
     text = f"{country}-{code}"
     w, h = 340, 150
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w * 2}" height="{h * 2}" viewBox="0 0 {w} {h}">
-<rect x="5" y="5" width="{w - 10}" height="{h - 10}" rx="5" fill="none" stroke="{INK}" stroke-width="8"/>
-<line x1="122" y1="5" x2="122" y2="{h - 5}" stroke="{INK}" stroke-width="7"/>
-{wheat(48, 20, 130)}
-<g font-family="{FONT}" font-weight="700" font-size="25" fill="{INK}" text-anchor="middle">
-  <text x="96" y="40">I</text><text x="96" y="68">P</text><text x="96" y="96">P</text><text x="96" y="124">C</text>
+<rect x="4" y="4" width="{w - 8}" height="{h - 8}" rx="5" fill="none" stroke="{INK}" stroke-width="4.5"/>
+<line x1="122" y1="4" x2="122" y2="{h - 4}" stroke="{INK}" stroke-width="4"/>
+{wheat(46, 20, 130)}
+<g font-family="{FONT}" font-weight="700" font-size="24" fill="{INK}" text-anchor="middle">
+  <text x="97" y="42">I</text><text x="97" y="69">P</text><text x="97" y="96">P</text><text x="97" y="123">C</text>
 </g>
 <g font-family="{FONT}" font-weight="700" fill="{INK}">
-  <text x="138" y="70" font-size="56" textLength="{w - 160}" lengthAdjust="spacingAndGlyphs">{text}</text>
-  <text x="138" y="130" font-size="56">{treatment}</text>
+  <text x="140" y="72" font-size="54" letter-spacing="2" textLength="{w - 162}" lengthAdjust="spacingAndGlyphs">{text}</text>
+  <text x="140" y="128" font-size="54" letter-spacing="3">{treatment}</text>
 </g>
 </svg>'''
 

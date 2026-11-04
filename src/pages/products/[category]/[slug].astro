@@ -57,7 +57,7 @@ const productSchema = {
 const waText = `Hello Ambica Patterns, I would like a quote for the ${p.name} (${p.code}, ${sizeLabel(p, true)}). Quantity: `;
 ---
 
-<Base cta={{ title: `Get a Price for the ${p.code}`, text: 'Send us the quantity and delivery location. We reply with a quote within one working day.', href: `/contact/?product=${p.slug}#quote`, label: 'Request a Quote' }} title={copy.metaTitle} description={copy.metaDescription} image={images[0].src} schema={[productSchema]} active="products" mainClass="products-main">
+<Base whatsappText={waText} cta={{ title: `Get a Price for the ${p.code}`, text: 'Send us the quantity and delivery location. We reply with a quote within one working day.', href: `/contact/?product=${p.slug}#quote`, label: 'Request a Quote' }} title={copy.metaTitle} description={copy.metaDescription} image={images[0].src} schema={[productSchema]} active="products" mainClass="products-main">
   <Breadcrumbs items={[{ name: 'Products', href: '/products/' }, { name: cat.name, href: categoryUrl(cat.slug) }, { name: p.code }]} />
 
   <div class="product-detail">
@@ -93,7 +93,6 @@ const waText = `Hello Ambica Patterns, I would like a quote for the ${p.name} ($
             </ul>
           )
         }
-        <p class="render-note">Studio renders and 3D model built from the pallet's actual dimensions.</p>
       </div>
       <div class="product-info">
         <span class="product-code">{p.code}</span>
@@ -112,8 +111,8 @@ const waText = `Hello Ambica Patterns, I would like a quote for the ${p.name} ($
     </div>
   </div>
 
-  <section class="about-section" data-aos="fade-up">
-    <h2>About the {p.code}</h2>
+  <section class="about-section">
+    <h2 data-aos="fade-up">About the {p.code}</h2>
     <div class="prose"><Content /></div>
     <h3>Key Features</h3>
     <ul class="commitment-list">{copy.highlights.map((h) => <li><Fa name="circle-check" /> {h}</li>)}</ul>

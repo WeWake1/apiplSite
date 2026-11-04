@@ -121,7 +121,7 @@ export const categories: Category[] = [
     metaDescription:
       'Pinewood pallets made in Bengaluru: 4-way block, 2-way stringer and skid pallets in 800 × 1200, 1000 × 1200, 1100 × 1100, 1120 × 1120 and custom sizes. ISPM-15 on request.',
     summary:
-      'Versatile, cost-effective pinewood block, stringer and skid pallets with an excellent strength-to-weight ratio, in popular sizes or built to yours.',
+      'Light, strong for their weight and economical: pinewood block, stringer and skid pallets in popular sizes or built to yours.',
     intro: [
       'Pinewood is the everyday workhorse of Indian manufacturing and export. It is light, strong for its weight, takes nails without splitting and heat treats well, which keeps freight weight down and suits most export destinations.',
       'Our range covers 4-way block pallets for warehouses and hand pallet trucks, 2-way stringer pallets and simple skids for in-plant use. Every model can be adjusted to your load and handling.',

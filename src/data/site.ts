@@ -27,7 +27,7 @@ export const site = {
     { display: '+91 988-683-7016', tel: '+919886837016' },
     { display: '+91 812-332-9333', tel: '+918123329333' },
   ],
-  // TODO(owner): confirm which number is on WhatsApp
+  // WhatsApp number confirmed by the owner (Nov 2026)
   whatsapp: '919886837016',
   email: 'sales@ambicapatterns.in',
 

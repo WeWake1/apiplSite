@@ -29,7 +29,7 @@ const itemList = {
 <Base cta={{ title: `Need ${c.name.toLowerCase()} for your next shipment?`, text: 'Send us the size, quantity and destination. We reply with a quote within one working day.', label: 'Request a Quote' }} title={c.metaTitle} description={c.metaDescription} image={mainImage(productBySlug[c.heroProduct]).src} active="products" mainClass="products-main">
   <Breadcrumbs items={[{ name: 'Products', href: '/products/' }, { name: c.name }]} />
   <div class="category-content" style="padding-top:2rem">
-    <div class="category-header" data-aos="fade-up">
+    <div class="category-header">
       <h1>{c.name}</h1>
       <p class="category-description">{c.summary}</p>
     </div>
@@ -41,11 +41,11 @@ const itemList = {
     </div>
   </div>
 
-  <section class="about-section" data-aos="fade-up">
+  <section class="about-section">
     {
       c.sections.map((s) => (
         <>
-          <h2>{s.heading}</h2>
+          <h2 data-aos="fade-up">{s.heading}</h2>
           {s.paragraphs?.map((t) => <p>{t}</p>)}
           {s.bullets && (
             <ul>

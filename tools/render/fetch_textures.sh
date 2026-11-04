@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 tmp=$(mktemp -d)
-for t in Wood096 Wood060; do
+for t in Wood096 Wood095 Wood060; do
   mkdir -p "textures/$t"
   curl -sL -o "$tmp/$t.zip" "https://ambientcg.com/get?file=${t}_2K-JPG.zip"
   for k in Color Roughness Displacement; do

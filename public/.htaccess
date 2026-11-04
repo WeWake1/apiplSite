@@ -30,8 +30,8 @@ ErrorDocument 404 /404.html
   <FilesMatch "\.(html|xml|txt)$">
     Header set Cache-Control "public, max-age=0, must-revalidate"
   </FilesMatch>
-  # 3D models keep the same file name when re-rendered: revalidate (a cheap 304 when unchanged)
-  <FilesMatch "\.glb$">
+  # 3D models and the hero film keep the same file name when re-rendered: revalidate (a cheap 304 when unchanged)
+  <FilesMatch "\.(glb|mp4)$">
     Header set Cache-Control "public, max-age=0, must-revalidate"
   </FilesMatch>
   # Un-hashed static files (favicons etc.): one week. Hashed /_astro/ files get a year (see _astro/.htaccess).

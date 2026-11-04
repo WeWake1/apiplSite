@@ -1,0 +1,211 @@
+---
+// Home hero: a rendered film of a Euro-size pallet being built board by board (tools/render/render_pallet.py
+// --anim). A build log beside it ticks off each layer as it lands, and when the pallet is finished its
+// dimensions are drawn on like a technical drawing. Reduced motion / data saver: the finished frame, no film.
+import Fa from './Fa.astro';
+import { site } from '../data/site';
+import film from '../../public/hero/hero-build.json';
+
+const [W, H] = film.size;
+const c = film.corners as Record<string, [number, number]>;
+const at = (k: string) => [c[k][0] * W, c[k][1] * H] as const;
+
+// A dimension line parallel to edge a-b, pushed `gap` px away from the pallet's centre, with end ticks.
+const centre = Object.values(c).reduce(([x, y], [u, v]) => [x + (u * W) / 8, y + (v * H) / 8], [0, 0]);
+function dim(a: readonly [number, number], b: readonly [number, number], gap: number, label: string, along = true) {
+  const dx = b[0] - a[0], dy = b[1] - a[1];
+  const len = Math.hypot(dx, dy);
+  let nx = -dy / len, ny = dx / len;
+  const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+  if ((mx - centre[0]) * nx + (my - centre[1]) * ny < 0) { nx = -nx; ny = -ny; }
+  const p = (q: readonly [number, number], d: number) => [q[0] + nx * d, q[1] + ny * d].map((v) => +v.toFixed(1));
+  const [a1, b1] = [p(a, gap), p(b, gap)];
+  const t = 9;
+  return {
+    ext: [[...p(a, 8), ...p(a, gap + 10)], [...p(b, 8), ...p(b, gap + 10)]],
+    line: [...a1, ...b1],
+    ticks: [[a1[0] - nx * t, a1[1] - ny * t, a1[0] + nx * t, a1[1] + ny * t], [b1[0] - nx * t, b1[1] - ny * t, b1[0] + nx * t, b1[1] + ny * t]],
+    // along a line: centred just outside it; the short height line: level text to its left (no overlap)
+    label: along
+      ? {
+          x: +((a1[0] + b1[0]) / 2 + nx * 24).toFixed(1),
+          y: +((a1[1] + b1[1]) / 2 + ny * 24).toFixed(1),
+          angle: upright((Math.atan2(dy, dx) * 180) / Math.PI),
+          anchor: 'middle',
+          text: label,
+        }
+      : {
+          x: +(Math.min(a1[0], b1[0]) - 18).toFixed(1),
+          y: +((a1[1] + b1[1]) / 2).toFixed(1),
+          angle: 0,
+          anchor: 'end',
+          text: label,
+        },
+    len: Math.round(len + 40),
+  };
+}
+const upright = (deg: number) => +(deg > 90 ? deg - 180 : deg < -90 ? deg + 180 : deg).toFixed(2);
+const [L, Wd, Ht] = film.dims_mm;
+const dims = [
+  dim(at('LFB'), at('RFB'), 44, `${L} mm`),
+  dim(at('RFT'), at('RBT'), 40, `${Wd} mm`),
+  dim(at('LFB'), at('LFT'), 40, `${Ht} mm`, false),
+];
+---
+
+<section class="hb" aria-labelledby="hb-title">
+  <div class="hb-text">
+    <h1 id="hb-title">Built board<br />by board.</h1>
+    <p class="hb-lead">Wooden pallets cut, assembled and heat treated in our own Bengaluru plant since {site.founded}.</p>
+  </div>
+
+  <div class="hb-stage" style={`aspect-ratio:${W}/${H}`}>
+    <div class="hb-zoom">
+    <img class="hb-still" src="/hero/hero-build-end.webp" width={W} height={H} alt="A Euro-size wooden pallet, 1200 × 800 × 144 mm, stamped IN-081 HT" fetchpriority="high" />
+    <video class="hb-film" muted playsinline preload="auto" poster="/hero/hero-build-start.webp" width={W} height={H} aria-hidden="true" tabindex="-1">
+      <source src="/hero/hero-build.mp4" type="video/mp4" />
+    </video>
+    <svg class="hb-dims" viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
+      {
+        dims.map((d, i) => (
+          <g style={`--i:${i};--len:${d.len}`}>
+            {d.ext.map((e) => <line class="hb-ext" x1={e[0]} y1={e[1]} x2={e[2]} y2={e[3]} />)}
+            <line class="hb-dim" x1={d.line[0]} y1={d.line[1]} x2={d.line[2]} y2={d.line[3]} />
+            {d.ticks.map((t) => <line class="hb-tickline" x1={t[0]} y1={t[1]} x2={t[2]} y2={t[3]} />)}
+            <g class="hb-label" transform={`translate(${d.label.x} ${d.label.y}) rotate(${d.label.angle})`}>
+              <text text-anchor={d.label.anchor} dy="9">{d.label.text}</text>
+            </g>
+          </g>
+        ))
+      }
+    </svg>
+    </div>
+    <button type="button" class="hb-replay" hidden><Fa name="rotate-right" /> Build it again</button>
+  </div>
+</section>
+
+<style>
+  .hb {
+    display: grid;
+    grid-template-columns: minmax(320px, 0.8fr) 1.2fr;
+    align-items: center;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 3rem 5% 2rem;
+  }
+  .hb h1 {
+    font-family: var(--font-heading);   /* one of the three places the signature font is kept */
+    font-weight: normal;
+    font-size: clamp(3rem, 6vw, 5.6rem);
+    line-height: 1;
+    margin: 0 0 1.25rem;
+  }
+  .hb-lead {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #495057;
+    max-width: 30rem;
+    margin: 0 0 1.5rem;
+  }
+
+  /* no panel: the film is rendered on the page colour, and its edges fade out so it blends in */
+  .hb-stage {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  /* Blend the film into the page: "darken" keeps whichever is darker, film or page, per pixel. The
+     film's background is rendered as light as (or lighter than) the page, so wherever the film shows
+     only background, the page colour comes through exactly, whatever the video decoder does to it;
+     the pallet, its shadow and the drawn dimensions are darker and show as they are. */
+  .hb-zoom { mix-blend-mode: darken; }
+  /* the film is framed with room for the boards to drop in; zoom in on the finished pallet */
+  .hb-zoom { position: absolute; inset: 0; transform: scale(1.2); transform-origin: 56% 56%; }
+  .hb-still, .hb-film, .hb-dims {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .hb-still { opacity: 0; transition: opacity 0.4s ease; }
+  .hb-film { object-fit: cover; }
+  .hb.is-static .hb-still { opacity: 1; }
+  .hb.is-static .hb-film { display: none; }
+
+  .hb-dims { pointer-events: none; overflow: visible; }
+  .hb-dims line { stroke: var(--primary-color); stroke-linecap: round; }
+  .hb-ext { stroke-width: 1.5; opacity: 0; transition: opacity 0.4s ease calc(var(--i) * 0.25s); }
+  .hb-dim {
+    stroke-width: 2.5;
+    stroke-dasharray: var(--len);
+    stroke-dashoffset: var(--len);
+    transition: stroke-dashoffset 0.8s cubic-bezier(0.6, 0, 0.2, 1) calc(var(--i) * 0.25s + 0.15s);
+  }
+  .hb-tickline { stroke-width: 2.5; opacity: 0; transition: opacity 0.3s ease calc(var(--i) * 0.25s + 0.8s); }
+  .hb-label { opacity: 0; transition: opacity 0.4s ease calc(var(--i) * 0.25s + 0.85s); }
+  .hb-label text { font: 600 25px var(--font-body); fill: var(--primary-color); }
+  .hb.dims-on .hb-ext, .hb.dims-on .hb-tickline, .hb.dims-on .hb-label { opacity: 1; }
+  .hb.dims-on .hb-dim { stroke-dashoffset: 0; }
+
+  .hb-replay {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 1px solid rgba(0, 86, 179, 0.2);
+    background: #fff;
+    color: var(--primary-color);
+    font: 600 0.9rem var(--font-body);
+    padding: 0.55rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+  }
+  .hb-replay[hidden] { display: none; }
+
+  @media (max-width: 900px) {
+    .hb { grid-template-columns: 1fr; padding-top: 1.5rem; }
+    .hb-stage { order: -1; }
+    .hb-label text { font-size: 30px; }
+    .hb-replay { right: 0.6rem; bottom: 0.6rem; font-size: 0.8rem; padding: 0.4rem 0.75rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hb-dim, .hb-ext, .hb-tickline, .hb-label { transition: none; }
+  }
+</style>
+
+<script>
+  const hero = document.querySelector<HTMLElement>('.hb');
+  const film = hero?.querySelector<HTMLVideoElement>('.hb-film');
+  const replay = hero?.querySelector<HTMLButtonElement>('.hb-replay');
+
+  function finish() {
+    hero?.classList.add('dims-on');
+    if (replay) replay.hidden = false;
+  }
+
+  const calm =
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+
+  if (hero && film) {
+    if (calm) {
+      hero.classList.add('is-static');
+      finish();
+    } else {
+      film.addEventListener('ended', finish);
+      film.play().catch(() => {
+        hero.classList.add('is-static');
+        finish();
+      });
+      replay?.addEventListener('click', () => {
+        hero.classList.remove('dims-on');
+        replay.hidden = true;
+        film.currentTime = 0;
+        film.play();
+      });
+    }
+  }
+</script>

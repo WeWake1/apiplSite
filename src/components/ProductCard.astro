@@ -15,7 +15,7 @@ const { href, title, image, text, delay = 0, heading = 'h3' } = Astro.props;
 const H = heading;
 ---
 
-<a href={href} class="product-card" data-aos="fade-up" data-aos-delay={delay || undefined}>
+<a href={href} class="product-card">
   <div class="product-card-image">
     <Image src={image.src} alt={image.alt} widths={[400, 600, 800]} sizes="(max-width: 768px) 90vw, 400px" loading="lazy" />
   </div>

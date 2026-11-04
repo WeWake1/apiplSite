@@ -27,7 +27,16 @@ const itemList = {
     <div class="products-nav-container" role="tablist" aria-label="Pallet families">
       {
         categories.map((c, i) => (
-          <a class={`products-nav-item${i === 0 ? ' active' : ''}`} data-category={i} href={`#${c.slug}`} role="tab" aria-selected={i === 0 ? 'true' : 'false'}>
+          <a
+            class={`products-nav-item${i === 0 ? ' active' : ''}`}
+            id={`tab-${c.slug}`}
+            href={categoryUrl(c.slug)}
+            data-panel={c.slug}
+            role="tab"
+            aria-controls={c.slug}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+          >
             {c.tab}
           </a>
         ))
@@ -36,110 +45,107 @@ const itemList = {
     </div>
   </div>
 
-  <div class="products-swiper">
-    <div class="swiper-wrapper">
-      {
-        categories.map((c) => (
-          <div class="swiper-slide category-slide" id={c.slug} role="tabpanel">
-            <div class="category-content">
-              <div class="category-header">
-                <h2>{c.name}</h2>
-                <p class="category-description">{c.summary}</p>
-                <p class="category-more"><a href={categoryUrl(c.slug)}>Buying guide and FAQs for {c.name.toLowerCase()}</a></p>
-              </div>
-              <div class="products-list">
-                {productsIn(c.slug).map((p) => (
-                  <ProductRow product={p} summary={copy[p.slug]} />
-                ))}
-              </div>
-            </div>
+  {
+    categories.map((c, i) => (
+      <section class="category-panel" id={c.slug} role="tabpanel" aria-labelledby={`tab-${c.slug}`} hidden={i !== 0}>
+        <div class="category-content">
+          <div class="category-header">
+            <h2>{c.name}</h2>
+            <p class="category-description">{c.summary}</p>
+            <p class="category-more"><a href={categoryUrl(c.slug)}>Buying guide and FAQs for {c.name.toLowerCase()}</a></p>
           </div>
-        ))
-      }
-    </div>
-  </div>
+          <div class="products-list">
+            {productsIn(c.slug).map((p) => (
+              <ProductRow product={p} summary={copy[p.slug]} />
+            ))}
+          </div>
+        </div>
+      </section>
+    ))
+  }
+  <script is:inline>
+    // Open the family named in the URL (#cp-pallets) before the first paint, so there is no flash.
+    (function () {
+      var id = location.hash.slice(1);
+      var panel = id && document.getElementById(id);
+      if (!panel || !panel.classList.contains('category-panel')) return;
+      document.querySelectorAll('.category-panel').forEach(function (p) { p.hidden = p !== panel; });
+      document.querySelectorAll('.products-nav-item').forEach(function (t) {
+        var on = t.getAttribute('data-panel') === id;
+        t.classList.toggle('active', on);
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+      });
+    })();
+  </script>
   <JsonLd data={itemList} />
 </Base>
 
 <style is:global>
-  .category-header h2 { font-family: var(--font-heading); font-size: 3.5rem; color: var(--primary-color); margin-bottom: 1rem; font-weight: normal; }
+  .category-header h2 { font-family: var(--font-body); font-weight: 700; font-size: 2.6rem; color: var(--primary-color); margin-bottom: 1rem; }
   .category-more { margin-top: 1rem; }
   .category-more a { font-weight: 600; text-decoration: none; }
   .category-more a:hover { text-decoration: underline; }
   .products-nav-container { max-width: 1100px; }
   a.products-nav-item { text-decoration: none; }
+  .category-panel:not([hidden]) { animation: panel-in 0.35s ease-out; }
+  @keyframes panel-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .category-panel:not([hidden]) { animation: none; } }
   @media (max-width: 768px) {
-    .category-header h2 { font-size: 2.6rem; }
+    .category-header h2 { font-size: 2rem; }
     .products-nav-container { justify-content: flex-start; overflow-x: auto; scrollbar-width: none; padding-bottom: 1rem; margin-bottom: -1rem; }
     .products-nav-container::-webkit-scrollbar { display: none; }
   }
 </style>
 
 <script>
-  import Swiper from 'swiper';
-  import 'swiper/css';
-
-  // Same behaviour as the original products page: tabs + sliding indicator + swipeable categories,
-  // the container grows/shrinks to the active category. Plus deep links (#cp-pallets).
-  const navItems = [...document.querySelectorAll<HTMLAnchorElement>('.products-nav-item')];
+  // Tabs: only the chosen pallet family is on the page. Each tab links to that family's own page, so
+  // without JavaScript it still works; with JavaScript it switches in place and keeps #hash deep links.
+  const tabs = [...document.querySelectorAll<HTMLAnchorElement>('.products-nav-item')];
+  const panels = [...document.querySelectorAll<HTMLElement>('.category-panel')];
   const indicator = document.querySelector<HTMLElement>('.products-nav-indicator');
-  const container = document.querySelector<HTMLElement>('.products-swiper');
-  const ids = navItems.map((a) => a.getAttribute('href')!.slice(1));
+  const nav = document.querySelector<HTMLElement>('.products-nav-header');
 
-  function updateIndicator(item?: HTMLElement) {
-    if (!indicator || !item) return;
-    indicator.style.left = `${item.offsetLeft}px`;
-    indicator.style.width = `${item.offsetWidth}px`;
+  function moveIndicator() {
+    const tab = tabs.find((t) => t.classList.contains('active'));
+    if (!indicator || !tab) return;
+    indicator.style.left = `${tab.offsetLeft}px`;
+    indicator.style.width = `${tab.offsetWidth}px`;
   }
-  function updateHeight(sw: Swiper) {
-    const content = sw.slides[sw.activeIndex]?.querySelector<HTMLElement>('.category-content');
-    if (content && container) container.style.height = `${content.scrollHeight}px`;
-  }
-  function updateNav(index: number) {
-    navItems.forEach((n, i) => {
-      n.classList.toggle('active', i === index);
-      n.setAttribute('aria-selected', String(i === index));
+
+  function show(id: string, scroll: boolean) {
+    const panel = panels.find((p) => p.id === id);
+    if (!panel) return;
+    panels.forEach((p) => (p.hidden = p !== panel));
+    tabs.forEach((t) => {
+      const on = t.dataset.panel === id;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      if (on) t.scrollIntoView({ block: 'nearest', inline: 'center' });
     });
-    const item = navItems[index];
-    updateIndicator(item);
-    item?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+    moveIndicator();
+    // back to the top of the list, just under the sticky tab bar, if the reader had scrolled down
+    if (scroll && nav && window.scrollY > panel.offsetTop - nav.offsetHeight) window.scrollTo({ top: panel.offsetTop - nav.offsetHeight });
   }
 
-  const start = Math.max(0, ids.indexOf(location.hash.slice(1)));
-  const sw = new Swiper('.products-swiper', {
-    speed: 500,
-    resistanceRatio: 0.3,
-    threshold: 20,
-    initialSlide: start,
-    on: {
-      init(s) {
-        updateHeight(s);
-        updateNav(s.activeIndex);
-      },
-      slideChangeTransitionStart(s) {
-        updateNav(s.activeIndex);
-        updateHeight(s);
-        history.replaceState(null, '', `#${ids[s.activeIndex]}`);
-      },
-    },
-  });
-  navItems.forEach((item, i) =>
-    item.addEventListener('click', (e) => {
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', (e) => {
       e.preventDefault();
-      sw.slideTo(i);
-    }),
-  );
-  window.addEventListener('hashchange', () => {
-    const i = ids.indexOf(location.hash.slice(1));
-    if (i >= 0) sw.slideTo(i);
+      show(tab.dataset.panel!, true);
+      history.replaceState(null, '', `#${tab.dataset.panel}`);
+    });
+    tab.addEventListener('keydown', (e) => {
+      const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!step) return;
+      e.preventDefault();
+      const next = tabs[(i + step + tabs.length) % tabs.length];
+      next.focus();
+      next.click();
+    });
   });
-  const refresh = () => {
-    updateNav(sw.activeIndex);
-    updateHeight(sw);
-  };
-  window.addEventListener('load', refresh);
-  window.addEventListener('resize', refresh);
-  document.querySelectorAll('.products-swiper img').forEach((img) => img.addEventListener('load', () => updateHeight(sw), { once: true }));
-  // 3D viewers change nothing in height, but a late font swap can; re-check once fonts are ready
-  document.fonts?.ready.then(() => updateHeight(sw));
+  window.addEventListener('hashchange', () => show(location.hash.slice(1), true));
+  window.addEventListener('resize', moveIndicator);
+  document.fonts?.ready.then(moveIndicator);
+  moveIndicator();
 </script>

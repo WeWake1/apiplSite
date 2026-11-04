@@ -5,7 +5,8 @@ import ProductCard from '../components/ProductCard.astro';
 import Faq from '../components/Faq.astro';
 import Fa from '../components/Fa.astro';
 import Industries from '../components/Industries.astro';
-import { categories, categoryUrl, mainImage, modelUrl, productBySlug, products } from '../lib/catalog';
+import HeroBuild from '../components/HeroBuild.astro';
+import { categories, categoryUrl, mainImage, productBySlug, products } from '../lib/catalog';
 import { site, yearsInBusiness } from '../data/site';
 
 import imgBlocks from '../assets/photos/cut-timber-blocks.jpg';
@@ -19,7 +20,6 @@ import g7 from '../assets/photos/factory-euro-pallet.jpg';
 
 const heroProduct = productBySlug['euro-pallet-1200x800'];
 const hero = mainImage(heroProduct);
-const heroPoster = await getImage({ src: hero.src, width: 1000, format: 'webp', quality: 80 });
 const gallery = [
   [g1, 'Bundles of sawn softwood timber in the Ambica Patterns yard'],
   [g2, 'Wrapped bundle of timber ready for pallet production'],
@@ -45,44 +45,22 @@ const faqs = [
   image={hero.src}
   active="home"
 >
-  <section class="hero">
-    <div class="hero-text">
-      <h1 data-aos="fade-up">High-Quality Wooden Pallets</h1>
-      <p data-aos="fade-up">Over {yearsInBusiness} years of excellence in manufacturing and supply: Euro-size, CP-type, GMA, pinewood and hardwood pallets from our factory in Bengaluru.</p>
-    </div>
+  <HeroBuild />
 
-    <model-viewer
-      id="hero-model"
-      data-src={modelUrl(heroProduct)}
-      alt="3D model of a Euro-size wooden pallet, 1200 × 800 mm"
-      camera-controls
-      auto-rotate
-      ar
-      shadow-intensity="1"
-      environment-image="legacy"
-      camera-orbit="-35deg 70deg 105%"
-      interaction-prompt="none"
-      style="width: 45%; height: 600px; border-radius: 12px; background-color: #f2f2f2; position: relative;"
-    >
-      <img slot="poster" src={heroPoster.src} width="1000" height="750" alt={hero.alt} fetchpriority="high" style="width:100%;height:100%;object-fit:contain;border-radius:12px;" />
-      <button type="button" class="view-3d hero-3d" aria-label="View the Euro-size pallet in 3D" hidden><Fa name="cube" /> 3D</button>
-    </model-viewer>
-  </section>
-
-  <div class="divider" data-aos="zoom-in"><hr /></div>
+  <div class="divider"><hr /></div>
 
   <section class="content-section two-column-layout">
-    <div class="text-content" data-aos="fade-right">
-      <h2>Pioneering Pallet Solutions Since {site.founded}</h2>
+    <div class="text-content">
+      <h2 data-aos="fade-up">Wooden Pallets Since {site.founded}</h2>
       <p>
-        Ambica Patterns India Pvt Ltd has been a cornerstone of the packaging industry, delivering robust and reliable wooden pallets. Every
+        Ambica Patterns India Pvt Ltd has made wooden pallets in Bengaluru since {site.founded}. Every
         pallet is built in our own plant at Chikkabanavara, north Bengaluru: we hold timber stock on site, cut boards and blocks to size,
         assemble each model to its drawing and heat treat export pallets in our registered chamber before they leave the gate. From here,
         close to the Peenya industrial belt, we deliver across Karnataka and the rest of India.
       </p>
       <p>
-        Our commitment to quality and precision engineering ensures your goods are transported safely and efficiently, from a 1200 × 800
-        Euro-size pallet to a 1275 × 1275 hardwood pallet for heavy machinery.
+        Every pallet is built to carry your goods safely and efficiently, from a 1200 × 800 Euro-size pallet for export cartons to a
+        1275 × 1275 hardwood pallet for heavy machinery, and we build custom sizes to your drawing.
       </p>
     </div>
     <div class="image-content" data-aos="fade-left">
@@ -90,11 +68,11 @@ const faqs = [
     </div>
   </section>
 
-  <div class="divider" data-aos="zoom-in"><hr /></div>
+  <div class="divider"><hr /></div>
 
   <section class="content-section">
     <h2 data-aos="fade-up">Our Product Range</h2>
-    <p data-aos="fade-up">{products.length} pallet models in six families. Choose one to see every model with its studio renders, 3D view and specifications.</p>
+    <p>{products.length} pallet models in six families.</p>
     <div class="product-range-container">
       {
         categories.map((c, i) => (
@@ -104,62 +82,56 @@ const faqs = [
     </div>
   </section>
 
-  <div class="divider" data-aos="zoom-in"><hr /></div>
+  <div class="divider"><hr /></div>
 
-  <section class="content-section" data-aos="fade-up">
-    <h2>Two Decades of Trust</h2>
+  <section class="content-section lead-in-gallery">
+    <h2 data-aos="fade-up">{yearsInBusiness} Years in Pallets</h2>
     <p>
-      Founded on the principles of integrity and craftsmanship, Ambica Patterns has grown from a small workshop into a leading manufacturer.
-      Our journey is built on long-lasting relationships with clients who trust us for our consistency and dedication.
+      We started in {site.founded} as a small workshop and grew into a full pallet plant. Many customers have ordered from us for years,
+      because every batch matches the one before.
     </p>
   </section>
 
   <section class="gallery-carousel-section" aria-label="Our factory">
     <div class="gallery-scroller" data-direction="left" data-speed="slow">
-      <div class="scroller-inner" data-aos="fade-in" data-aos-delay="200">
+      <div class="scroller-inner">
         {galleryImgs.map(({ img, alt }) => <img src={img.src} width={img.attributes.width} height={img.attributes.height} alt={alt} loading="lazy" decoding="async" />)}
         {galleryImgs.map(({ img }) => <img src={img.src} width={img.attributes.width} height={img.attributes.height} alt="" aria-hidden="true" loading="lazy" decoding="async" />)}
       </div>
     </div>
   </section>
 
-  <section class="about-section" data-aos="fade-up">
-    <h2>Industries We Serve</h2>
+  <section class="about-section home-industries">
+    <h2 data-aos="fade-up">Industries We Serve</h2>
     <p>We cater to a wide range of industries, providing pallet solutions that meet the specific requirements of each sector.</p>
     <Industries />
   </section>
 
-  <div class="divider" data-aos="zoom-in"><hr /></div>
+  <div class="divider"><hr /></div>
 
-  <section class="about-section" data-aos="fade-up">
-    <h2>Frequently Asked Questions</h2>
+  <section class="about-section">
+    <h2 data-aos="fade-up">Frequently Asked Questions</h2>
     <Faq items={faqs} />
   </section>
 </Base>
 
 <script is:inline>
-  // Rotating 3D pallet in the hero. The render (poster) shows first. Desktops load the 3D viewer once the
-  // page is idle; phones, touch screens and data-saver users get a "3D" button instead, because the
-  // viewer is about 1 MB of JavaScript and would make the first scroll janky on a slower phone.
+  // Factory gallery strip: fetch the photos shortly before the strip is reached, and only start the
+  // motion (from the first photo) once every photo is decoded, so nothing pops in while it moves.
   (function () {
-    var mv = document.getElementById('hero-model');
-    if (!mv) return;
-    var btn = mv.querySelector('.hero-3d');
-    var go = function () {
-      if (!window.__ambicaLoadModelViewer) return;
-      if (btn) btn.hidden = true;
-      window.__ambicaLoadModelViewer().then(function () { mv.setAttribute('src', mv.getAttribute('data-src')); });
+    var strip = document.querySelector('.scroller-inner');
+    if (!strip) return;
+    var imgs = [].slice.call(strip.querySelectorAll('img'));
+    var start = function () {
+      imgs.forEach(function (i) { i.loading = 'eager'; });
+      Promise.all(imgs.map(function (i) { return i.decode ? i.decode().catch(function () {}) : Promise.resolve(); }))
+        .then(function () { strip.classList.add('is-ready'); });
     };
-    var light = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches || (navigator.connection && navigator.connection.saveData);
-    if (light) {
-      if (btn) {
-        btn.hidden = false;
-        btn.addEventListener('click', go);
-      }
-      return;
-    }
-    window.addEventListener('load', function () {
-      if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 2500 }); else setTimeout(go, 1200);
-    });
+    if (!('IntersectionObserver' in window)) return start();
+    var io = new IntersectionObserver(function (es) {
+      if (es.some(function (e) { return e.isIntersecting; })) { io.disconnect(); start(); }
+    }, { rootMargin: '800px 0px' });
+    io.observe(strip);
   })();
 </script>
+

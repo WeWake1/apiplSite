@@ -24,17 +24,17 @@ const faqs = [
   title={`Quality & Certifications: ISPM-15 ${site.ippc}, ISO 9001, PEFC / FSC`}
   description={`Ambica Patterns is a registered ISPM-15 heat-treatment provider (${site.ippc}) with an ISO 9001 quality system and PEFC / FSC certified timber. How we check every pallet.`}
 >
-  <section class="about-hero" data-aos="fade-up">
+  <section class="about-hero">
     <h1>Quality &amp; Certifications</h1>
     <p class="tagline">Independent certificates are the easiest way to know a pallet supplier does what it says. These are ours, and this is how we check every pallet.</p>
   </section>
 
-  <section class="about-section" data-aos="fade-up">
-    <h2>Our Certifications</h2>
+  <section class="about-section">
+    <h2 data-aos="fade-up">Our Certifications</h2>
     <div class="services-grid">
       {
         site.certifications.map((c, i) => (
-          <div class="service-card" data-aos="fade-up" data-aos-delay={i * 100}>
+          <div class="service-card">
             <Fa name={c.icon} />
             <h3>{c.name}{c.sub && ` (${c.sub})`}</h3>
             <p>{c.text}</p>
@@ -44,12 +44,12 @@ const faqs = [
     </div>
   </section>
 
-  <div class="divider" data-aos="zoom-in"><hr /></div>
+  <div class="divider"><hr /></div>
 
-  <section class="about-section" data-aos="fade-up">
+  <section class="about-section">
     <div class="about-two-column">
       <div class="about-text">
-        <h2>ISPM-15 in Plain English</h2>
+        <h2 data-aos="fade-up">ISPM-15 in Plain English</h2>
         <p>Wooden packaging that crosses a border must be heat treated so it cannot carry pests. The core of the wood is held at 56 °C for at least 30 minutes, and the pallet is stamped with the IPPC mark.</p>
         <p>Our mark reads <strong>{site.ippc} HT</strong> next to the IPPC wheat-ear symbol, on two opposite sides of every export pallet. <a href="/guides/ispm-15-heat-treatment/">Read the full ISPM-15 guide</a>.</p>
       </div>
@@ -59,14 +59,14 @@ const faqs = [
     </div>
   </section>
 
-  <div class="divider" data-aos="zoom-in"><hr /></div>
+  <div class="divider"><hr /></div>
 
-  <section class="about-section" data-aos="fade-up">
-    <h2>Five Checks Between Timber and Truck</h2>
+  <section class="about-section">
+    <h2 data-aos="fade-up">Five Checks Between Timber and Truck</h2>
     <div class="services-grid">
       {
         checks.map(([icon, t, d], i) => (
-          <div class="service-card" data-aos="fade-up" data-aos-delay={i * 100}>
+          <div class="service-card">
             <Fa name={icon} />
             <h3>{i + 1}. {t}</h3>
             <p>{d}</p>
@@ -76,8 +76,8 @@ const faqs = [
     </div>
   </section>
 
-  <section class="about-section" data-aos="fade-up">
-    <h2>Questions About Quality</h2>
+  <section class="about-section">
+    <h2 data-aos="fade-up">Questions About Quality</h2>
     <Faq items={faqs} />
   </section>
 

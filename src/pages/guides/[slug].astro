@@ -31,14 +31,14 @@ const article = {
 ---
 
 <Base cta={{ title: 'Need Pallets for Your Next Shipment?', text: 'Send us the size, quantity and destination. We reply with a quote within one working day.', label: 'Request a Quote' }} title={d.metaTitle} description={d.metaDescription} image={img.src} type="article" schema={[article]}>
-  <section class="about-hero" data-aos="fade-up">
+  <section class="about-hero">
     <h1>{d.title}</h1>
     <p class="tagline">{d.summary}</p>
   </section>
   <Breadcrumbs items={[{ name: 'Guides', href: '/guides/' }, { name: d.title }]} />
   <article class="about-section prose">
     <p style="font-size:.9rem;color:#6c757d">By {site.legalName} · <time datetime={d.published.toISOString()}>{fmt(d.published)}</time></p>
-    <div class="about-image" style="margin:1rem 0 2rem;background:#f2f2f2;border-radius:12px">
+    <div class="about-image" style="margin:1rem 0 2rem;background:#fff;border-radius:12px">
       <Image src={img.src} alt={img.alt} widths={[600, 900, 1200]} sizes="(max-width: 900px) 90vw, 1100px" loading="eager" />
     </div>
     <Content />

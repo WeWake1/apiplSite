@@ -11,6 +11,7 @@ export interface Category {
   metaTitle: string;
   metaDescription: string;
   summary: string; // one paragraph under the heading (products page + cards)
+  line: string; // one short line (home page rows on phones, about page index)
   intro: string[];
   sections: { heading: string; paragraphs?: string[]; bullets?: string[] }[];
   faqs: Faq[];
@@ -25,6 +26,7 @@ export const categories: Category[] = [
     metaTitle: 'Euro-Size Wooden Pallets 1200 × 800 & 1200 × 1000 | Bangalore',
     metaDescription:
       'Euro-size wooden pallets made in Bengaluru: 1200 × 800 × 144, 1200 × 1000 perimeter base and 1000 × 1200 industrial pallets. 4-way, chamfered corners, ISPM-15 heat treated.',
+    line: '1200 × 800 and 1200 × 1000, 4-way, chamfered corners',
     summary:
       'Pallets built to the Euro pallet family dimensions and construction: 1200 × 800 and two 1200 × 1000 industrial formats, 4-way entry, chamfered corners, heat treated for export.',
     intro: [
@@ -70,6 +72,7 @@ export const categories: Category[] = [
     metaTitle: 'CP1–CP9 Type Chemical Pallets | Manufacturer in Bangalore',
     metaDescription:
       'CP-type chemical pallets in all nine CP sizes, CP1 to CP9 (1000 × 1200 to 1140 × 1140), built to the standard CP dimensions and layouts in Bengaluru. ISPM-15 heat treated.',
+    line: 'CP1 to CP9 for drums, sacks, octabins and IBCs',
     summary:
       'All nine chemical-industry formats, CP1 to CP9, built to the standard CP dimensions and board layouts for drums, sacks, octabins and bulk containers.',
     intro: [
@@ -120,6 +123,7 @@ export const categories: Category[] = [
     metaTitle: 'Pinewood Pallets Manufacturer in Bangalore | 4-Way & 2-Way',
     metaDescription:
       'Pinewood pallets made in Bengaluru: 4-way block, 2-way stringer and skid pallets in 800 × 1200, 1000 × 1200, 1100 × 1100, 1120 × 1120 and custom sizes. ISPM-15 on request.',
+    line: 'Block, stringer and skid pallets in popular sizes',
     summary:
       'Light, strong for their weight and economical: pinewood block, stringer and skid pallets in popular sizes or built to yours.',
     intro: [
@@ -161,6 +165,7 @@ export const categories: Category[] = [
     metaTitle: 'Heavy-Duty Hardwood Pallets | Manufacturer in Bangalore',
     metaDescription:
       'Heavy-duty hardwood pallets made in Bengaluru: 4-way block, 2-way stringer and skid pallets from 1000 × 1200 to 1275 × 1275 mm for machinery, metals and heavy industrial loads.',
+    line: 'Heavy-duty pallets and skids for machinery and metal',
     summary:
       'Dense, heavy-duty hardwood block, stringer and skid pallets for machinery, metal and other heavy or concentrated loads.',
     intro: [
@@ -197,6 +202,7 @@ export const categories: Category[] = [
     metaTitle: 'GMA Pallet 48 × 40 (1220 × 1016 mm) Manufacturer in India',
     metaDescription:
       'GMA 48 × 40 inch (1220 × 1016 mm) stringer pallets with notched stringers for exports to the USA and Canada. Made in Bengaluru, ISPM-15 heat treated.',
+    line: '48 × 40 inch pallets for shipments to the USA and Canada',
     summary:
       'The 48 × 40 inch North American standard pallet with three notched stringers, for shipments to the USA and Canada.',
     intro: [
@@ -229,6 +235,7 @@ export const categories: Category[] = [
     metaTitle: 'Wooden Pallet Collars 1200 × 800 | Hinged & Stackable',
     metaDescription:
       'Hinged wooden pallet collars for 1200 × 800 pallets, 195 mm high, with galvanised steel corner hinges. Stack to build a crate, fold flat when empty. Made in Bengaluru.',
+    line: 'Hinged collars that turn a pallet into a stackable crate',
     summary: 'Hinged wooden collars that turn a 1200 × 800 pallet into a stackable crate and fold flat when not in use.',
     intro: [
       'A pallet collar is a hinged wooden frame that sits on a pallet to form an open crate. Add one collar for low items or stack several for a deeper box, then fold them flat when the job is done.',

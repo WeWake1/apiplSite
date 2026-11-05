@@ -1,6 +1,8 @@
 ---
-// "Industries We Serve": a compact strip of the sectors, each drawn as its typical load on a small
-// wooden pallet. Each tile links to the pallets that sector buys (shown on hover). Home and about pages.
+// "Industries We Serve": each sector drawn as its typical load on a small wooden pallet, linking to the
+// pallets that sector buys. Desktop and tablets: a row of tiles. Phones: a "forklift picker", one big
+// stage and eight sector buttons; changing sector lifts the old load off and drops the new one on.
+// Home and about pages.
 import { categoryUrl } from '../lib/catalog';
 
 
@@ -21,18 +23,21 @@ function gear(cx: number, cy: number, outer: number, inner: number, n: number) {
 const industries = [
   {
     name: 'Manufacturing',
+    short: 'Factories',
     text: 'Raw material in, finished goods out, and parts moving between lines and plants.',
     link: ['Pinewood pallets', categoryUrl('pinewood-pallets')],
     goods: `<rect x="26" y="38" width="68" height="40" rx="2"/><path d="M26 51h68M26 64h68"/><path class="soft" d="M30 42l60 32M90 42L30 74"/><rect x="26" y="38" width="68" height="40" rx="2" class="line"/>`,
   },
   {
     name: 'Logistics & Warehousing',
+    short: 'Logistics',
     text: 'Standard footprints that fit racking, trucks, containers and hand pallet trucks.',
     link: ['Euro-size pallets', categoryUrl('euro-pallets')],
     goods: `<rect x="22" y="56" width="36" height="22" rx="1.5"/><rect x="62" y="56" width="36" height="22" rx="1.5"/><rect x="34" y="32" width="36" height="24" rx="1.5"/><path class="tape" d="M40 56v22M80 56v22M52 32v24"/><path class="line" d="M78 22h18m-6-6 6 6-6 6"/>`,
   },
   {
     name: 'FMCG',
+    short: 'FMCG',
     text: 'Light, consistent pallets for high-volume cartons, cases and bottled goods.',
     link: ['GMA pallets', categoryUrl('gma-pallets')],
     goods: `${[22, 38, 54, 70, 86]
@@ -41,12 +46,14 @@ const industries = [
   },
   {
     name: 'Pharmaceuticals',
+    short: 'Pharma',
     text: 'Clean, heat-treated pallets for packed medicines and regulated export consignments.',
     link: ['Euro-size pallets', categoryUrl('euro-pallets')],
     goods: `<rect x="24" y="48" width="34" height="30" rx="1.5"/><rect x="62" y="48" width="34" height="30" rx="1.5"/><path class="accent" d="M41 56v14M34 63h14M79 56v14M72 63h14"/><g transform="rotate(-30 60 28)"><rect x="46" y="22" width="28" height="12" rx="6"/><path class="tape" d="M60 22v12"/></g>`,
   },
   {
     name: 'Chemicals & Polymers',
+    short: 'Chemicals',
     text: 'CP1 to CP9 pallets sized for drums, sacks, octabins and IBCs.',
     link: ['CP-type pallets', categoryUrl('cp-pallets')],
     goods: `${[24, 62]
@@ -55,12 +62,14 @@ const industries = [
   },
   {
     name: 'Engineering & Heavy Industries',
+    short: 'Heavy industry',
     text: 'Hardwood pallets and skids for machinery, castings and heavy fabricated parts.',
     link: ['Hardwood pallets', categoryUrl('hardwood-pallets')],
     goods: `<path d="${gear(60, 52, 25, 20, 10)}"/><circle class="accent-fill" cx="60" cy="52" r="8"/>`,
   },
   {
     name: 'Automotive',
+    short: 'Auto',
     text: 'Pallets with stackable collars for components, spares and returnable packaging.',
     link: ['Pallet collars', categoryUrl('pallet-collars')],
     // a small car (side view, facing right) parked on the pallet
@@ -71,6 +80,7 @@ const industries = [
   },
   {
     name: 'Exporters & Importers',
+    short: 'Export',
     text: 'ISPM-15 heat treated and stamped IN-081 HT, accepted at customs worldwide.',
     link: ['ISPM-15 heat treatment', '/quality-certifications/'],
     goods: `<rect x="30" y="54" width="60" height="24" rx="1.5"/><path class="tape" d="M60 54v24"/><circle cx="60" cy="31" r="17"/><path class="tape" d="M43 31h34M60 14c-6 5-8 11-8 17s2 12 8 17c6-5 8-11 8-17s-2-12-8-17z"/>`,
@@ -98,3 +108,75 @@ const pallet = `<path d="M8 78h104v6H8z"/><path d="M12 84h12v8H12zM54 84h12v8H54
     ))
   }
 </ul>
+
+<div class="ind-picker" data-ind-picker>
+  <div class="ind-stage">
+    <svg class="ind-stage-art" viewBox="0 0 120 100" aria-hidden="true">
+      {industries.map((ind, i) => <g class={`ind-goods ind-load${i === 0 ? ' is-on' : ''}`} set:html={ind.goods} />)}
+      <g class="ind-pallet" set:html={pallet} />
+    </svg>
+    {
+      industries.map((ind, i) => (
+        <div class="ind-info" hidden={i !== 0} aria-live="polite">
+          <p class="ind-info-name">{ind.name}</p>
+          <p class="ind-info-text">{ind.text}</p>
+          <a href={ind.link[1]}>{ind.link[0]} <span aria-hidden="true">→</span></a>
+        </div>
+      ))
+    }
+  </div>
+  <div class="ind-chips" role="group" aria-label="Choose an industry">
+    {
+      industries.map((ind, i) => (
+        <button type="button" class="ind-chip" aria-pressed={i === 0 ? 'true' : 'false'} aria-label={ind.name}>
+          <svg viewBox="0 0 120 100" aria-hidden="true">
+            <g class="ind-goods" set:html={ind.goods} />
+            <g class="ind-pallet" set:html={pallet} />
+          </svg>
+          <span>{ind.short}</span>
+        </button>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  // Phones: the forklift picker. A tap shows that sector; until the visitor taps, it moves on by itself
+  // every few seconds while it is on screen (not at all with reduced motion).
+  document.querySelectorAll<HTMLElement>('[data-ind-picker]').forEach((picker) => {
+    const loads = [...picker.querySelectorAll<SVGGElement>('.ind-load')];
+    const infos = [...picker.querySelectorAll<HTMLElement>('.ind-info')];
+    const chips = [...picker.querySelectorAll<HTMLButtonElement>('.ind-chip')];
+    let current = 0;
+    let timer: number | undefined;
+    const show = (i: number) => {
+      if (i === current) return;
+      loads[current].classList.remove('is-on');
+      loads[i].classList.add('is-on');
+      infos[current].hidden = true;
+      infos[i].hidden = false;
+      chips[current].setAttribute('aria-pressed', 'false');
+      chips[i].setAttribute('aria-pressed', 'true');
+      current = i;
+    };
+    const stop = () => {
+      window.clearInterval(timer);
+      timer = undefined;
+    };
+    chips.forEach((chip, i) =>
+      chip.addEventListener('click', () => {
+        picker.dataset.touched = '1';
+        stop();
+        show(i);
+      }),
+    );
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting && timer === undefined && !picker.dataset.touched) timer = window.setInterval(() => show((current + 1) % loads.length), 3200);
+        else if (!e.isIntersecting) stop();
+      },
+      { threshold: 0.5 },
+    ).observe(picker);
+  });
+</script>

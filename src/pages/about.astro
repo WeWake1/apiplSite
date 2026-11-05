@@ -17,15 +17,6 @@ const commitments = [
   'PEFC / FSC timber on request',
 ];
 
-// One line per family for the "What We Do" index
-const oneLiners: Record<string, string> = {
-  'euro-pallets': '1200 × 800 and 1200 × 1000, 4-way, chamfered corners',
-  'cp-pallets': 'CP1 to CP9 for drums, sacks, octabins and IBCs',
-  'pinewood-pallets': 'Block, stringer and skid pallets in popular sizes',
-  'hardwood-pallets': 'Heavy-duty pallets and skids for machinery and metal',
-  'gma-pallets': '48 × 40 inch pallets for shipments to the USA and Canada',
-  'pallet-collars': 'Hinged collars that turn a pallet into a stackable crate',
-};
 ---
 
 <Base
@@ -74,7 +65,7 @@ const oneLiners: Record<string, string> = {
                 <span class="ri-num">{String(i + 1).padStart(2, '0')}</span>
                 <span class="ri-text">
                   <span class="ri-name">{c.name}</span>
-                  <span class="ri-line">{oneLiners[c.slug]}</span>
+                  <span class="ri-line">{c.line}</span>
                 </span>
                 <span class="ri-count">{n} {n === 1 ? 'model' : 'models'}</span>
                 <Image class="ri-img" src={mainImage(productBySlug[c.heroProduct]).src} alt="" widths={[160, 240]} sizes="120px" loading="lazy" />

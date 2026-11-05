@@ -73,10 +73,18 @@ const faqs = [
   <section class="content-section">
     <h2 data-aos="fade-up">Our Product Range</h2>
     <p>{products.length} pallet models in six families.</p>
-    <div class="product-range-container range-focus">
+    <div class="product-range-container range-tiles">
       {
         categories.map((c, i) => (
-          <ProductCard href={categoryUrl(c.slug)} title={c.name} image={mainImage(productBySlug[c.heroProduct])} text={c.summary} line={c.line} delay={(i % 3) * 200} />
+          <ProductCard
+            href={categoryUrl(c.slug)}
+            title={c.name}
+            image={mainImage(productBySlug[c.heroProduct])}
+            text={c.summary}
+            line={c.line}
+            delay={(i % 3) * 200}
+            sizes="(max-width: 768px) 46vw, 400px"
+          />
         ))
       }
     </div>
@@ -114,71 +122,6 @@ const faqs = [
     <Faq items={faqs} />
   </section>
 </Base>
-
-<script is:inline>
-  // "Our Product Range" on phones: compact rows. The row at the middle of the screen opens up (its pallet
-  // grows and moves to the centre, the description appears) and closes again as you scroll on. Layout
-  // changes are animated FLIP-style: measure, switch the class, then animate from the old boxes.
-  (function () {
-    var box = document.querySelector('.range-focus');
-    if (!box || !box.animate) return;
-    var phone = window.matchMedia('(max-width: 768px)');
-    var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
-    var cards = [].slice.call(box.querySelectorAll('.product-card'));
-    var active = null, busy = false, queued = false;
-    var MS = 480, EASE = 'cubic-bezier(0.2, 0.8, 0.2, 1)';
-
-    var parts = function (c) { return [c.querySelector('.product-card-image'), c.querySelector('h3')]; };
-    var snap = function (c) {
-      var r = c.getBoundingClientRect();
-      return { h: r.height, p: parts(c).map(function (el) {
-        var q = el.getBoundingClientRect();
-        return { x: q.left - r.left, y: q.top - r.top, w: q.width, h: q.height };
-      }) };
-    };
-    var set = function (next) {
-      if (next === active) return;
-      var touched = [active, next].filter(Boolean);
-      var before = touched.map(snap);
-      if (active) active.classList.remove('is-focus');
-      if (next) next.classList.add('is-focus');
-      active = next;
-      var anims = [];
-      touched.forEach(function (c, i) {
-        var a = before[i], b = snap(c);
-        anims.push(c.animate([{ height: a.h + 'px' }, { height: b.h + 'px' }], { duration: MS, easing: EASE }));
-        parts(c).forEach(function (el, k) {
-          var f = a.p[k], l = b.p[k];
-          var t = 'translate(' + (f.x - l.x) + 'px,' + (f.y - l.y) + 'px)' + (k === 0 ? ' scale(' + f.w / l.w + ',' + f.h / l.h + ')' : '');
-          anims.push(el.animate([{ transform: t, transformOrigin: '0 0' }, { transform: 'none', transformOrigin: '0 0' }], { duration: MS, easing: EASE }));
-        });
-        var shown = c.querySelectorAll(c.classList.contains('is-focus') ? '.product-card-text' : '.product-card-line, .product-card-arrow');
-        [].forEach.call(shown, function (el) {
-          anims.push(el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: MS * 0.6, delay: MS * 0.4, easing: 'ease-out', fill: 'backwards' }));
-        });
-      });
-      busy = true;
-      Promise.all(anims.map(function (x) { return x.finished; })).catch(function () {}).then(function () { busy = false; check(); });
-    };
-    var check = function () {
-      queued = false;
-      if (busy) return;
-      if (!phone.matches || calm.matches) {
-        if (active) { active.classList.remove('is-focus'); active = null; }
-        return;
-      }
-      var mid = window.innerHeight / 2, pick = active;
-      var first = cards[0].getBoundingClientRect(), last = cards[cards.length - 1].getBoundingClientRect();
-      if (mid < first.top || mid > last.bottom) pick = null;
-      else cards.forEach(function (c) { var r = c.getBoundingClientRect(); if (r.top + 8 <= mid && r.bottom - 8 >= mid) pick = c; });
-      set(pick);
-    };
-    var later = function () { if (!queued) { queued = true; requestAnimationFrame(check); } };
-    window.addEventListener('scroll', later, { passive: true });
-    window.addEventListener('resize', later);
-    check();
-  })();
-</script>
 
 <script is:inline>
   // Factory gallery strip: fetch the photos shortly before the strip is reached, and only start the

@@ -115,6 +115,7 @@ const pallet = `<path d="M8 78h104v6H8z"/><path d="M12 84h12v8H12zM54 84h12v8H54
       {industries.map((ind, i) => <g class={`ind-goods ind-load${i === 0 ? ' is-on' : ''}`} set:html={ind.goods} />)}
       <g class="ind-pallet" set:html={pallet} />
     </svg>
+    <div class="ind-infos">
     {
       industries.map((ind, i) => (
         <div class="ind-info" hidden={i !== 0} aria-live="polite">
@@ -124,6 +125,7 @@ const pallet = `<path d="M8 78h104v6H8z"/><path d="M12 84h12v8H12zM54 84h12v8H54
         </div>
       ))
     }
+    </div>
   </div>
   <div class="ind-chips" role="group" aria-label="Choose an industry">
     {

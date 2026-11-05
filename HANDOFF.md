@@ -199,3 +199,11 @@ Cloning Pallet Euro into a folder called `palletEuroSite` keeps the same layout 
   - All 46 pages pass at 320, 360, 390, 414 and 768 px: no horizontal overflow and nothing off-screen.
 - Home gallery strip: the photos load before it is reached, and it starts moving only once they are decoded. This fixes the jump when scrolling to it fast.
 - Image panels and the 3D viewer are white.
+
+### 5 November 2026, evening (phone fixes)
+- "Industries We Serve" picker on phones: all sector texts share one grid cell (`.ind-infos`), so the card is always as tall as the longest text and the chips never move.
+- Taps: the browser's square tap flash is off site-wide (`-webkit-tap-highlight-color: transparent`). Base.astro adds `.is-pressed` (a rounded inset tint) to the tapped link or button after 80 ms, or at once on a quick tap, and never when the touch turns into a scroll.
+- "Our Product Range" on phones (up to 768 px): a static two-column grid of tiles (`.range-tiles`). Each tile shows the render, the name and the family's short line (`line` in `categories.ts`). The full description stays on the family's own page. Desktop keeps the 3 × 2 cards.
+  - Two scroll-driven versions were tried first: one pinned the list to the screen, the other floated the open card over its neighbours. The owner found both laggy on a real phone, and they were removed.
+- Sticky works site-wide now: `body, html` use `overflow-x: clip`, with `hidden` as the fallback. With `hidden`, `body` was a scroll container of its own, so `position: sticky` never stuck. The products page's tab bar now stays at the top as it was designed to.
+- A dot-grid background (after reactbits.dev's DotGrid) was tried and dropped by the owner. Do not bring it back.

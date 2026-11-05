@@ -234,6 +234,52 @@ const business = {
         e.preventDefault();
         window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
       });
+
+      // --- Taps: a rounded pressed state instead of the browser's square flash (legacy.css, "Taps"). Shown
+      // after a moment, or at once on a quick tap, and dropped as soon as the touch turns into a scroll.
+      const TAPPABLE = 'a, button, summary, [role="button"], [role="tab"]';
+      let pressed: Element | null = null;
+      let pressTimer = 0;
+      let pressX = 0;
+      let pressY = 0;
+      const unpress = () => {
+        window.clearTimeout(pressTimer);
+        pressTimer = 0;
+        pressed?.classList.remove('is-pressed');
+        pressed = null;
+      };
+      document.addEventListener(
+        'pointerdown',
+        (e) => {
+          unpress();
+          if (e.pointerType === 'mouse' || !(e.target instanceof Element)) return;
+          const el = e.target.closest(TAPPABLE);
+          if (!el) return;
+          pressed = el;
+          pressX = e.clientX;
+          pressY = e.clientY;
+          pressTimer = window.setTimeout(() => {
+            pressTimer = 0;
+            el.classList.add('is-pressed');
+          }, 80);
+        },
+        { passive: true },
+      );
+      document.addEventListener('pointermove', (e) => pressed && Math.hypot(e.clientX - pressX, e.clientY - pressY) > 10 && unpress(), { passive: true });
+      document.addEventListener('pointercancel', unpress);
+      window.addEventListener('scroll', () => pressed && unpress(), { passive: true });
+      window.addEventListener('pageshow', unpress);
+      document.addEventListener('pointerup', () => {
+        const el = pressed;
+        if (!el) return;
+        window.clearTimeout(pressTimer);
+        pressTimer = 0;
+        el.classList.add('is-pressed');
+        window.setTimeout(() => {
+          el.classList.remove('is-pressed');
+          if (pressed === el) pressed = null;
+        }, 180);
+      });
     </script>
   </body>
 </html>

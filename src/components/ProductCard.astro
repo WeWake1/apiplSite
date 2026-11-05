@@ -8,17 +8,18 @@ interface Props {
   title: string;
   image: { src: ImageMetadata; alt: string };
   text?: string;
-  line?: string; // short line, shown instead of the text in the home page's phone rows
+  line?: string; // short line, shown instead of the text in the home page's phone tiles
   delay?: number;
   heading?: 'h2' | 'h3';
+  sizes?: string; // image sizes, when the card is not ~90 % of a phone's width (home page tiles)
 }
-const { href, title, image, text, line, delay = 0, heading = 'h3' } = Astro.props;
+const { href, title, image, text, line, delay = 0, heading = 'h3', sizes = '(max-width: 768px) 90vw, 400px' } = Astro.props;
 const H = heading;
 ---
 
 <a href={href} class="product-card">
   <div class="product-card-image">
-    <Image src={image.src} alt={image.alt} widths={[400, 600, 800]} sizes="(max-width: 768px) 90vw, 400px" loading="lazy" />
+    <Image src={image.src} alt={image.alt} widths={[400, 600, 800]} sizes={sizes} loading="lazy" />
   </div>
   <H>{title}</H>
   {line && <p class="product-card-line">{line}</p>}

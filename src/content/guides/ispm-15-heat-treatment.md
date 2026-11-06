@@ -40,7 +40,7 @@ A compliant pallet carries a mark on at least two opposite sides, usually on the
 - **The registration number** of the treatment provider, issued by the national plant protection organisation. In India that is the Directorate of Plant Protection, Quarantine & Storage.
 - **The treatment code**: *HT* for heat treatment, *MB* for methyl bromide, *DH* for dielectric heating, *SF* for sulphuryl fluoride.
 
-So a mark that reads **IN-081 HT** means: treated in India, by registered provider 081, using heat treatment.
+So a mark that reads **IN-083 HT** means: treated in India, by registered provider 083, using heat treatment.
 
 If the stamp is missing, faded or incomplete, customs at the destination can treat the pallet as non-compliant.
 
@@ -50,6 +50,6 @@ If a treated pallet is repaired, the new components must also be treated. When a
 
 ## How Ambica Patterns handles it
 
-We run a registered ISPM-15 heat-treatment facility, registration **IN-081**, at our plant in Chikkabanavara, Bengaluru. Export pallets are debarked, heat treated with probes in the core of the thickest pieces, and stamped "IN-081 HT" next to the IPPC symbol on two opposite sides before dispatch. Because treatment happens on site, there is no waiting for a third-party chamber and no gap in the paperwork.
+We run a registered ISPM-15 heat-treatment facility, registration **IN-083**, at our plant in Chikkabanavara, Bengaluru. Export pallets are debarked, heat treated with probes in the core of the thickest pieces, and stamped "IN-083 HT" next to the IPPC symbol on two opposite sides before dispatch. Because treatment happens on site, there is no waiting for a third-party chamber and no gap in the paperwork.
 
 Have a shipment coming up? [Ask us for heat-treated pallets](/contact/) or see our [Euro-size pallets](/products/euro-pallets/), [CP-type pallets](/products/cp-pallets/) and [GMA pallets](/products/gma-pallets/).

@@ -286,6 +286,7 @@ def stamp_material(name, path):
     b = n["Principled BSDF"]
     t = n.new("ShaderNodeTexImage")
     t.image = bpy.data.images.load(path, check_existing=True)
+    m["aspect"] = t.image.size[0] / t.image.size[1]   # the decal takes the mark's proportions from its PNG
     t.interpolation = "Linear"     # crisper thin lines than Cubic at this size
     l.new(t.outputs["Color"], b.inputs["Base Color"])
     b.inputs["Roughness"].default_value = 0.88
@@ -553,7 +554,6 @@ def place_nails(parts, z_offset=0.0):
 
 
 # ================================================================ markings
-STAMP_ASPECT = {"ippc": 340 / 150, "epal": 2.0, "epal2": 336 / 150, "epal3": 336 / 150, "cp": 2.0}
 _stamp_mats = {}
 
 
@@ -568,7 +568,7 @@ def decal(mark, centre, normal, face_w, face_h):
     """Flat marking on a vertical face (centre in mm, world)."""
     if mark not in _stamp_mats:
         _stamp_mats[mark] = stamp_material("stamp_" + mark, stamp_file(mark))
-    asp = STAMP_ASPECT["cp" if mark.startswith("cp") else mark]
+    asp = _stamp_mats[mark]["aspect"]
     w = min(face_w * 0.80, face_h * 0.66 * asp)
     h = w / asp
     n = Vector(normal).normalized()

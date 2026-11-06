@@ -17,4 +17,4 @@ PW-01 gives you the 800 × 1200 mm Euro footprint in a lighter, more economical 
 
 Five top boards run the 1200 mm length: 120 mm wide at the two edges and 100 mm in between. They sit on three 100 mm cross boards that are flush with the ends of the pallet, over nine 100 × 100 mm blocks and three bottom boards that run under each row of blocks. The pallet is 130 mm high, double-deck and non-reversible, with fork entry from all four sides.
 
-Board thickness, block size and nailing can be adjusted to your load. For export we heat treat to ISPM-15 and stamp the pallet "IN-081 HT".
+Board thickness, block size and nailing can be adjusted to your load. For export we heat treat to ISPM-15 and stamp the pallet "IN-083 HT".

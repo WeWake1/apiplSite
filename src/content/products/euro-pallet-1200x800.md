@@ -7,7 +7,7 @@ highlights:
   - "11 boards and 9 blocks in the classic layout"
   - "17 mm corner chamfers cut through every layer at all four corners"
   - "Outer bottom boards chamfered between the blocks for hand pallet trucks"
-  - "Heat treated to ISPM-15 and stamped IN-081 HT for export"
+  - "Heat treated to ISPM-15 and stamped IN-083 HT for export"
 applications:
   - "Exports to Europe and the UK"
   - "FMCG and retail distribution"
@@ -21,4 +21,4 @@ We build it to the familiar Euro pallet construction. Five top boards (145, 100,
 
 At each corner a 17 mm 45° chamfer is cut through the top board, cross board, block and bottom board, so there is no sharp corner to catch or split. The two outer bottom boards are chamfered along their upper outside edge between the blocks, with a curved run-out at each end, so the wheels of a hand pallet truck roll over them from the long side.
 
-Please note that Ambica Patterns is not an EPAL licensee: these pallets carry our ISPM-15 mark "IN-081 HT", not the EPAL mark, and are intended for one-way and domestic use. Load ratings are confirmed per order for your load and handling.
+Please note that Ambica Patterns is not an EPAL licensee: these pallets carry our ISPM-15 mark "IN-083 HT", not the EPAL mark, and are intended for one-way and domestic use. Load ratings are confirmed per order for your load and handling.

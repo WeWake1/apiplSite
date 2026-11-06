@@ -17,4 +17,4 @@ CP1 is the pallet most chemical and polymer plants start with. Its 1000 × 1200 
 
 Underneath, three 100 mm stringer boards (22 mm) run across the 1000 mm side, set 40 mm in from the ends. They sit on nine blocks, 80 × 135 mm and 80 mm high, set 50 mm in from the ends and flush with the long sides, which rest on three 135 mm bottom boards. The overall height is 138 mm. The four corners of the top and bottom decks have 20 mm 45° chamfers.
 
-Because conveyors and palletisers in chemical plants are set up around these positions, we keep to the standard CP1 layout. The pallets carry our ISPM-15 mark "IN-081 HT"; we are not an EPAL licensee, so they are CP1-type pallets without EPAL or CP markings.
+Because conveyors and palletisers in chemical plants are set up around these positions, we keep to the standard CP1 layout. The pallets carry our ISPM-15 mark "IN-083 HT"; we are not an EPAL licensee, so they are CP1-type pallets without EPAL or CP markings.

@@ -1,0 +1,17 @@
+# ambicapatterns.in (and www.ambicapatterns.in) -> https://ambicapatterns.com
+# Upload ONLY this file to public_html of the ambicapatterns.in website in hPanel.
+# 301 = "moved permanently": Google transfers the .in site's history to the .com pages.
+# Email (sales@ambicapatterns.in, Google Workspace) is not affected: it uses DNS, not these files.
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # the old site's four pages go straight to their new addresses (no double redirect)
+  RewriteRule ^(index\.html)?$ https://ambicapatterns.com/ [R=301,L,NC]
+  RewriteRule ^about\.html$ https://ambicapatterns.com/about/ [R=301,L,NC]
+  RewriteRule ^products\.html$ https://ambicapatterns.com/products/ [R=301,L,NC]
+  RewriteRule ^contact\.html$ https://ambicapatterns.com/contact/ [R=301,L,NC]
+
+  # everything else keeps its path
+  RewriteRule ^(.*)$ https://ambicapatterns.com/$1 [R=301,L]
+</IfModule>

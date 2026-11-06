@@ -17,4 +17,4 @@ HW-05 is our largest block pallet, 1275 × 1275 mm square and built entirely fro
 
 The base is a perimeter frame, and every outer bottom board is chamfered along its upper outside edge between the blocks, so a pallet truck can enter cleanly from any of the four sides. At each corner a 20 mm chamfer is cut through every layer, from the top board down to the base, which protects the corners from knocks and splitting. The pallet is 161 mm high.
 
-It is the pallet to choose for big machines, oversized crates and heavy export loads. ISPM-15 heat treatment and the "IN-081 HT" mark are available.
+It is the pallet to choose for big machines, oversized crates and heavy export loads. ISPM-15 heat treatment and the "IN-083 HT" mark are available.

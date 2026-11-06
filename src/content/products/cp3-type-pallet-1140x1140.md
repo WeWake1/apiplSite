@@ -17,4 +17,4 @@ CP3 is the square pallet of the CP family and one of the most common pallets in 
 
 The deck has nine 18 mm top boards, 120 mm at the edges and centre and 80 mm in between, with 37.5 mm gaps. They sit on three 100 mm stringer boards and nine 80 × 135 mm blocks, set in from the ends as in the CP3 drawing, with three 135 mm bottom boards underneath. The height is 138 mm and the deck corners are chamfered 20 mm.
 
-CP3-type pallets are marked with our ISPM-15 stamp "IN-081 HT" for export. They are built to the standard layout but are not EPAL-marked.
+CP3-type pallets are marked with our ISPM-15 stamp "IN-083 HT" for export. They are built to the standard layout but are not EPAL-marked.

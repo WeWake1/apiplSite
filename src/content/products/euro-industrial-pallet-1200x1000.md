@@ -21,4 +21,4 @@ The top deck has nine boards running across the 1000 mm side; at each end two bo
 
 All four corners carry a 24 mm 45° chamfer through every layer, and every perimeter bottom board is chamfered on its upper outside edge between the blocks, so hand pallet trucks can enter from any side.
 
-These pallets are built to the industrial Euro dimensions and carry our ISPM-15 mark "IN-081 HT". They are not EPAL-marked pallets.
+These pallets are built to the industrial Euro dimensions and carry our ISPM-15 mark "IN-083 HT". They are not EPAL-marked pallets.

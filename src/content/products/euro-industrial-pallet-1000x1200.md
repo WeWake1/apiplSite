@@ -18,4 +18,4 @@ This pallet uses the proven Euro construction on a wider 1000 × 1200 mm deck. S
 
 The wider deck suits goods that do not fit neatly on a 1200 × 800 pallet: chemicals in sacks, building materials, larger cartons and mixed industrial loads. The outer bottom boards are chamfered between the blocks so hand pallet trucks can enter from the long sides, and every corner has a 24 mm chamfer through all layers.
 
-Export pallets are heat treated to ISPM-15 and stamped "IN-081 HT". These pallets are built to the industrial Euro dimensions and are not EPAL-marked.
+Export pallets are heat treated to ISPM-15 and stamped "IN-083 HT". These pallets are built to the industrial Euro dimensions and are not EPAL-marked.

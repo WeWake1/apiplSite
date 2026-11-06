@@ -45,7 +45,7 @@ export const categories: Category[] = [
       {
         heading: 'Export ready',
         paragraphs: [
-          'Every pallet for export is heat treated in our registered facility and stamped with the IPPC mark "IN-081 HT", so it clears customs in all countries that follow ISPM-15 without fumigation certificates.',
+          'Every pallet for export is heat treated in our registered facility and stamped with the IPPC mark "IN-083 HT", so it clears customs in all countries that follow ISPM-15 without fumigation certificates.',
         ],
       },
     ],
@@ -56,7 +56,7 @@ export const categories: Category[] = [
       },
       {
         q: 'Are your Euro-size pallets heat treated?',
-        a: 'Yes, for export. They are heat treated to ISPM-15 and marked "IN-081 HT" with the IPPC symbol on two opposite sides.',
+        a: 'Yes, for export. They are heat treated to ISPM-15 and marked "IN-083 HT" with the IPPC symbol on two opposite sides.',
       },
       {
         q: 'How many 1200 × 800 pallets fit in a container?',
@@ -142,7 +142,7 @@ export const categories: Category[] = [
       {
         heading: 'Heat treatment',
         paragraphs: [
-          'Any pinewood pallet can be heat treated to ISPM-15 in our registered facility and stamped "IN-081 HT" for export. For domestic use we can supply untreated pallets to keep costs down.',
+          'Any pinewood pallet can be heat treated to ISPM-15 in our registered facility and stamped "IN-083 HT" for export. For domestic use we can supply untreated pallets to keep costs down.',
         ],
       },
     ],

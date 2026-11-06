@@ -17,4 +17,4 @@ CP8 is a special-purpose container pallet. It keeps the square 1140 × 1140 mm f
 
 To carry heavy containers around that opening, CP8 has four 80 mm stringer boards over twelve 80 × 100 mm blocks, set 20 mm in from the sides. The two-layer base has three full-length boards under the blocks, crossed by four boards underneath that run flush to the edges. The height is 156 mm and the corners are chamfered 20 mm.
 
-CP8-type pallets are stamped "IN-081 HT" for export and are not EPAL-marked.
+CP8-type pallets are stamped "IN-083 HT" for export and are not EPAL-marked.

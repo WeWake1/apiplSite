@@ -17,4 +17,4 @@ When softwood is not enough, seasoned hardwood gives a pallet that resists crush
 
 Ten 22 mm top boards run across the 1200 mm side. At each edge two 97 mm boards are butted together to give a solid landing for the forks, with six 100 mm boards spaced evenly between them. The deck sits on three stringer boards (120, 100 and 120 mm) and nine 95 mm high blocks. A perimeter base of two end boards and three boards between them lets the pallet sit flat on racking beams and conveyors. Overall height is 161 mm, with fork entry from all four sides.
 
-Hardwood pallets suit engineering plants, foundries and any site where a pallet is used again and again. For export we heat treat to ISPM-15 and stamp the pallet "IN-081 HT".
+Hardwood pallets suit engineering plants, foundries and any site where a pallet is used again and again. For export we heat treat to ISPM-15 and stamp the pallet "IN-083 HT".

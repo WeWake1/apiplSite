@@ -6,7 +6,7 @@ highlights:
   - "48 × 40 in (1220 × 1016 × 132 mm)"
   - "Three 38 mm stringers, each with two rounded notches"
   - "Seven top boards and three bottom boards"
-  - "Heat treated to ISPM-15 and stamped IN-081 HT for export"
+  - "Heat treated to ISPM-15 and stamped IN-083 HT for export"
 applications:
   - "Exports to the USA and Canada"
   - "Retail and grocery supply chains"
@@ -20,4 +20,4 @@ The 48 × 40 inch pallet, often called the GMA pallet after the grocery manufact
 
 Our version measures 1220 × 1016 mm and 132 mm high. Seven top boards (160 mm at the edges and 100 mm in between) run across three 38 mm stringers, with three bottom boards at the ends and centre. Each stringer has two notches, about 230 mm long and 38 mm deep, cut with rounded corners so the timber is not weakened by sharp inside corners. The notches give partial 4-way entry: pallet trucks and forklifts enter from the 40 inch ends, and forklifts can also enter through the notches from the 48 inch sides.
 
-Every export GMA pallet is heat treated to ISPM-15 and stamped "IN-081 HT", as required for wood packaging entering North America. It is rated for around 1,000 kg evenly distributed; heavier versions can be built on request.
+Every export GMA pallet is heat treated to ISPM-15 and stamped "IN-083 HT", as required for wood packaging entering North America. It is rated for around 1,000 kg evenly distributed; heavier versions can be built on request.

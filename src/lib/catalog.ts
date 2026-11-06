@@ -61,7 +61,7 @@ export function specRows(p: Product): [string, string][] {
   rows.push(['Material', p.wood]);
   if (p.loadKg) rows.push(['Load capacity', `${p.loadKg.toLocaleString('en-IN')} kg`]);
   if (p.use) rows.push(['Typical use', p.use]);
-  rows.push(['Treatment', 'ISPM-15 heat treatment, IPPC mark IN-081 HT']);
+  rows.push(['Treatment', 'ISPM-15 heat treatment, IPPC mark IN-083 HT']);
   return rows;
 }
 

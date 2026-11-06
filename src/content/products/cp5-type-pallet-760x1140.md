@@ -17,4 +17,4 @@ CP5 is the narrowest CP format at 760 × 1140 mm, designed as a container pallet
 
 Seven top boards (100 and 80 mm, 18 mm thick) run the 1140 mm length with 23 mm gaps. Unlike CP1 to CP3, the three 100 mm stringer boards and the nine 100 × 80 mm blocks are flush with the ends of the pallet, and the bottom boards are 80 mm wide at the sides and 100 mm in the centre. The corners are square, exactly as the CP5 drawing shows, and the height is 138 mm.
 
-Every pallet is checked against the CP5 dimensions and, for export, heat treated and stamped "IN-081 HT". CP5-type pallets from Ambica Patterns are not EPAL-marked.
+Every pallet is checked against the CP5 dimensions and, for export, heat treated and stamped "IN-083 HT". CP5-type pallets from Ambica Patterns are not EPAL-marked.

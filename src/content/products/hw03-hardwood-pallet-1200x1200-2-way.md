@@ -17,4 +17,4 @@ HW-03 is a simple, very strong design: nine 105 mm hardwood top boards nailed to
 
 Solid stringers make the pallet stiff along its length, which suits concentrated and heavy loads. Forklifts enter from the two open sides between the stringers; the bottom boards keep the pallet steady on the floor and in stacks.
 
-All boards are 22 mm seasoned hardwood. For export we heat treat to ISPM-15 and stamp the stringers "IN-081 HT".
+All boards are 22 mm seasoned hardwood. For export we heat treat to ISPM-15 and stamp the stringers "IN-083 HT".

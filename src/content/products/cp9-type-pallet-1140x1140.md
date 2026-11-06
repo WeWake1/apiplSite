@@ -17,4 +17,4 @@ CP9 combines the square 1140 × 1140 mm deck of CP3 with the taller 156 mm two-l
 
 The deck has nine 18 mm top boards, 120 mm at the edges and centre and 80 mm in between. Three 80 mm stringer boards run under the deck, set 20 mm in from the sides, over nine 80 × 100 mm blocks. The base has three full-length boards under the blocks, crossed by three 100 mm boards underneath that run flush to the edges. The corners of the deck and base are chamfered 20 mm.
 
-CP9-type pallets are marked "IN-081 HT" for export. They are built to the standard layout but are not EPAL-marked.
+CP9-type pallets are marked "IN-083 HT" for export. They are built to the standard layout but are not EPAL-marked.

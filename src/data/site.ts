@@ -8,7 +8,7 @@ export const site = {
   tagline: 'Perfection is Our Habit !!',
   founded: 2001,
   description:
-    'Wooden pallet manufacturer in Bengaluru since 2001: Euro-size and CP-type pallets, GMA, pinewood and hardwood pallets and pallet collars. ISPM-15 heat treatment (IN-081), ISO 9001, PEFC / FSC.',
+    'Wooden pallet manufacturer in Bengaluru since 2001: Euro-size and CP-type pallets, GMA, pinewood and hardwood pallets and pallet collars. ISPM-15 heat treatment (IN-083), ISO 9001, PEFC / FSC.',
 
   address: {
     street: 'No. 6/7, Hesarghatta Main Road, Near Railway Station, Chikkabanavara',
@@ -38,7 +38,7 @@ export const site = {
   },
 
   // Plant protection registration printed in the ISPM-15 mark on every heat-treated pallet
-  ippc: 'IN-081',
+  ippc: 'IN-083',
 
   // TODO(owner): add profile URLs to show the icons in the footer
   social: {
@@ -51,10 +51,10 @@ export const site = {
     {
       id: 'ispm15',
       badge: 'ISPM-15',
-      sub: 'IN-081',
+      sub: 'IN-083',
       name: 'ISPM-15 heat treatment',
       icon: 'fire-flame-curved',
-      text: 'Registered heat-treatment provider IN-081. Export pallets are heat treated and stamped with the IPPC mark "IN-081 HT", accepted by customs worldwide.',
+      text: 'Registered heat-treatment provider IN-083. Export pallets are heat treated and stamped with the IPPC mark "IN-083 HT", accepted by customs worldwide.',
     },
     {
       id: 'iso9001',

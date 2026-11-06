@@ -17,4 +17,4 @@ A skid is the simplest strong pallet you can buy: deck boards nailed to solid ru
 
 Without bottom boards, a skid is lighter and uses less timber than a block pallet, and the runners make an excellent base for bolting down machinery. Forklifts enter from the two open ends between the runners; it is not suitable for hand pallet trucks.
 
-For export we heat treat to ISPM-15 and stamp the runners "IN-081 HT". We can add bottom boards if you later need a double-deck version.
+For export we heat treat to ISPM-15 and stamp the runners "IN-083 HT". We can add bottom boards if you later need a double-deck version.

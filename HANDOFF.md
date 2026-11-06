@@ -26,11 +26,11 @@ Both are Astro 7 static sites for Hostinger. Each repo has its own README with d
   - The EPAL and CP sizes are kept but renamed "Euro-size Pallet 1200 × 800" and "CP3-type Chemical Pallet".
   - Their pages say plainly that they are not EPAL pallets.
   - EPAL load ratings were removed from the Euro-size pages, because those figures only apply to licensed pallets.
-- Certifications: ISPM-15 registration with the stamp exactly **"IN-081 HT"** next to the IPPC wheat-ear symbol, ISO 9001, and PEFC / FSC.
+- Certifications: ISPM-15 registration with the stamp exactly **"IN-083 HT"** (HT centred under the code) next to the official IPPC symbol, ISO 9001, and PEFC / FSC. The code was first given as IN-081; the owner corrected it on 6 Nov 2026.
 - No "AMBICA" text may be stamped on the pallets.
 - Product image spot: the render shows first, and the pallet's own 3D model (GLB) loads only when the visitor taps "3D".
 - Home hero: desktops auto-load the rotating 3D Euro-size pallet as on the old site. Phones and touch screens get a "3D" button instead, because the 1 MB viewer script dropped the mobile Lighthouse score from 100 to 69. This can be reverted in `src/pages/index.astro` if preferred.
-- A factory photo showing an EPAL oval was removed from the quality page and replaced by a render close-up of the IN-081 HT mark.
+- A factory photo showing an EPAL oval was removed from the quality page and replaced by a render close-up of the IN-083 HT mark.
 
 ### Pallet Euro
 - A new company of the same owner, EPAL licensed, focused on EPAL pallets. Its range is EPAL 1, EPAL 2, EPAL 3, CP1–CP9 and pallet collars.
@@ -74,7 +74,7 @@ Both are Astro 7 static sites for Hostinger. Each repo has its own README with d
    - Set `tools/render/brand.json` `"code"` and re-render, so the IPPC mark shows the real code instead of IN-XXX.
    - Set the emails in `public/contact.php`.
 2. **Ambica WhatsApp:** which number is on WhatsApp? The site uses +91 98868 37016.
-3. **Ambica IPPC code:** is the mark printed "IN-081" or "IN-81"? Change it in `src/data/site.ts` and `tools/render/brand.json` if needed, then re-render.
+3. **Ambica IPPC code:** answered (6 Nov 2026): **IN-083 HT**. It is set in `src/data/site.ts` and `tools/render/brand.json`; if it ever changes, change both and re-render.
 4. **PW-06 size:** 1140 × 1140 (currently used) or 1100 × 1100? The reference site lists both.
 5. **ITC Anna font:** does the owner have a web licence for it (the old site's heading font)?
 6. **CP8 / CP9:** EPAL's sheets say 28 and 24 boards, but the drawings give 21 and 18, and the renders follow the drawings. The spec tables show EPAL's numbers. Settle it with Pallet Euro's full EPAL licence documents.
@@ -148,7 +148,7 @@ Cloning Pallet Euro into a folder called `palletEuroSite` keeps the same layout 
 ### 4 November 2026
 - Owner's answers:
   - The WhatsApp number is +91 98868 37016 (already in `site.ts`).
-  - The IPPC code is IN-081.
+  - The IPPC code is IN-081. (Wrong: corrected to IN-083 on 6 Nov, see below.)
   - PW-06 is 1140 × 1140.
   - The ITC Anna web licence is held.
   - No team photos or testimonials yet.
@@ -181,7 +181,7 @@ Cloning Pallet Euro into a folder called `palletEuroSite` keeps the same layout 
 ### 5 November 2026 (owner approved the new render look)
 - All 28 products re-rendered in the new look and the GLBs re-exported. `web_gain` was recalibrated for the white viewer: the Euro pallet measures (211,184,150) against the render's (211,184,151).
 - Knots: `KNOT_MAP` + `grain_strip()` in `render_pallet.py`. One deck board per pallet (two on large decks) and the odd block or bottom board show a few knots; the rest show clear wood. This applies to the GLBs too.
-- IPPC stamp redrawn with thinner lines and an open wheat ear (`make_stamps.py`), with lighter wear in the shader. The quality-page close-up was re-rendered (`src/assets/brand/ippc-mark-in-081-ht.webp`).
+- IPPC stamp redrawn with thinner lines and an open wheat ear (`make_stamps.py`), with lighter wear in the shader. The quality-page close-up was re-rendered (now `src/assets/brand/ippc-mark-in-083-ht.webp`). Superseded on 6 Nov by the official IPPC symbol.
 - Hero is live on the home page (`HeroBuild.astro`), and `/hero-preview/` is deleted.
   - The film uses a small steel hand stamp (`stamp_tool()`).
   - The dimension labels are plain text. "144 mm" sits to the left of its line.
@@ -207,3 +207,11 @@ Cloning Pallet Euro into a folder called `palletEuroSite` keeps the same layout 
   - Two scroll-driven versions were tried first: one pinned the list to the screen, the other floated the open card over its neighbours. The owner found both laggy on a real phone, and they were removed.
 - Sticky works site-wide now: `body, html` use `overflow-x: clip`, with `hidden` as the fallback. With `hidden`, `body` was a scroll container of its own, so `position: sticky` never stuck. The products page's tab bar now stays at the top as it was designed to.
 - A dot-grid background (after reactbits.dev's DotGrid) was tried and dropped by the owner. Do not bring it back.
+
+### 6 November 2026 (IPPC code IN-083, official symbol)
+- The heat-treatment registration is **IN-083**, not IN-081. Every mention on the site, the README, this file and the SEO plan (HTML and PDF) now says IN-083.
+- New IPPC mark (`make_stamps.py`), approved by the owner on a test render:
+  - The symbol is the official IPPC one (stem, ladder rungs, right-hand branch, "IPPC" beside the stem), traced from the owner's reference artwork. Overlaid on it, 6 of about 15,000 pixels differ. The outlines are in `IPPC_STROKES` / `IPPC_LETTERS`, in the reference's 800 px coordinates.
+  - "HT" is centred under "IN-083". The box is only as wide as the symbol and code need (582 × 300 px, about 15% narrower than before), so on a block the mark keeps its height and is a little narrower.
+  - `render_pallet.py` now takes every mark's proportions from its PNG (`stamp_material()` stores `aspect`), instead of the old `STAMP_ASPECT` table.
+- Re-rendered with the new mark: all 28 products, their GLBs, the hero film and stills, and the quality-page close-up (`ippc-mark-in-083-ht.webp`). The old `stamps/ippc_IN-081_HT.png` is deleted.

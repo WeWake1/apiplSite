@@ -57,4 +57,4 @@ For domestic shipments, in-plant handling and exports where the buyer has no pre
 
 ## What we make
 
-Ambica Patterns builds [Euro-size](/products/euro-pallets/), [CP-type](/products/cp-pallets/) and [GMA](/products/gma-pallets/) pallets to the standard dimensions, plus custom [pinewood](/products/pinewood-pallets/) and [hardwood](/products/hardwood-pallets/) pallets, in Bengaluru. We are not an EPAL licensee, so our pallets carry our ISPM-15 mark "IN-081 HT" rather than the EPAL mark. [Tell us where your goods are going](/contact/) and we will recommend the right pallet.
+Ambica Patterns builds [Euro-size](/products/euro-pallets/), [CP-type](/products/cp-pallets/) and [GMA](/products/gma-pallets/) pallets to the standard dimensions, plus custom [pinewood](/products/pinewood-pallets/) and [hardwood](/products/hardwood-pallets/) pallets, in Bengaluru. We are not an EPAL licensee, so our pallets carry our ISPM-15 mark "IN-083 HT" rather than the EPAL mark. [Tell us where your goods are going](/contact/) and we will recommend the right pallet.

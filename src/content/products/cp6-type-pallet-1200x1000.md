@@ -17,4 +17,4 @@ CP6 is built for heavy bagged bulk materials. Its deck has eleven 18 mm top boar
 
 Three stringer boards, 125 mm wide at the edges and 100 mm in the centre, run the full 1200 mm under the deck. Below them nine 80 × 100 mm blocks stand 80 mm tall, set 50 mm in from every side. The base has two layers of 18 mm boards: three boards directly under the blocks, crossed by three boards underneath. The result is stiffer under stacked loads and spreads weight across the floor and rack beams. The overall height is 156 mm, and the deck corners are chamfered 20 mm.
 
-CP6-type pallets are stamped "IN-081 HT" for export and are not EPAL-marked.
+CP6-type pallets are stamped "IN-083 HT" for export and are not EPAL-marked.

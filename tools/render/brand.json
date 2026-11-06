@@ -1,6 +1,6 @@
 {
   "name": "ambica",
-  "ippc": {"country": "IN", "code": "081", "treatment": "HT"},
+  "ippc": {"country": "IN", "code": "083", "treatment": "HT"},
   "epal": false,
   "marks": {
     "default": {"L": "ippc"}

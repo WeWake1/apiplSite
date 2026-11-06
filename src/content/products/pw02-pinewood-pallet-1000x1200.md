@@ -17,4 +17,4 @@ The 1000 × 1200 mm pallet is one of the most used sizes in Indian industry, and
 
 Under the deck, three stringer boards (120 mm at the edges, 100 mm in the centre) run the 1200 mm length over nine blocks. The base is a perimeter frame: two end boards and three boards between them, so the pallet rests on all four edges and stays steady on conveyors and rack beams. The height is 130 mm with fork openings on all four sides.
 
-If your load is heavier than usual, we can thicken the boards or enlarge the blocks. Export orders are heat treated to ISPM-15 and stamped "IN-081 HT".
+If your load is heavier than usual, we can thicken the boards or enlarge the blocks. Export orders are heat treated to ISPM-15 and stamped "IN-083 HT".

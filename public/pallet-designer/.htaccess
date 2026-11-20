@@ -1,0 +1,6 @@
+# Internal spec-sheet tool: works for anyone with the link, but stays out of search results.
+# robots.txt lets Google read this folder, so Google can see this "noindex".
+# The header also covers the page if the app is rebuilt and its index.html replaced.
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>

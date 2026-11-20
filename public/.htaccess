@@ -16,6 +16,7 @@ ErrorDocument 404 /404.html
   # Pages from the old site
   RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
   RewriteRule ^index\.html$ / [R=301,L]
+  RewriteRule ^index\.php$ / [R=301,L,NC]
   RewriteRule ^about\.html$ /about/ [R=301,L,NC]
   RewriteRule ^products\.html$ /products/ [R=301,L,NC]
   RewriteRule ^contact\.html$ /contact/ [R=301,L,NC]

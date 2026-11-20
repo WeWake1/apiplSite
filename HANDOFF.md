@@ -215,3 +215,65 @@ Cloning Pallet Euro into a folder called `palletEuroSite` keeps the same layout 
   - "HT" is centred under "IN-083". The box is only as wide as the symbol and code need (582 × 300 px, about 15% narrower than before), so on a block the mark keeps its height and is a little narrower.
   - `render_pallet.py` now takes every mark's proportions from its PNG (`stamp_material()` stores `aspect`), instead of the old `STAMP_ASPECT` table.
 - Re-rendered with the new mark: all 28 products, their GLBs, the hero film and stills, and the quality-page close-up (`ippc-mark-in-083-ht.webp`). The old `stamps/ippc_IN-081_HT.png` is deleted.
+
+## 10. SEO progress (step by step, verified with the owner)
+
+We work through `docs/seo-plan/` one step at a time. For each step: explain it, do it, verify it, record it here. The owner wants to understand each step in depth, so explain the why, not just the how.
+
+| # | Step | Status (7 Nov 2026) | Evidence / notes |
+|---|---|---|---|
+| 1 | One official address: https://ambicapatterns.com | Done, verified | The www, http and .in addresses and the old `.html` pages all 301 to the matching .com page (checked with curl). `http://ambicapatterns.in` takes 2 hops (Hostinger forces HTTPS first), which is fine. The live site matches the latest build. |
+| 1b | Sitemap in Search Console | Done, verified | `sitemap.xml` shows "Success" with 44 discovered pages, which is every page (404 and thank-you are left out on purpose). |
+| 1c | Home page indexed | Done, verified | URL Inspection: "URL is on Google", HTTPS OK. |
+| 2 | .in moved to .com in Search Console | Done, started 7 Nov 2026 | Change of address is running (Google keeps it active for 180 days). Keep the .in redirect file (`tools/deploy/ambicapatterns-in/.htaccess`) and the .in domain registration for at least a year, ideally for good. Never touch .in DNS: `sales@ambicapatterns.in` email runs on Google Workspace (MX records). |
+| 2b | Bing Webmaster Tools (also feeds ChatGPT search and DuckDuckGo) | Not confirmed | Sign in at bing.com/webmasters, then "Import from Google Search Console". |
+| 3 | Technical audit of the live site | In progress | (a) `/pallet-designer/`: owner keeps it, now `noindex` and crawlable (11 Nov, see below). (b) Still to check: every title and description, canonicals, structured data (Rich Results Test), Core Web Vitals and PageSpeed (mobile), images and alt text, internal links, and the Search Console "Pages" report once it fills in (1–3 weeks). |
+| 4 | Keyword research | To do | Markets (owner): Bengaluru and Karnataka, the rest of India, Indian exporters, buyers abroad. |
+| 5 | On-page optimisation against the keywords | To do | |
+| 6 | Google Business Profile | To do | The owner has the login. Check that the website link is https://ambicapatterns.com and that name, address and phone match the site exactly. |
+| 7 | Listings (IndiaMART, JustDial, TradeIndia, Bing Places, Apple Business Connect) | To do | Same name, address and phone everywhere (NAP). No EPAL claims. |
+| 8 | Reviews routine | To do | |
+| 9 | Content (guides, real photos, case studies) | To do | |
+| 10 | Links and reputation | To do | |
+| 11 | AI search (AI Overviews, ChatGPT and others) | To do | |
+| 12 | Measurement | To do | GA4 is wired but off (`site.ga4Id` is empty in `src/data/site.ts`). Turning it on needs the owner's decision and a privacy policy update. |
+
+### Re-verified 11 November 2026
+
+- **Steps 1, 1b, 1c and 2 still hold.**
+  - All www, http, .in and old `.html` addresses 301 to the right .com page (curl).
+  - All 44 sitemap pages return 200 with no redirect, and each one's canonical is its own address.
+  - The sitemap shows "Success" (44 pages, last read 9 Nov).
+  - The home page is "URL is on Google" over HTTPS.
+  - The change of address (.in to .com) is running since 7 Nov.
+  - The .in MX records still point to Google Workspace.
+  - The live site matches the local build, except the sitemap's `lastmod` dates.
+- **Search Console exports** are filed in `docs/seo-plan/search-console/`; the README there explains them. The repo is public on GitHub, so ask the owner before committing them.
+- **Pages report (Google's data from 6 Nov):** 14 real pages indexed. The 30 others had not been processed yet.
+  - 404s: `/index.php` and `www…/index.php`, old-site addresses with no redirect.
+  - "Alternate page with proper canonical tag": the `/contact/?product=…` quote links. Two of these were indexed anyway.
+  - "Page with redirect": old home page addresses (intended).
+  - "Crawled - currently not indexed": `www…/products.html` (last crawled 31 Jul).
+- **Bing (step 2b):** Webmaster Tools is not signed in on this Mac's Chrome. Bing already lists the new home and About pages next to the old .in pages.
+- **For step 7 (listings):** infobel.in describes the company as "EPAL certified", and Cybo shows the old gmail address and a fax number. These must be corrected.
+- **Audit item found:** the sitemap gives every page the build date as `lastmod`. Google ignores `lastmod` when it is not accurate.
+
+### Changes made 11 November 2026 (approved by the owner; live once the zip is uploaded)
+
+Zip: `deploy/ambica-site-2026-11-11-1410.zip`.
+
+- **`/index.php` now 301s to the home page** (`public/.htaccess`). This fixes the two 404s.
+  - The www version takes 2 hops: www is removed first, then index.php.
+- **Quote links moved after `#`.** The "Get a quote" and "Request a Quote" buttons now link to `/contact/#quote-<slug>` instead of `/contact/?product=<slug>#quote`. Google ignores everything after `#`, so it sees one contact page instead of 28 copies.
+  - The contact page has one invisible `<span id="quote-<slug>" class="quote-target">` per product, built from the same list as the dropdown. The browser jumps to the form by itself, exactly as with `#quote`.
+  - A first version scrolled with JavaScript and stopped 30 px short, because fonts swapping in after the scroll moved the form.
+  - The script picks the product from the hash, and also when only the hash changes. Old `?product=` links still work.
+  - Tested: direct link, a click from a product page and from a family page, old link style. The page layout is unchanged.
+- **`/pallet-designer/` is hidden from Google but still works.**
+  - It now has `<meta name="robots" content="noindex, nofollow">`, plus an `X-Robots-Tag` header from `public/pallet-designer/.htaccess` (that file survives a rebuild of the app).
+  - Its `Disallow` line is removed from robots.txt, because Google has to read the page to see the noindex.
+- **Search Console exports** go to GitHub: the owner chose this knowing the repo is public. The owner commits and pushes everything, including the deploy zip; Claude does not run git commit.
+- **After uploading, check:**
+  - `curl -I https://ambicapatterns.com/index.php` gives a 301 to `/`.
+  - `curl -I https://ambicapatterns.com/pallet-designer/` shows `x-robots-tag: noindex, nofollow`.
+  - Then click "Validate fix" on the Not found (404) issue in Search Console.

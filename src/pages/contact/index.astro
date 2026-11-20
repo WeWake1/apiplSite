@@ -59,6 +59,8 @@ import { site, whatsappLink } from '../../data/site';
       </div>
 
       <div class="contact-form-section" id="quote">
+        {/* One invisible target per product, so a /contact/#quote-<slug> link makes the browser jump here by itself, exactly like #quote. */}
+        {categories.flatMap((c) => productsIn(c.slug)).map((p) => <span id={`quote-${p.slug}`} class="quote-target" aria-hidden="true" />)}
         <h2 data-aos="fade-up">Send Us a Message</h2>
         <form class="contact-form" action="/contact.php" method="POST" data-quote-form>
           <div class="form-status" role="status" hidden data-status></div>
@@ -135,8 +137,15 @@ import { site, whatsappLink } from '../../data/site';
     if (started) started.value = String(Date.now());
     const params = new URLSearchParams(location.search);
     const select = form.querySelector<HTMLSelectElement>('#product');
-    const want = params.get('product');
-    if (want && select && [...select.options].some((o) => o.value === want)) select.value = want;
+    // Quote links are /contact/#quote-<product slug>. Google ignores everything after '#',
+    // so it sees a single contact page. Old ?product=<slug> links (already known to Google) still work.
+    const fromHash = () => (location.hash.startsWith('#quote-') ? decodeURIComponent(location.hash.slice(7)) : '');
+    const choose = (want: string | null) => {
+      if (want && select && [...select.options].some((o) => o.value === want)) select.value = want;
+    };
+    choose(fromHash() || params.get('product'));
+    // Only the '#' part changed (no page load): still pick the product.
+    addEventListener('hashchange', () => choose(fromHash()));
     const status = form.querySelector<HTMLElement>('[data-status]');
     const fail = (msg: string) => {
       if (!status) return;

@@ -1174,6 +1174,12 @@ header nav ul li a.active {
 }
 
 /* Contact Form */
+/* Invisible per-product jump targets (/contact/#quote-<slug>): take no space */
+.quote-target {
+    display: block;
+    height: 0;
+}
+
 .contact-form-section h2 {
     font-family: var(--font-body);
     font-size: 1.9rem;

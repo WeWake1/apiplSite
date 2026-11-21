@@ -331,3 +331,18 @@ Zip: `deploy/ambica-site-2026-11-11-1410.zip`.
   - New pallets must never be called EPAL.
 - **Indexing:** the owner requested the top 10 on 20 Nov and will do the rest.
 - **GA4:** the owner wants it. They need to create the property and send the `G-` Measurement ID; then the privacy policy needs updating.
+
+### 21 November 2026: speed confirmed, Google Analytics on (live once the zip is uploaded)
+
+- **PageSpeed (mobile), CP3 product page after the 20 Nov upload:** Performance 100 and CLS 0 (it was 91 and 0.192). Accessibility was 96 because the Related Pallets card text used `#6c757d`; now `#495057`.
+- **GA4:** `site.ga4Id = 'G-M1HF49H6XK'` (stream "Ambica Patterns", ID 16386214793), using the built-in gtag.js in `Base.astro`.
+  - The GTM container snippet GA offered (GTM-N36RJV8C) is **not** used; adding it would double count.
+  - No consent banner (owner's choice, 21 Nov). The privacy policy's "Cookies and analytics" section now describes GA (updated 21 Nov 2026).
+- **Lead events** (tested with a stubbed gtag on the local preview):
+  - `whatsapp_click`, `phone_click`, `email_click`: a click listener in `Base.astro`;
+  - `generate_lead` (with the product) when the quote form succeeds: `contact/index.astro`. The thank-you redirect waits at most 1 s.
+- **Owner to do in GA4 (Admin):**
+  - mark the 4 events as key events;
+  - set data retention to 14 months (the policy says 14);
+  - link Search Console;
+  - optionally define the office IP as internal traffic.

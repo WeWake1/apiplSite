@@ -240,6 +240,17 @@ const business = {
         window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
       });
 
+      // --- Leads: WhatsApp, phone and email taps are sent to Google Analytics as events (marked as key events
+      // in GA4). The quote form sends generate_lead from contact/index.astro. No-op if Analytics is off or blocked.
+      document.addEventListener('click', (e) => {
+        const a = (e.target as HTMLElement).closest?.('a[href]') as HTMLAnchorElement | null;
+        const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+        if (!a || !gtag) return;
+        const href = a.getAttribute('href') ?? '';
+        const name = href.startsWith('https://wa.me/') ? 'whatsapp_click' : href.startsWith('tel:') ? 'phone_click' : href.startsWith('mailto:') ? 'email_click' : '';
+        if (name) gtag('event', name, { link_url: href.split('?')[0], page_path: location.pathname });
+      });
+
       // --- Taps: a rounded pressed state instead of the browser's square flash (legacy.css, "Taps"). Shown
       // after a moment, or at once on a quick tap, and dropped as soon as the touch turns into a scroll.
       const TAPPABLE = 'a, button, summary, [role="button"], [role="tab"]';

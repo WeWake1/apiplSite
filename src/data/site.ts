@@ -75,7 +75,9 @@ export const site = {
   ],
 
   googleSiteVerification: '',
-  ga4Id: '',
+  // Google Analytics 4, stream "Ambica Patterns" (owner, 21 Nov 2026). No consent banner by the owner's choice;
+  // the privacy policy explains it. Lead events: see Base.astro ("Leads") and contact/index.astro.
+  ga4Id: 'G-M1HF49H6XK',
 } as const;
 
 export const yearsInBusiness = new Date().getFullYear() - site.founded;

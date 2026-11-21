@@ -162,7 +162,16 @@ import { site, whatsappLink } from '../../data/site';
         const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
         const data = await res.json().catch(() => ({}));
         if (!res.ok || !data.ok) throw new Error(data.error || 'could not send');
-        location.href = '/contact/thank-you/';
+        // Google Analytics lead event (a key event in GA4), then go to the thank-you page. The redirect waits
+        // for Analytics to confirm, but never more than 1 second (it never waits if Analytics is off or blocked).
+        const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+        const thanks = () => { location.href = '/contact/thank-you/'; };
+        if (gtag) {
+          let gone = false;
+          const go = () => { if (!gone) { gone = true; thanks(); } };
+          gtag('event', 'generate_lead', { form: 'quote', product: select?.value || 'none', event_callback: go });
+          setTimeout(go, 1000);
+        } else thanks();
       } catch (err) {
         fail(`Sorry, the message could not be sent (${(err as Error).message}). Please call or WhatsApp us instead.`);
         if (btn) btn.disabled = false;

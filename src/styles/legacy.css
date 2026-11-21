@@ -1439,7 +1439,7 @@ a { color: var(--primary-color); }
 }
 .product-card p.product-card-text {
     font-size: 0.98rem;
-    color: #6c757d;
+    color: #495057; /* #6c757d failed the contrast check (PageSpeed, 21 Nov 2026) */
     padding: 0 1.5rem 1.5rem;
     margin-top: -0.75rem;
     line-height: 1.6;

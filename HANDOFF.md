@@ -277,3 +277,57 @@ Zip: `deploy/ambica-site-2026-11-11-1410.zip`.
   - `curl -I https://ambicapatterns.com/index.php` gives a 301 to `/`.
   - `curl -I https://ambicapatterns.com/pallet-designer/` shows `x-robots-tag: noindex, nofollow`.
   - Then click "Validate fix" on the Not found (404) issue in Search Console.
+
+### 20 November 2026
+
+- **Live check after the owner's upload:** `/index.php` 301s to `/`. `/pallet-designer/` sends `x-robots-tag: noindex, nofollow` and has the meta tag. robots.txt no longer blocks it. Quote links are `#quote-<slug>` and the contact page has 28 targets.
+- **Bing Webmaster Tools:** set up by the owner (imported from GSC). Its data takes up to 48 h. Make sure the sitemap is listed under Sitemaps.
+- **GSC .com, data from 16 Nov:** 15 indexed, 50 not indexed.
+  - 30 "Discovered – currently not indexed": Google knows these sitemap pages but has not crawled them yet.
+  - 9 alternate-canonical (old `?product=` links).
+  - 8 redirect (old addresses).
+  - 2 404 (`index.php`, fixed: owner to click "Validate fix").
+  - 1 crawled-not-indexed (old products.html).
+- **GSC .in:** 2 "Page with redirect", 0 indexed. Expected during the move; nothing to do.
+
+### Step 3 audit, part 1 (20 November 2026)
+
+- **"Discovered – currently not indexed" (30 pages):**
+  - 1 guide (`/guides/pallet-sizes/`), `/quality-certifications/`;
+  - family pages: CP, hardwood, pinewood;
+  - the remaining 23 product pages: CP1, 2, 4–9; Euro ×3; GMA; HW01–06; collar; PW01, 02, 04, 05, 06, 08.
+  - The owner requests indexing for about 10 a day, in priority order.
+- **Titles, descriptions and H1:** all 44 indexable pages are unique, with one H1 each.
+  - About 30 descriptions run 161–182 characters, so Google will cut them off.
+  - The home H1 is "Built board by board." and has no keywords.
+  - Both are handled in step 5 with the keyword list.
+- **Structured data:** LocalBusiness on every page, Product ×28, BreadcrumbList, FAQPage ×8, ItemList ×7, Article ×3.
+  - `sameAs` is empty: fill it after GBP and listings exist.
+  - Product has no `offers`, because there are no public prices. That's fine.
+- **PageSpeed (mobile):**
+  - Home: 100/100/100/100.
+  - Product pages: Performance 91–92, Accessibility 96, CLS 0.178–0.192.
+  - **Cause of the CLS:** Poppins is wider than the Arial fallback. When Poppins swaps in, the breadcrumb row wraps to 2 lines at ≤390 px (39 → 68 px) and the product text rewraps, pushing the product block down about 30 px. Only ITC Anna is preloaded.
+  - **Accessibility:** breadcrumb grey `#6c757d` fails contrast.
+- **Owner's answers:**
+  - Top products are custom pinewood pallets, heat-treated pallets, "EPAL pallets", "used EPAL pallets" and wooden pallets in general. **The EPAL items need clarifying, because Ambica has no EPAL licence.**
+  - No good real photos yet; the owner will arrange some.
+  - Wants GA4 turned on.
+
+### Font jump and breadcrumb fixes (20 November 2026, approved by the owner; live once the zip is uploaded)
+
+- **Size-matched stand-in fonts** (`legacy.css`, section 2): `Poppins Fallback` uses local Arial, and `Poppins Fallback Roboto` uses local Roboto (Android has no Arial).
+  - Each has `size-adjust` and ascent/descent/line-gap overrides, measured on 18k characters of the site's own text: Poppins is 10.6% / 5.8% wider than Arial (400 / 600), and 11.4% / 12.6% wider than Roboto (400 / Medium).
+  - `--font-body` is now `'Poppins', 'Poppins Fallback', 'Poppins Fallback Roboto', sans-serif`.
+- **Preload:** `Base.astro` preloads `poppins-latin-400/600-normal.woff2`, the same hashed files the @fontsource CSS uses.
+- **Breadcrumbs:** colour is `#495057` (contrast fix). On screens ≤600 px, the last item is hidden on trails of 3+ items, so the row always fits on one line.
+- **Tested** on all 35 product and family pages at 360, 390 and 412 px, comparing Poppins with the stand-in:
+  - the breadcrumb height never changes;
+  - 96 of 105 cases show zero movement;
+  - in 9 cases, one summary paragraph wraps to a fourth line (26 px). Estimated CLS is about 0.01, down from 0.17–0.19.
+  - **Re-run PageSpeed (mobile) on a product page after upload.**
+- **EPAL (owner, 20 Nov):** Ambica resells used genuine EPAL pallets, repairs used EPAL pallets, and makes new Euro-size (non-EPAL) pallets.
+  - Before any site wording or keywords use "EPAL", the owner should confirm with EPAL India what is allowed. Repairing EPAL pallets normally needs an EPAL repair licence.
+  - New pallets must never be called EPAL.
+- **Indexing:** the owner requested the top 10 on 20 Nov and will do the rest.
+- **GA4:** the owner wants it. They need to create the property and send the `G-` Measurement ID; then the privacy policy needs updating.

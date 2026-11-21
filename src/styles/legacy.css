@@ -26,6 +26,47 @@ body, html {
     font-display: swap;
 }
 
+/* Stand-ins for Poppins while it downloads, scaled to take the same space, so text does not rewrap
+   (and the page does not jump) when Poppins swaps in. Measured 20 Nov 2026 on the site's own text:
+   size-adjust = Poppins width / stand-in width; the overrides are Poppins' ascent 105, descent 35 and
+   line gap 10 (per 100) divided by size-adjust. Arial: iPhone, Mac, Windows. Roboto: Android (no Arial). */
+@font-face {
+    font-family: 'Poppins Fallback';
+    src: local('Arial'), local('ArialMT');
+    font-weight: 400;
+    size-adjust: 110.63%;
+    ascent-override: 94.91%;
+    descent-override: 31.64%;
+    line-gap-override: 9.04%;
+}
+@font-face {
+    font-family: 'Poppins Fallback';
+    src: local('Arial Bold'), local('Arial-BoldMT');
+    font-weight: 600;
+    size-adjust: 105.81%;
+    ascent-override: 99.23%;
+    descent-override: 33.08%;
+    line-gap-override: 9.45%;
+}
+@font-face {
+    font-family: 'Poppins Fallback Roboto';
+    src: local('Roboto'), local('Roboto-Regular');
+    font-weight: 400;
+    size-adjust: 111.43%;
+    ascent-override: 94.23%;
+    descent-override: 31.41%;
+    line-gap-override: 8.97%;
+}
+@font-face {
+    font-family: 'Poppins Fallback Roboto';
+    src: local('Roboto Medium'), local('Roboto-Medium');
+    font-weight: 600;
+    size-adjust: 112.61%;
+    ascent-override: 93.24%;
+    descent-override: 31.08%;
+    line-gap-override: 8.88%;
+}
+
 /* --- 3. CSS Variables (Root) --- */
 /* This makes it easy to manage your theme colors and fonts */
 :root {
@@ -33,7 +74,7 @@ body, html {
     --dark-color: #212529;
     --light-color: #f8f9fa;
     --font-heading: 'ITCAnna', sans-serif;
-    --font-body: 'Poppins', sans-serif;
+    --font-body: 'Poppins', 'Poppins Fallback', 'Poppins Fallback Roboto', sans-serif;
 }
 
 /* --- 4. General Body Styles --- */
@@ -1476,11 +1517,18 @@ a { color: var(--primary-color); }
 .btn-outline:hover { background: var(--primary-color); color: #fff; }
 
 /* Breadcrumbs */
-.breadcrumbs { max-width: 1200px; margin: 0 auto; padding: 1.5rem 5% 0; font-size: 0.9rem; color: #6c757d; }
+.breadcrumbs { max-width: 1200px; margin: 0 auto; padding: 1.5rem 5% 0; font-size: 0.9rem; color: #495057; }
 .breadcrumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .breadcrumbs li:not(:last-child)::after { content: "/"; margin-left: 0.4rem; color: #adb5bd; }
-.breadcrumbs a { color: #6c757d; text-decoration: none; }
+.breadcrumbs a { color: #495057; text-decoration: none; }
 .breadcrumbs a:hover { color: var(--primary-color); }
+/* Phones: drop the last item (the current page, repeated by the H1 below) from trails of 3+ items, so the
+   line always fits on one row and cannot jump between 1 and 2 lines while the font loads. Google reads the
+   full trail from the BreadcrumbList data. */
+@media (max-width: 600px) {
+    .breadcrumbs li:last-child:not(:nth-child(-n+2)) { display: none; }
+    .breadcrumbs li:nth-last-child(2):not(:first-child)::after { content: none; }
+}
 
 /* Product detail page */
 .product-detail { max-width: 1200px; margin: 0 auto; padding: 2rem 5% 1rem; }

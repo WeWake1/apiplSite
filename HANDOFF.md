@@ -346,3 +346,12 @@ Zip: `deploy/ambica-site-2026-11-11-1410.zip`.
   - set data retention to 14 months (the policy says 14);
   - link Search Console;
   - optionally define the office IP as internal traffic.
+
+### 21 November 2026 (later): GA4 confirmed, Step 3 audit part 2
+
+- **The owner confirmed** GA4 Realtime works, retention is set to 14 months, and Search Console is linked. **Pending:** mark the 4 lead events as key events once they show up in GA4 (memory note `pending-ga4-key-events`).
+- **Alt text:** OK. 151 distinct descriptions. Thumbnails in buttons (which have aria-labels) and the About page icons have an empty alt, which is correct for decorative images.
+- **Images:** OK. The largest file is 439 KB (a full-width factory photo, already WebP).
+- **Internal links:** OK. Every sitemap page has at least 2 links from other pages, and product pages have 2–12.
+- **Sitemap `lastmod` (approved):** now the date of the newest Git commit touching each page's own content: its page file, `content/*.md`, its renders folder, and `products.json` / `categories.ts` where used. It ignores layout and styles. **Commit before building**, or the dates stay at the last commit.
+- Zip: `deploy/ambica-site-2026-11-21-1434.zip`.
